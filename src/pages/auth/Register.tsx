@@ -3,19 +3,30 @@ import { useDispatch } from "react-redux";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/buttons";
 import SocialLogin from "./SocialLogin";
-import { registerUserAction } from "../../redux/auth/authActions";
+import { useSignUpMutation } from "../../features/api/authSlice";
 
 const Register = (): JSX.Element => {
   const dispatch = useDispatch();
   const [data, setData] = useState({ email: "", password: "", userName: "" });
+  const [errMsg, setErr] = useState<string>("");
+
+  const [registerUser, { isLoading }] = useSignUpMutation();
+  
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  console.log("data", data);
 
   const handleSubmit = () => {
-    dispatch(registerUserAction(data));
+    registerUser(data)
+    .unwrap()
+    .then((res)=>{
+      localStorage.setItem("user", JSON.stringify(res.data));
+      console.log(res, 'i am the res here')
+    })
+    .catch((err)=>{
+      setErr(err?.data?.message || "Something went wrong")
+    })
   };
 
   return (
@@ -29,7 +40,7 @@ const Register = (): JSX.Element => {
       <form>
         <Input.Label
           title={""}
-          placeholder={"Enter your usern ame"}
+          placeholder={"Enter your username"}
           name="userName"
           className="rounded-md"
           autoComplete="off"
@@ -50,6 +61,7 @@ const Register = (): JSX.Element => {
           className="rounded-md"
           onChange={(e: any) => handleChange(e)}
         />
+        <p className="error"> {errMsg}</p>
         <Button.Primary
           title={"Sign Up"}
           className="w-full mt-4"

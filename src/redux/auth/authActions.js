@@ -9,7 +9,8 @@ let base_url = window.location.origin;
 
 export const saveUserDetails = (data) => {
   const user = JSON.stringify(data.data);
-  const token = data.data.access_token;
+  console.log(user, 'i am the data in user d')
+  const token = data.token;
   Cookies.set("token", token);
   Cookies.set("user", user);
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
