@@ -1,15 +1,18 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Input from "../../../components/input/Input";
 import Button from "../../../components/button/buttons";
-import { useAddQuestionMutation } from "../../../features/api/question/questionSlice";
+import { DeckQuestion } from "features/api/deck/deckSliceTypes";
+import { useEditQuestionMutation } from "../../../features/api/question/questionSlice";
 
 // Explicitly import the types for JSX
-type CreateQuizProps = {};
+type CreateQuizProps = {
+  question: DeckQuestion;
+};
 
-const MultipleChoice: React.FC<CreateQuizProps> = () => {
+const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
   const { id } = useParams();
-  const [addQuestion, { isLoading }] = useAddQuestionMutation();
+  const [editQuestion, { isLoading }] = useEditQuestionMutation();
 
   const [data, setData] = useState({
     question: "",
@@ -19,6 +22,19 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
   });
 
   const [answerFields, setAnswerFields] = useState(["option 1", "option 2"]);
+
+  useEffect(() => {
+    if (question) {
+      setData({
+        ...data,
+        question: question?.question,
+        type: question?.type,
+        answer: question?.answer,
+      });
+      setAnswerFields(question?.multichoiceOptions);
+    }
+  }, [question]);
+
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -47,25 +63,14 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
   };
 
   const handleSubmit = (e: any) => {
-    console.log("hjfjff", e);
-
-    // e.preventDefault();
-
-    addQuestion({
-      deckId: id,
+    editQuestion({
+      deckId: question?._id,
       payload: { ...data, multichoiceOptions: answerFields },
     })
       .unwrap()
       .then((res) => {
         // navigate("/auth/login");
         console.log("res", res);
-        setData({
-          question: "",
-          type: "MULTI_CHOICE",
-          multichoiceOptions: [],
-          answer: "",
-        });
-        setAnswerFields(["option 1", "option 2"]);
       })
       .catch((err) => {
         console.log("i am err", err);
@@ -74,10 +79,11 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
   };
 
   return (
-    <div className="mt-5 p-5 border w-full">
+    <div className="p-5 w-full">
       <textarea
         name="question"
-        rows={2}
+        rows={4}
+        value={data?.question}
         placeholder="Type your question here..."
         className="mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[60px] px-4 py-2 mb-4 border border-gray-300 rounded-md"
         onChange={(e: any) => handleChange(e)}
@@ -124,14 +130,14 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
           + Add Answer or Option
         </button>
         <Button.Primary
-          title={"Save"}
+          title={"Edit"}
           className="mt-4"
           loading={isLoading}
-          onClick={(e) => handleSubmit(e)}
+          onClick={handleSubmit}
         />
       </div>
     </div>
   );
 };
 
-export default MultipleChoice;
+export default EditMultipleChoice;

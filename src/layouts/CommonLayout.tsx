@@ -16,8 +16,8 @@ export default function CommonLayout() {
         <section>
           {/* Body */}
           <Routes>
-            <Route path="/" exact element={<Landing />} />
-            <Route path="/admin/create" exact element={<CreateQuiz />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/admin/create" element={<CreateQuiz />} />
             <Route
               path="/*"
               element={<Navigate to="/landing/not-found" replace />}

@@ -35,8 +35,8 @@ function App() {
             <Route path="/*" element={<CommonLayout />} />
             <Route path="/auth/*" element={<AuthLayout />} />
             <Route path="/dashboard/*" element={<AdminLayout />} />
-            <Route path="/dashboard/create/*" element={<CreateQuizLayout />} />
-            <Route path="/quiz/:id" element={<QuizTaker />} />
+            <Route path="/deck/create/*" element={<CreateQuizLayout />} />
+            <Route path="/deck/practise/:id" element={<QuizTaker />} />
           </Routes>
         </BrowserRouter>
       </>

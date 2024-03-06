@@ -2,13 +2,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 // Explicitly import the types for JSX
-type CreateQuizProps = {};
+type CreateQuizProps = { setView: (e: string) => void };
 
 const menuItems = [
   { name: "Quiz description", icon: "", href: "details" },
   { name: "Quiz time", icon: "", href: "time" },
 ];
-const SettingsMenu: React.FC<CreateQuizProps> = () => {
+const SettingsMenu: React.FC<CreateQuizProps> = ({ setView }) => {
   const navigate = useNavigate();
   return (
     <ul>
@@ -17,7 +17,7 @@ const SettingsMenu: React.FC<CreateQuizProps> = () => {
           <li
             key={index + menu?.name}
             className="p-3 hover:bg-white hover:shadow-md rounded-md"
-            onClick={() => navigate(`/dashboard/create/${menu?.href}`)}
+            onClick={() => setView(menu?.href)}
           >
             {menu?.name}
           </li>

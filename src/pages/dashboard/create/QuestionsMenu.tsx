@@ -1,38 +1,52 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 // Explicitly import the types for JSX
-type CreateQuizProps = {};
+type CreateQuizProps = {
+  setView: (e: string) => void;
+};
 
 const menuItems = [
-  { name: "Multiple Choice", icon: "", href: "multiple-choice" },
-  { name: "Poll", icon: "", href: "" },
-  { name: "Fill-in-the-blank", icon: "", href: "" },
-  { name: "Open-ended", icon: "", href: "" },
+  {
+    name: "Multiple Choice",
+    icon: "",
+    href: "multiple-choice",
+    type: "MULTI_CHOICE",
+  },
+  {
+    name: "QNA",
+    icon: "",
+    href: "qna",
+    type: "QNA",
+  },
+  { name: "Poll", icon: "", href: "", type: "QNA" },
+  { name: "Fill-in-the-blank", icon: "", href: "", type: "QNA" },
+  { name: "Open-ended", icon: "", href: "", type: "QNA" },
 ];
 
-const QuestionsMenu: React.FC<CreateQuizProps> = () => {
-  const navigate = useNavigate();
+const QuestionsMenu: React.FC<CreateQuizProps> = ({ setView }) => {
+  const [showMenu, setShowMenu] = useState(false);
+
   return (
-    <div>
-      <div className="mb-3 text-center">
-        <h2 className="mb-1 text-lg">Add Questions</h2>
-        <p className="text-sm">
-          Which type of questions would you like to set?
-        </p>
-      </div>
-      <ul>
-        {menuItems?.length > 0 &&
-          menuItems.map((menu, index) => (
-            <li
-              key={index + menu?.name}
-              className="p-3 hover:bg-white hover:shadow-md rounded-md"
-              onClick={() => navigate(`/dashboard/create/${menu?.href}`)}
-            >
-              {menu?.name}
-            </li>
-          ))}
-      </ul>
+    <div className="bg-primary p-2 my-4 w-fit rounded-md">
+      {showMenu ? (
+        <ul className="flex gap-4">
+          {menuItems?.length > 0 &&
+            menuItems.map((menu, index) => (
+              <li
+                key={index + menu?.name}
+                className="p-3 hover:bg-white hover:shadow-md rounded-md"
+                onClick={() => {
+                  setView(menu?.href);
+                  setShowMenu(false);
+                }}
+              >
+                {menu?.name}
+              </li>
+            ))}
+        </ul>
+      ) : (
+        <button onClick={() => setShowMenu(true)}> + Add Question</button>
+      )}
     </div>
   );
 };

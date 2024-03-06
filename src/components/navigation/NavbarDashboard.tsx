@@ -52,7 +52,7 @@ export default function NavbarDashboard() {
                   </a> */}
                   <button
                     type="button"
-                    onClick={() => navigate("/dashboard/create")}
+                    onClick={() => navigate("/deck/create")}
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary focus:outline-none"
                   >
                     Create Quiz

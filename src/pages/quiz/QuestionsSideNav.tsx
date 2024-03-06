@@ -3,10 +3,17 @@ import Button from "../../components/button/buttons";
 
 type Props = {
   data: any;
+  answers: any;
+  setActiveQuestion: React.Dispatch<React.SetStateAction<number>>;
+  handleSubmit: () => void;
 };
 
-const QuestionsSideNav: React.FC<Props> = ({ data }: Props) => {
-  // const navigate = useNavigate();
+const QuestionsSideNav: React.FC<Props> = ({
+  data,
+  answers,
+  setActiveQuestion,
+  handleSubmit,
+}) => {
   return (
     <div className="bg-[#D9D9D9] w-full rounded-md min-h-[70vh]">
       <div className="mb-4 border-b py-2">
@@ -19,7 +26,12 @@ const QuestionsSideNav: React.FC<Props> = ({ data }: Props) => {
             data.map((_: any, index: number) => (
               <div
                 key={index}
-                className="w-[30px] h-[30px] flex items-center justify-center bg-primary text-white rounded-sm"
+                onClick={() => setActiveQuestion(index)}
+                className={`${
+                  answers.hasOwnProperty(index)
+                    ? "bg-primary text-white"
+                    : "bg-[#FFFFFF]"
+                } w-[30px] h-[30px] flex items-center justify-center rounded-md border border-primary`}
               >
                 {index + 1}
               </div>
@@ -27,7 +39,11 @@ const QuestionsSideNav: React.FC<Props> = ({ data }: Props) => {
         </div>
 
         <div className="flex justify-center">
-          <Button.Primary title={"Submit"} className="mt-8 px-5 " />
+          <Button.Primary
+            onClick={() => handleSubmit()}
+            title={"Submit"}
+            className="mt-8 px-5 "
+          />
         </div>
       </div>
     </div>

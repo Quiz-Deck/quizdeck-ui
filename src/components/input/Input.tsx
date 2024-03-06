@@ -114,4 +114,98 @@ Input.Password = ({
   );
 };
 
+Input.Number = ({
+  title,
+  className,
+  placeholder,
+  type,
+  name,
+  readOnly,
+  id,
+  value,
+  defaultValue,
+  htmlFor,
+  onKeyDown,
+  onChange,
+  disabled,
+  autoComplete,
+}: any) => {
+  return (
+    <div>
+      <label
+        htmlFor={htmlFor}
+        className="block text-sm font-medium text-[#151515]"
+      >
+        {title ?? "Title"}
+      </label>
+      <div className="mt-2">
+        <input
+          type={"number"}
+          name={name}
+          readOnly={readOnly}
+          defaultValue={defaultValue}
+          id={id}
+          value={value}
+          onKeyDown={onKeyDown}
+          className={
+            "mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 " +
+            className
+          }
+          placeholder={placeholder}
+          onChange={onChange}
+          disabled={disabled}
+          autoComplete={autoComplete}
+        />
+      </div>
+    </div>
+  );
+};
+
+Input.Textarea = ({
+  title,
+  className,
+  placeholder,
+  type,
+  name,
+  readOnly,
+  id,
+  value,
+  defaultValue,
+  htmlFor,
+  onKeyDown,
+  onChange,
+  disabled,
+  autoComplete,
+}: any) => {
+  return (
+    <div>
+      <label
+        htmlFor={htmlFor}
+        className="block text-sm font-medium text-[#151515]"
+      >
+        {title ?? "Title"}
+      </label>
+      <div className="mt-2">
+        <textarea
+          name={name}
+          readOnly={readOnly}
+          defaultValue={defaultValue}
+          id={id}
+          value={value}
+          onKeyDown={onKeyDown}
+          className={
+            "mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 " +
+            className
+          }
+          placeholder={placeholder}
+          onChange={onChange}
+          disabled={disabled}
+          autoComplete={autoComplete}
+          minLength={5}
+        />
+      </div>
+    </div>
+  );
+};
+
 export default Input;

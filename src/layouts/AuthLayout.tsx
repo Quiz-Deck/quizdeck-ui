@@ -11,8 +11,8 @@ export default function AuthLayout() {
       <div className="grid grid-cols-2 items-center w-full">
         <div>
           <Routes>
-            <Route path="/login" exact element={<Login />} />
-            <Route path="/register" exact element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
         <div

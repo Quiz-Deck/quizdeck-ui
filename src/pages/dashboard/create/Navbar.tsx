@@ -11,7 +11,11 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const QuizNavbar: React.FC = () => {
+interface Props {
+  setView: (e: string) => void;
+}
+
+const QuizNavbar: React.FC<Props> = ({ setView }) => {
   // const navigate = useNavigate();
   const [active_tab, setActiveTab] = useState("settings");
 
@@ -44,8 +48,8 @@ const QuizNavbar: React.FC = () => {
         </nav>
       </div>
       <div className="mt-5 px-4">
-        {active_tab === "settings" && <SettingsMenu />}
-        {active_tab === "questions" && <QuestionsMenu />}
+        {active_tab === "settings" && <SettingsMenu setView={setView} />}
+        {active_tab === "questions" && <QuestionsMenu setView={setView} />}
       </div>
     </div>
   );

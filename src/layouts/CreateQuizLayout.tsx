@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 // import QuizNavbar from "../pages/dashboard/create/Navbar";
 // import Explore from "../pages/dashboard/explore/Explore";
 import CreateQuiz from "../pages/dashboard/create";
+import CreateDeckQuestions from 'pages/dashboard/create/CreateDeckQuestions';
 import NavbarDashboard from "../components/navigation/NavbarDashboard";
 
 export default function CreateQuizLayout() {
@@ -21,10 +22,10 @@ export default function CreateQuizLayout() {
         </div>
         <NavbarDashboard />
       </div>
-      <div className="pr-8 mt-6">
+      <div className="mt-6">
         <Routes>
-          <Route path="*" exact element={<CreateQuiz />} />
-          <Route path="/:page" element={<CreateQuiz />} />
+          <Route path="*" element={<CreateQuiz />} />
+          <Route path="/:id" element={<CreateDeckQuestions />} />
         </Routes>
       </div>
     </div>

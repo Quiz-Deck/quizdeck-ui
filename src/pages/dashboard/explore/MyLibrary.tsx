@@ -1,7 +1,12 @@
 import React from "react";
 import Dummy from "../../../assets/images/rectangle.jpg";
+import { useGetUserDeckQuery } from "../../../features/api/deck/deckSlice";
 
 export default function MyLibrary() {
+  const { data, error, isLoading } = useGetUserDeckQuery();
+
+  console.log("data", data);
+
   return (
     <div>
       <div className="mt-10 mb-6">
@@ -9,8 +14,8 @@ export default function MyLibrary() {
       </div>
 
       {Array(8)
-        .fill()
-        .map((index) => (
+        .fill(null)
+        .map((_, index) => (
           <div
             key={index}
             className="border border-[#D6E4FD] rounded-lg flex justify-between p-3 mb-4"

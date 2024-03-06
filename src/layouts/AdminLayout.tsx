@@ -14,10 +14,10 @@ export default function AdminLayout() {
         <NavbarDashboard />
         <div className="pr-8 mt-6">
           <Routes>
-            <Route path="*" exact element={<Explore />} />
-            <Route path="/explore" exact element={<Explore />} />
-            <Route path="/question/:id" exact element={<Question />} />
-            <Route path="/my-library" exact element={<MyLibrary />} />
+            <Route path="*" element={<Explore />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/question/:id" element={<Question />} />
+            <Route path="/my-library" element={<MyLibrary />} />
           </Routes>
         </div>
       </div>

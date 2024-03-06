@@ -6,7 +6,7 @@ interface BaseProps {
   className?: string;
   disabled?: boolean;
   loading?: boolean;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
 }
 
 interface ButtonProps extends BaseProps {
@@ -51,19 +51,12 @@ Button.Base = ({
   );
 };
 
-Button.Primary = ({
-  title,
-  style,
-  className,
-  disabled,
-  loading,
-  onClick = () => {},
-}) => {
+Button.Primary = ({ title, style, className, disabled, loading, onClick }) => {
   return (
     <button
       type="button"
       style={style}
-      onClick={() => onClick()}
+      onClick={() => (onClick ? onClick() : {})}
       disabled={disabled || loading}
       className={
         "bg-primary p-2 rounded-md text-center text-white whitespace-nowrap " +
