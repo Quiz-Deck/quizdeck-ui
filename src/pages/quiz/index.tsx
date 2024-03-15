@@ -67,6 +67,7 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
               setActiveQuestion={setActiveQuestion}
               answers={answers}
               setAnswers={setAnswers}
+              handleSubmit={handleSubmit}
             />
           </div>
         </div>

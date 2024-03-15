@@ -15,12 +15,22 @@ const QuestionsSideNav: React.FC<Props> = ({
   handleSubmit,
 }) => {
   return (
-    <div className="bg-[#D9D9D9] w-full rounded-md min-h-[70vh]">
-      <div className="mb-4 border-b py-2">
+    <div
+      className="bg-[#FAFAFF] w-full rounded-md min-h-[70vh]"
+      style={{
+        boxShadow: "0px 2px 3px 0px #D6E4FD",
+      }}
+    >
+      <div className="mb-4 border-b-2 border-[#DDE6F7] py-2">
         <p className="text-center text-lg font-bold">14:09</p>
       </div>
 
       <div className="px-4">
+        <div className="text-center mb-8">
+          <h3 className="font-bold text-lg mb-1">Select Questions</h3>
+          <p className="text-sm">Choose question or skip question</p>
+        </div>
+
         <div className="grid grid-cols-5 gap-3 mt-5">
           {data.length > 0 &&
             data.map((_: any, index: number) => (
@@ -38,7 +48,7 @@ const QuestionsSideNav: React.FC<Props> = ({
             ))}
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-24">
           <Button.Primary
             onClick={() => handleSubmit()}
             title={"Submit"}

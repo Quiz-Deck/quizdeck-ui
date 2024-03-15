@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "../../components/button/buttons";
-import { DeckQuestion } from "../../features/api/deck/deckSliceTypes";
 
 // Explicitly import the types for JSX
 type Props = {
@@ -8,6 +7,7 @@ type Props = {
   answers: any;
   setAnswers: any;
   activeQuestion: number;
+  handleSubmit: () => void;
   setActiveQuestion: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -17,6 +17,7 @@ const MultipleChoice: React.FC<Props> = ({
   setActiveQuestion,
   answers,
   setAnswers,
+  handleSubmit,
 }: Props) => {
   const handleSelectAnswer = (
     questionIndex: number,
@@ -29,8 +30,8 @@ const MultipleChoice: React.FC<Props> = ({
   };
 
   return (
-    <div className="p-5 border w-full">
-      <div className="mb-4 border-b py-2">
+    <div className="p-5 border border-[#D6E4FD] w-full">
+      <div className="mb-4 border-b border-[#D6E4FD] py-2">
         <p className="text-center text-lg font-bold">
           Question {activeQuestion + 1}
         </p>
@@ -42,17 +43,21 @@ const MultipleChoice: React.FC<Props> = ({
           <ul>
             {data[activeQuestion]?.multichoiceOptions.map(
               (option: string, index: number) => (
-                <li
-                  key={index}
-                  onClick={() => handleSelectAnswer(activeQuestion, option)}
-                  className={`${
-                    answers[activeQuestion] === option
-                      ? "bg-primary text-white"
-                      : "bg-[#FFFFFF]"
-                  } pl-3 pr-10 w-full text-base focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 rounded-md mb-5 w-full`}
-                >
-                  {option}
-                </li>
+                <div className="flex items-center gap-3 mb-8" key={index}>
+                  <span className="capitalize">
+                    {String.fromCharCode(97 + index)}.
+                  </span>
+                  <li
+                    onClick={() => handleSelectAnswer(activeQuestion, option)}
+                    className={`${
+                      answers[activeQuestion] === option
+                        ? "bg-primary text-white"
+                        : " bg-[#FAFAFF]"
+                    } pl-3 pr-10 w-full text-base focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 border border-gray-300 rounded-md w-full`}
+                  >
+                    {option}
+                  </li>
+                </div>
               )
             )}
           </ul>
@@ -68,14 +73,22 @@ const MultipleChoice: React.FC<Props> = ({
             setActiveQuestion(activeQuestion - 1);
           }}
         />
-        <Button.Primary
-          title={"Next"}
-          className="px-8 mt-4"
-          disabled={activeQuestion === data?.length - 1}
-          onClick={() => {
-            setActiveQuestion(activeQuestion + 1);
-          }}
-        />
+        {activeQuestion === data?.length - 1 ? (
+          <Button.Primary
+            title={"Submit"}
+            className="px-8 mt-4"
+            onClick={() => handleSubmit()}
+          />
+        ) : (
+          <Button.Primary
+            title={"Next"}
+            className="px-8 mt-4"
+            disabled={activeQuestion === data?.length - 1}
+            onClick={() => {
+              setActiveQuestion(activeQuestion + 1);
+            }}
+          />
+        )}
       </div>
     </div>
   );

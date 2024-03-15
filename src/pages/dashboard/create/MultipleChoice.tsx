@@ -5,9 +5,11 @@ import Button from "../../../components/button/buttons";
 import { useAddQuestionMutation } from "../../../features/api/question/questionSlice";
 
 // Explicitly import the types for JSX
-type CreateQuizProps = {};
+type CreateQuizProps = {
+  handleClose: () => void;
+};
 
-const MultipleChoice: React.FC<CreateQuizProps> = () => {
+const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
   const { id } = useParams();
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
 
@@ -46,19 +48,13 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
     setData({ ...data, ["answer"]: answer });
   };
 
-  const handleSubmit = (e: any) => {
-    console.log("hjfjff", e);
-
-    // e.preventDefault();
-
+  const handleSubmit = () => {
     addQuestion({
       deckId: id,
       payload: { ...data, multichoiceOptions: answerFields },
     })
       .unwrap()
-      .then((res) => {
-        // navigate("/auth/login");
-        console.log("res", res);
+      .then(() => {
         setData({
           question: "",
           type: "MULTI_CHOICE",
@@ -75,13 +71,23 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
 
   return (
     <div className="mt-5 p-5 border w-full">
-      <textarea
+      <Input.Textarea
+        title={""}
         name="question"
-        rows={2}
         placeholder="Type your question here..."
-        className="mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[60px] px-4 py-2 mb-4 border border-gray-300 rounded-md"
+        className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+        autoComplete="off"
+        minLength={12}
+        rows={2}
         onChange={(e: any) => handleChange(e)}
       />
+      {/* <textarea
+        name="question"
+        
+        placeholder=''
+        className="mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[60px] px-4 py-2 mb-4 border border-gray-300 rounded-md"
+        onChange={(e: any) => handleChange(e)}
+      /> */}
 
       {answerFields.map((inputField, index) => (
         <Fragment key={`${inputField}~${index}`}>
@@ -97,7 +103,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
                 title={""}
                 name="answer"
                 placeholder={"Type answer or option"}
-                className="rounded-md mb-4 w-full"
+                className="rounded-md mb-4 w-full bg-[#FAFAFF]"
                 autoComplete="off"
                 value={inputField}
                 onChange={(event: any) => handleInputChange(index, event)}
@@ -123,12 +129,19 @@ const MultipleChoice: React.FC<CreateQuizProps> = () => {
         >
           + Add Answer or Option
         </button>
-        <Button.Primary
-          title={"Save"}
-          className="mt-4"
-          loading={isLoading}
-          onClick={(e) => handleSubmit(e)}
-        />
+        <div className="flex gap-5">
+          <Button.Secondary
+            title={"Cancel"}
+            className="mt-4"
+            onClick={() => handleClose()}
+          />
+          <Button.Primary
+            title={"Save"}
+            className="mt-4"
+            loading={isLoading}
+            onClick={() => handleSubmit()}
+          />
+        </div>
       </div>
     </div>
   );

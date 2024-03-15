@@ -18,9 +18,6 @@ const menuItems = [
     href: "qna",
     type: "QNA",
   },
-  { name: "Poll", icon: "", href: "", type: "QNA" },
-  { name: "Fill-in-the-blank", icon: "", href: "", type: "QNA" },
-  { name: "Open-ended", icon: "", href: "", type: "QNA" },
 ];
 
 const QuestionsMenu: React.FC<CreateQuizProps> = ({ setView }) => {
@@ -45,7 +42,10 @@ const QuestionsMenu: React.FC<CreateQuizProps> = ({ setView }) => {
             ))}
         </ul>
       ) : (
-        <button onClick={() => setShowMenu(true)}> + Add Question</button>
+        <button onClick={() => setShowMenu(true)} className="text-white">
+          {" "}
+          + Add New Question
+        </button>
       )}
     </div>
   );

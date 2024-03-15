@@ -1,13 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import moment from "moment";
+import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/rectangle.jpg";
-import { useGetSingleDeckQuery } from "../../../features/api/deck/deckSlice";
+import { EditDeckModal } from "components/modals/EditDeckModal";
+import {
+  useGetSingleDeckQuery,
+  useDeleteSingleDeckMutation,
+} from "../../../features/api/deck/deckSlice";
+
+interface TimeAgoProps {
+  time?: string; // Accepts a string representation of the time
+}
+
+export const TimeAgo: React.FC<TimeAgoProps> = ({ time }) => {
+  const timeAgo = moment(time).fromNow(); // Calculate the time difference
+  return <span>{timeAgo}</span>; // Display the calculated time difference
+};
 
 export default function Question() {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [open, setOpen] = useState(false);
+  const [deleteSingleDeck] = useDeleteSingleDeckMutation();
   const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
+
+  const handleDelete = (id: string) => {
+    deleteSingleDeck(id)
+      .unwrap()
+      .then(() => {
+        navigate(-1);
+      })
+      .catch((err) => {
+        console.log("i am err", err);
+        // errorHandler(err?.data?.message || "Something went wrong", true);
+      });
+  };
+
+  const openModal = () => {
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -44,7 +80,9 @@ export default function Question() {
               />
               <p className="text-sm">Author’s Name</p>
               <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
-              <p className="text-sm">1 week ago</p>
+              <p className="text-sm">
+                {<TimeAgo time={data?.data?.[0]?.createdOn} />}
+              </p>
             </div>
           </div>
         </div>
@@ -55,6 +93,16 @@ export default function Question() {
           </div>
           <p className="text-sm text-right">Share</p>
         </div>
+        <Button.Secondary
+          title={"Delete Deck"}
+          className="px-8 mt-4"
+          onClick={() => handleDelete(id || "")}
+        />
+        <Button.Primary
+          title={"Edit Deck"}
+          className="px-8 mt-4"
+          onClick={() => openModal()}
+        />
       </div>
 
       <div className="my-10 md:max-w-[80%]">
@@ -68,6 +116,12 @@ export default function Question() {
       >
         Take Quiz
       </button>
+
+      <EditDeckModal
+        open={open}
+        setClose={closeModal}
+        deck={data?.data && data?.data?.[0]}
+      />
     </div>
   );
 }

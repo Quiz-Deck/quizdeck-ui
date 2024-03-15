@@ -17,8 +17,20 @@ const deckSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    //Edit a deck
+    editDeck: build.mutation<
+      AuthResponse,
+      { deckId?: string; payload: Partial<CreateDeckRequest> }
+    >({
+      query: ({ deckId, payload }) => ({
+        url: `/deck/edit/${deckId}`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+
     //Get a user's deck
-    getUserDeck: build.query<AuthResponse, void>({
+    getUserDeck: build.query<SingleDeckResponse, void>({
       query: () => ({
         url: "/deck/user",
         method: "GET",
@@ -41,7 +53,7 @@ const deckSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    //Gelete a single deck
+    //Delete a single deck
     deleteSingleDeck: build.mutation<SingleDeckResponse, string>({
       query: (id) => ({
         url: `/deck/${id}`,
@@ -54,6 +66,7 @@ const deckSlice = apiSlice.injectEndpoints({
 
 export const {
   useCreateDeckMutation,
+  useEditDeckMutation,
   useGetUserDeckQuery,
   useGetSingleDeckQuery,
   useGetPublicDecksQuery,

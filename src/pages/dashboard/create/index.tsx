@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import QuizNavbar from "./Navbar";
-// import QuizDetails from "./Details";
-// import MultipleChoice from "./MultipleChoice";
 import Input from "../../../components/input/Input";
 import { SelectInput } from "components/input/select";
 import Button from "../../../components/button/buttons";
@@ -44,18 +41,22 @@ const CreateQuiz: React.FC<CreateQuizProps> = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4">
+    <div className="max-w-7xl mx-auto px-4 mt-12">
       <div className="flex justify-between items-center mb-10">
-        <h2 className="text-xl font-bold">Create a new deck</h2>
-        <Button.Primary title={"Create"} className="mb-4" />
+        <h2 className="text-2xl font-bold">Create a new deck</h2>
       </div>
 
-      <div>
+      <div
+        style={{
+          boxShadow: "0px 2px 3px 0px #D6E4FD",
+        }}
+        className="border border-[#D6E4FD] rounded-[1rem] px-[2.5rem] py-[3.125rem]"
+      >
         <Input.Label
           title={"Quiz Name"}
           name="title"
           placeholder={"Quiz Name"}
-          className="rounded-md mb-5"
+          className="rounded-md mb-5 bg-[#FAFAFF]"
           autoComplete="off"
           onChange={(e: any) => handleChange(e)}
         />
@@ -63,7 +64,7 @@ const CreateQuiz: React.FC<CreateQuizProps> = () => {
           title={"Quiz Description"}
           name="description"
           placeholder={"Add a description..."}
-          className="rounded-md mb-5 min-h-[100px]"
+          className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
           autoComplete="off"
           minLength={12}
           onChange={(e: any) => handleChange(e)}
@@ -73,7 +74,7 @@ const CreateQuiz: React.FC<CreateQuizProps> = () => {
             label={"Quiz Type"}
             name={"type"}
             onChange={(e: any) => handleChange(e)}
-            className="rounded-md"
+            className="rounded-md bg-[#FAFAFF]"
           >
             <option>Select Quiz Type</option>
             <option value={"PRIVATE"}>PRIVATE</option>
@@ -84,42 +85,26 @@ const CreateQuiz: React.FC<CreateQuizProps> = () => {
             label={"Quiz Status"}
             name={"status"}
             onChange={(e: any) => handleChange(e)}
-            className="rounded-md"
+            className="rounded-md bg-[#FAFAFF]"
           >
             <option>Select Quiz Status</option>
             <option value={"DRAFT"}>DRAFT</option>
             <option value={"PUBLISHED"}>PUBLISHED</option>
           </SelectInput>
-          {/* <Input.Label
-            title={"Quiz Type"}
-            name="type"
-            placeholder={"Quiz Type"}
-            className="rounded-md mb-5"
-            autoComplete="off"
-            onChange={(e: any) => handleChange(e)}
-          /> */}
-
-          {/* <Input.Label
-            title={"Quiz Status"}
-            name="status"
-            placeholder={"Quiz Status"}
-            className="rounded-md mb-5"
-            autoComplete="off"
-            onChange={(e: any) => handleChange(e)}
-          /> */}
         </div>
 
         <Input.Number
           title={"Timer (optional)"}
           name="timer"
           placeholder={"How many minutes should this test last for?"}
-          className="rounded-md mb-5"
+          className="rounded-md mb-5 bg-[#FAFAFF]"
           autoComplete="off"
           onChange={(e: any) => handleChange(e)}
         />
         <Button.Primary
-          title={"Create"}
+          title={"Create Deck"}
           className="mt-4"
+          // disabled={false}
           loading={isLoading}
           onClick={handleSubmit}
         />

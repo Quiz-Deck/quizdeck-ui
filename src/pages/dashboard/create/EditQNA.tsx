@@ -53,28 +53,39 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
 
   return (
     <div className="p-5 w-full">
-      <textarea
+      <Input.Textarea
+        title={""}
+        name="question"
+        defaultValue={data?.question}
+        placeholder="Type your question here..."
+        className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+        autoComplete="off"
+        minLength={12}
+        rows={2}
+        onChange={(e: any) => handleChange(e)}
+      />
+      {/* <textarea
         name="question"
         rows={4}
-        defaultValue={data?.question}
+       
         placeholder="Type your question here..."
         className="mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[60px] px-4 py-2 mb-4 border border-gray-300 rounded-md"
         onChange={(e: any) => handleChange(e)}
-      />
+      /> */}
 
       <Input.Label
         title={"Answer"}
         name="answer"
         placeholder={"Enter the answer"}
         defaultValue={data?.answer}
-        className="rounded-md mb-5"
+        className="rounded-md mb-5 bg-[#FAFAFF]"
         autoComplete="off"
         onChange={(e: any) => handleChange(e)}
       />
 
       <div className="flex items-center justify-end">
         <Button.Primary
-          title={"Edit"}
+          title={"Edit Question"}
           className="mt-4"
           loading={isLoading}
           onClick={handleSubmit}

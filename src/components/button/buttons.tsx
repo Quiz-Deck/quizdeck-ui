@@ -59,11 +59,12 @@ Button.Primary = ({ title, style, className, disabled, loading, onClick }) => {
       onClick={() => (onClick ? onClick() : {})}
       disabled={disabled || loading}
       className={
-        "bg-primary p-2 rounded-md text-center text-white whitespace-nowrap " +
-        className
+        "p-2 rounded-md text-center text-white whitespace-nowrap " +
+        className +
+        (disabled ? " bg-[#FAFAFF]" : " bg-primary")
       }
     >
-      {title ?? "Title"}
+      {loading ? "Loading..." : title ?? "Title"}
       {/* {loading && <RiLoader5Fill size={24} className="animate-spin ml-4" />} */}
     </button>
   );
@@ -84,8 +85,9 @@ Button.Secondary = ({
       onClick={() => onClick()}
       disabled={disabled || loading}
       className={
-        "bg-white border border-primary p-2 rounded-md text-center text-primary whitespace-nowrap " +
-        className
+        "border-primary p-2 rounded-md text-center text-primary whitespace-nowrap " +
+        className +
+        (disabled ? " bg-[#FAFAFF]" : " bg-white border")
       }
     >
       {title ?? "Title"}

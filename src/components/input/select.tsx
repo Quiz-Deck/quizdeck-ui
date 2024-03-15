@@ -38,18 +38,7 @@ export const SelectInput = ({
   ...rest
 }: SelectProps) => {
   return (
-    <div className={`${className}`}>
-      {/* {label && (
-        <div className="w-full flex items-center mb-1">
-          <label
-            className={`text-[10px] md:text-[14px] capitalize leading-[21px] text-grey font-bold `}
-          >
-            {label}
-          </label>
-          {labelIcon && <img src={labelIcon} alt="" className="ml-2" />}
-          {required && <span className="text-text-red ml-[3px]"> * </span>}
-        </div>
-      )} */}
+    <div>
       {label && (
         <div className="w-full flex items-center mb-1">
           <label className="block text-sm font-medium text-[#151515]">
@@ -70,7 +59,7 @@ export const SelectInput = ({
           onChange={onChange}
           autoComplete="off"
           className={
-            "mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 " +
+            "mt-2 block pl-3 pr-10 w-full text-base focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 " +
             className
           }
         >

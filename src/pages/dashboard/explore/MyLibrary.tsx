@@ -1,11 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import moment from "moment";
 import Dummy from "../../../assets/images/rectangle.jpg";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckSlice";
 
-export default function MyLibrary() {
-  const { data, error, isLoading } = useGetUserDeckQuery();
+interface TimeAgoProps {
+  time: string; // Accepts a string representation of the time
+}
 
-  console.log("data", data);
+export const TimeAgo: React.FC<TimeAgoProps> = ({ time }) => {
+  const timeAgo = moment(time).fromNow(); // Calculate the time difference
+  return <span>{timeAgo}</span>; // Display the calculated time difference
+};
+
+export default function MyLibrary() {
+  const navigate = useNavigate();
+  const { data, error, isLoading } = useGetUserDeckQuery();
 
   return (
     <div>
@@ -13,12 +23,13 @@ export default function MyLibrary() {
         <h2 className="text-2xl font-semibold">My Library</h2>
       </div>
 
-      {Array(8)
-        .fill(null)
-        .map((_, index) => (
+      {data?.data &&
+        data?.data?.length > 0 &&
+        data?.data?.map((deck, index) => (
           <div
             key={index}
-            className="border border-[#D6E4FD] rounded-lg flex justify-between p-3 mb-4"
+            onClick={() => navigate(`/dashboard/question/${deck?._id}`)}
+            className="border border-[#D6E4FD] rounded-lg flex justify-between p-3 mb-4 cursor-pointer"
           >
             <div className="flex gap-3">
               <img
@@ -28,11 +39,15 @@ export default function MyLibrary() {
               />
               <div className="px-2 flex flex-col justify-between h-full">
                 <div>
-                  <h3 className="text-2xl font-semibold mb-2">Quiz name</h3>
+                  <h3 className="text-2xl font-semibold mb-2">{deck?.title}</h3>
                   <div className="flex justify-between pb-2">
-                    <p className="text-sm font-semibold">25 Questions</p>
-                    <p className="text-sm font-semibold">15 mins</p>
-                    <p className="text-sm font-semibold">125 plays</p>
+                    <p className="text-sm font-semibold">
+                      {deck?.questions?.length} Questions
+                    </p>
+                    <p className="text-sm font-semibold">{deck?.timer} mins</p>
+                    <p className="text-sm font-semibold">
+                      {deck?.playCount} plays
+                    </p>
                   </div>
                 </div>
 
@@ -44,13 +59,29 @@ export default function MyLibrary() {
                   />
                   <p className="text-sm">Author’s Name</p>
                   <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
-                  <p className="text-sm">1 week ago</p>
+                  <p className="text-sm">
+                    {<TimeAgo time={deck?.createdOn} />}
+                  </p>
                 </div>
               </div>
             </div>
             <div className="px-2">
-              <div className="flex justify-between bg-[#126CD626] px-3 py-1 rounded-full">
-                <span className="text-xs text-primary"> Published</span>
+              <div
+                className={`flex justify-between px-3 py-1 rounded-full ${
+                  deck?.status === "PUBLISHED"
+                    ? "bg-[#d5fed5e6]"
+                    : "bg-[#126CD626]"
+                }`}
+              >
+                <span
+                  className={`text-xs ${
+                    deck?.status === "PUBLISHED"
+                      ? "text-[#008000]"
+                      : "text-primary"
+                  }`}
+                >
+                  {deck?.status}
+                </span>
               </div>
             </div>
           </div>

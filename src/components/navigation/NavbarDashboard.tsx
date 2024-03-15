@@ -12,14 +12,14 @@ export default function NavbarDashboard() {
       {({ open }) => (
         <>
           <div className="max-w-8xl pr-8">
-            <div className="flex justify-between py-3 mb-4 h-14">
-              <div className="flex px-2 lg:px-0 max-w-2xl w-full">
+            <div className="flex justify-end py-3 mb-4 h-14">
+              {/* <div className="flex px-2 lg:px-0 max-w-2xl w-full">
                 <input
                   placeholder="Search"
                   type={"search"}
                   className="bg-[#F6F6F5] w-full px-4"
                 />
-              </div>
+              </div> */}
 
               <div className="flex items-center lg:hidden">
                 {/* Mobile menu button */}

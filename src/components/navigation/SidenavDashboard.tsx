@@ -3,9 +3,9 @@ import React from "react";
 const navigation = [
   { name: "Explore", href: "/dashboard/explore" },
   { name: "My Library", href: "/dashboard/my-library" },
-  { name: "Report", href: "#" },
-  { name: "Profile", href: "#" },
-  { name: "Notification", href: "#" },
+  // { name: "Report", href: "#" },
+  // { name: "Profile", href: "#" },
+  // { name: "Notification", href: "#" },
 ];
 
 export default function SidenavDashboard() {

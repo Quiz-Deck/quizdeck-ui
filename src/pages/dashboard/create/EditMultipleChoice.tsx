@@ -80,12 +80,15 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
 
   return (
     <div className="p-5 w-full">
-      <textarea
+      <Input.Textarea
+        title={""}
         name="question"
-        rows={4}
         value={data?.question}
         placeholder="Type your question here..."
-        className="mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[60px] px-4 py-2 mb-4 border border-gray-300 rounded-md"
+        className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+        autoComplete="off"
+        minLength={12}
+        rows={4}
         onChange={(e: any) => handleChange(e)}
       />
 
@@ -103,7 +106,7 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
                 title={""}
                 name="answer"
                 placeholder={"Type answer or option"}
-                className="rounded-md mb-4 w-full"
+                className="rounded-md mb-4 w-full bg-[#FAFAFF]"
                 autoComplete="off"
                 value={inputField}
                 onChange={(event: any) => handleInputChange(index, event)}
@@ -130,7 +133,7 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
           + Add Answer or Option
         </button>
         <Button.Primary
-          title={"Edit"}
+          title={"Edit Question"}
           className="mt-4"
           loading={isLoading}
           onClick={handleSubmit}
