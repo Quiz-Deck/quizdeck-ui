@@ -1,8 +1,8 @@
 import React, { useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
-import Input from "../../../components/input/Input";
-import Button from "../../../components/button/buttons";
-import { useAddQuestionMutation } from "../../../features/api/question/questionSlice";
+import Input from "../../../../components/input/Input";
+import Button from "../../../../components/button/buttons";
+import { useAddQuestionMutation } from "../../../../features/api/question/questionSlice";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {

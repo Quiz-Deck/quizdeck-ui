@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../components/button/buttons";
+import Button from "../../../components/button/buttons";
 
 // Explicitly import the types for JSX
 type Props = {

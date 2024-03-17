@@ -24,7 +24,7 @@ Input.Label = ({
   disabled,
   autoComplete,
 }: any) => {
-  console.log("defaultValue", defaultValue);
+
   return (
     <div>
       <label

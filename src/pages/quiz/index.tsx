@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import Button from "components/button/buttons";
 import QuestionsSideNav from "./QuestionsSideNav";
-import MultipleChoice from "./MultipleChoice";
+import MultipleChoice from "./questionTypes/MultipleChoice";
+import { CloseTestModal } from "components/modals/CloseTestModal";
 import { useGetSingleDeckQuery } from "../../features/api/deck/deckSlice";
 
 // Explicitly import the types for JSX
@@ -15,9 +17,18 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answers, setAnswers] = useState<AnswerFormat>({});
   const [score, setScore] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
 
   const { id } = useParams();
   const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
+
+  const openModal = () => {
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+  };
 
   const handleSubmit = () => {
     let correctCount = 0;
@@ -45,7 +56,10 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
           </p>
           <p className="text-sm">{data?.data?.[0]?.title}</p>
         </div>
-        <div>close</div>
+        <Button.Secondary
+          title={"Close"}
+          onClick={() => openModal()}
+        />
       </div>
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 mt-16">
@@ -80,6 +94,7 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
           </div>
         )}
       </div>
+      <CloseTestModal open={open} setClose={closeModal} />
     </div>
   );
 };

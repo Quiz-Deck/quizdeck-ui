@@ -1,8 +1,8 @@
-import React, { useState, Fragment } from "react";
+import React, { useState,  } from "react";
 import { useParams } from "react-router-dom";
-import Input from "../../../components/input/Input";
-import Button from "../../../components/button/buttons";
-import { useAddQuestionMutation } from "../../../features/api/question/questionSlice";
+import Input from "../../../../components/input/Input";
+import Button from "../../../../components/button/buttons";
+import { useAddQuestionMutation } from "../../../../features/api/question/questionSlice";
 
 type CreateQuizProps = {
   handleClose: () => void;
@@ -23,10 +23,7 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose }) => {
     setData({ ...data, [name]: value });
   };
 
-
-
   const handleSubmit = () => {
-
     addQuestion({
       deckId: id,
       payload: { ...data },

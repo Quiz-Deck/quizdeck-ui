@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import QuizNavbar from "./Navbar";
-// import QuizDetails from "./Details";
-import QNA from "./QNA";
-import MultipleChoice from "./MultipleChoice";
+import QNA from "./questionTypes/QNA";
+import MultipleChoice from "./questionTypes/MultipleChoice";
 import QuestionsMenu from "./QuestionsMenu";
-import EditMultipleChoice from "./EditMultipleChoice";
-import EditQNA from "./EditQNA";
-import Input from "../../../components/input/Input";
-import { SelectInput } from "components/input/select";
+import EditMultipleChoice from "../editQuestionTypes/EditMultipleChoice";
+import EditQNA from "../editQuestionTypes/EditQNA";
 import Button from "../../../components/button/buttons";
+import { EditDeckModal } from "components/modals/EditDeckModal";
 import { useGetSingleDeckQuery } from "../../../features/api/deck/deckSlice";
 import { useDeleteQuestionMutation } from "../../../features/api/question/questionSlice";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {};
 
-const CreateDeckQuestions: React.FC<CreateQuizProps> = () => {
+const AddDeckQuestions: React.FC<CreateQuizProps> = () => {
   const { id } = useParams();
-  const [deleteQuestion] = useDeleteQuestionMutation();
+  const navigate = useNavigate();
 
+  const [deleteQuestion] = useDeleteQuestionMutation();
+  const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
+
+  const [open, setOpen] = useState(false);
   const [view, setView] = useState({ status: false, type: "" });
 
   const handleDelete = (id: string) => {
@@ -34,17 +35,31 @@ const CreateDeckQuestions: React.FC<CreateQuizProps> = () => {
     setView({ status: false, type: "" });
   };
 
-  const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
-  // console.log("data", data);
+  const openModal = () => {
+    setOpen(true);
+  };
 
-  console.log("view", view);
+  const closeModal = () => {
+    setOpen(false);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4">
+      <button
+        onClick={() => navigate(-1)}
+        className="text-primary font-medium mb-5"
+      >
+        Back
+      </button>
+
       <div className="mb-12 border border-[#D6E4FD] rounded-md px-4 py-4">
-        <div className="mb-5">
-          <label className="text-sm text-[#444444]">Deck title:</label>
-          <h2>{data?.data?.[0]?.title}</h2>
+        <div className="mb-6 flex justify-between items-center">
+          <h2 className="text-2xl font-bold">{data?.data?.[0]?.title}</h2>
+          <Button.Primary
+            title={"Edit Deck"}
+            className="px-8 mt-4"
+            onClick={() => openModal()}
+          />
         </div>
 
         <div className="mb-5">
@@ -104,8 +119,13 @@ const CreateDeckQuestions: React.FC<CreateQuizProps> = () => {
       )}
 
       <QuestionsMenu setView={setViewType} />
+      <EditDeckModal
+        open={open}
+        setClose={closeModal}
+        deck={data?.data && data?.data?.[0]}
+      />
     </div>
   );
 };
 
-export default CreateDeckQuestions;
+export default AddDeckQuestions;

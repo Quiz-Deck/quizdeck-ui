@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/rectangle.jpg";
-import { EditDeckModal } from "components/modals/EditDeckModal";
 import {
   useGetSingleDeckQuery,
   useDeleteSingleDeckMutation,
@@ -21,7 +20,7 @@ export const TimeAgo: React.FC<TimeAgoProps> = ({ time }) => {
 export default function Question() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [open, setOpen] = useState(false);
+
   const [deleteSingleDeck] = useDeleteSingleDeckMutation();
   const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
 
@@ -35,14 +34,6 @@ export default function Question() {
         console.log("i am err", err);
         // errorHandler(err?.data?.message || "Something went wrong", true);
       });
-  };
-
-  const openModal = () => {
-    setOpen(true);
-  };
-
-  const closeModal = () => {
-    setOpen(false);
   };
 
   return (
@@ -101,7 +92,7 @@ export default function Question() {
         <Button.Primary
           title={"Edit Deck"}
           className="px-8 mt-4"
-          onClick={() => openModal()}
+          onClick={() => navigate(`/deck/create/${id}`)}
         />
       </div>
 
@@ -116,12 +107,6 @@ export default function Question() {
       >
         Take Quiz
       </button>
-
-      <EditDeckModal
-        open={open}
-        setClose={closeModal}
-        deck={data?.data && data?.data?.[0]}
-      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/button/buttons";
 
 type Props = {
@@ -14,6 +14,38 @@ const QuestionsSideNav: React.FC<Props> = ({
   setActiveQuestion,
   handleSubmit,
 }) => {
+  const countdown = false;
+  const [timer, setTimer] = useState(0);
+  const [isActive, setIsActive] = useState(true);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    if (isActive) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => (countdown ? prevTimer - 1 : prevTimer + 1));
+      }, 1000);
+    } else {
+      clearInterval(interval!);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isActive, countdown]);
+
+  const handleStartTimer = () => {
+    setIsActive((prevIsActive) => !prevIsActive);
+  };
+
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes < 10 ? "0" : ""}${minutes}:${
+      seconds < 10 ? "0" : ""
+    }${seconds}`;
+  };
+
   return (
     <div
       className="bg-[#FAFAFF] w-full rounded-md min-h-[70vh]"
@@ -22,7 +54,7 @@ const QuestionsSideNav: React.FC<Props> = ({
       }}
     >
       <div className="mb-4 border-b-2 border-[#DDE6F7] py-2">
-        <p className="text-center text-lg font-bold">14:09</p>
+        <p className="text-center text-lg font-bold">{formatTime(timer)}</p>
       </div>
 
       <div className="px-4">
@@ -50,7 +82,10 @@ const QuestionsSideNav: React.FC<Props> = ({
 
         <div className="flex justify-center mt-24">
           <Button.Primary
-            onClick={() => handleSubmit()}
+            onClick={() => {
+              handleSubmit();
+              handleStartTimer();
+            }}
             title={"Submit"}
             className="mt-8 px-5 "
           />

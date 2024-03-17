@@ -122,20 +122,20 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
             autoComplete="off"
             onChange={(e: any) => handleChange(e)}
           />
-          <Button.Primary
-            title={"Edit Deck"}
-            className="mt-4"
-            // disabled={false}
-            loading={isLoading}
-            onClick={handleSubmit}
-          />
-          <Button.Secondary
-            title={"Cancel"}
-            className="mt-4"
-            // disabled={false}
-            loading={isLoading}
-            onClick={() => setClose()}
-          />
+          <div className="flex mt-4 items-center gap-5">
+            <Button.Primary
+              title={"Edit Deck"}
+              className="mt-4"
+              // disabled={false}
+              loading={isLoading}
+              onClick={handleSubmit}
+            />
+            <Button.Secondary
+              title={"Cancel"}
+              className="mt-4"
+              onClick={() => setClose()}
+            />
+          </div>
         </div>
       </div>
     </Modal>

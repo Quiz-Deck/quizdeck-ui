@@ -1,9 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-// import QuizNavbar from "../pages/dashboard/create/Navbar";
-// import Explore from "../pages/dashboard/explore/Explore";
 import CreateQuiz from "../pages/dashboard/create";
-import CreateDeckQuestions from 'pages/dashboard/create/CreateDeckQuestions';
+import CreateDeckQuestions from 'pages/dashboard/create/AddDeckQuestions';
 import NavbarDashboard from "../components/navigation/NavbarDashboard";
 
 export default function CreateQuizLayout() {
