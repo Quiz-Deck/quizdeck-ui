@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../../components/input/Input";
 import { SelectInput } from "components/input/select";
 import Button from "../../../components/button/buttons";
-import { useCreateDeckMutation } from "../../../features/api/deck/deckSlice";
+import successHandler from "handlers/successHandler";
+import errorHandler from "handlers/errorHandler";
+import { useCreateDeckMutation } from "../../../features/api/deck/deckApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {};
@@ -30,14 +32,12 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
   const handleSubmit = () => {
     createDeck(data)
       .unwrap()
-      .then((res) => {
-        // localStorage.setItem("user", JSON.stringify(res.data));
+      .then((res: any) => {
+        successHandler(res, true);
         navigate(`/deck/create/${res?.data?._id}`);
-        console.log("res", res);
       })
       .catch((err) => {
-        console.log("i am err", err);
-        // errorHandler(err?.data?.message || "Something went wrong", true);
+        errorHandler(err?.data, true);
       });
   };
 

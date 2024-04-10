@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../../components/button/buttons";
+import Input from "../../../components/input/Input";
 
 // Explicitly import the types for JSX
 type Props = {
@@ -19,13 +20,12 @@ const QNA: React.FC<Props> = ({
   setAnswers,
   handleSubmit,
 }: Props) => {
-  const handleSelectAnswer = (
-    questionIndex: number,
-    selectedOption: string
-  ) => {
+  const handleChange = (e: any) => {
+    const { value } = e.target;
+
     setAnswers({
       ...answers,
-      [questionIndex]: selectedOption,
+      [activeQuestion]: value,
     });
   };
 
@@ -39,28 +39,14 @@ const QNA: React.FC<Props> = ({
 
       <div>
         <p className="mb-6">{data[activeQuestion]?.question}</p>
-
-        <ul>
-          {data[activeQuestion]?.multichoiceOptions.map(
-            (option: string, index: number) => (
-              <div className="flex items-center gap-3 mb-8" key={index}>
-                <span className="capitalize">
-                  {String.fromCharCode(97 + index)}.
-                </span>
-                <li
-                  onClick={() => handleSelectAnswer(activeQuestion, option)}
-                  className={`${
-                    answers[activeQuestion] === option
-                      ? "bg-primary text-white"
-                      : " bg-[#FAFAFF]"
-                  } pl-3 pr-10 w-full text-base focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 border border-gray-300 rounded-md w-full`}
-                >
-                  {option}
-                </li>
-              </div>
-            )
-          )}
-        </ul>
+        <Input.Label
+          title={"Answer"}
+          name="answer"
+          placeholder={"Enter the answer"}
+          className="rounded-md mb-5 bg-[#FAFAFF]"
+          autoComplete="off"
+          onChange={(e: any) => handleChange(e)}
+        />
       </div>
 
       <div className="flex justify-end items-center gap-5">
@@ -76,7 +62,7 @@ const QNA: React.FC<Props> = ({
           <Button.Primary
             title={"Submit"}
             className="px-8 mt-4"
-            onClick={() => handleSubmit()}
+            onClick={() => {handleSubmit()}}
           />
         ) : (
           <Button.Primary

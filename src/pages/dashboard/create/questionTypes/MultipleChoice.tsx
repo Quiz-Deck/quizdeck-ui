@@ -2,7 +2,9 @@ import React, { useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import Input from "../../../../components/input/Input";
 import Button from "../../../../components/button/buttons";
-import { useAddQuestionMutation } from "../../../../features/api/question/questionSlice";
+import successHandler from "handlers/successHandler";
+import errorHandler from "handlers/errorHandler";
+import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {
@@ -54,7 +56,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
       payload: { ...data, multichoiceOptions: answerFields },
     })
       .unwrap()
-      .then(() => {
+      .then((res: any) => {
         setData({
           question: "",
           type: "MULTI_CHOICE",
@@ -62,20 +64,20 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
           answer: "",
         });
         setAnswerFields(["option 1", "option 2"]);
+        successHandler(res, true);
       })
       .catch((err) => {
-        console.log("i am err", err);
-        // errorHandler(err?.data?.message || "Something went wrong", true);
+        errorHandler(err?.data, true);
       });
   };
 
   return (
-    <div className="mt-5 p-5 border w-full">
+    <div className="mt-5 p-5 border border-t-4 border-t-primary w-full">
       <Input.Textarea
         title={""}
         name="question"
         placeholder="Type your question here..."
-        className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+        className="rounded-md mb-5 min-h-[80px] bg-[#FAFAFF]"
         autoComplete="off"
         minLength={12}
         rows={2}
@@ -90,7 +92,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
       /> */}
 
       {answerFields.map((inputField, index) => (
-        <Fragment key={`${inputField}~${index}`}>
+        <Fragment key={index}>
           <div className="flex gap-4 w-full items-center">
             <input
               type="radio"

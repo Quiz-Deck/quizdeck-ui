@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Button from "../../components/button/buttons";
 
 type Props = {
@@ -6,6 +6,9 @@ type Props = {
   answers: any;
   setActiveQuestion: React.Dispatch<React.SetStateAction<number>>;
   handleSubmit: () => void;
+  timer: number;
+  setTimer: React.Dispatch<React.SetStateAction<number>>;
+  handleStartTimer: () => void;
 };
 
 const QuestionsSideNav: React.FC<Props> = ({
@@ -13,30 +16,32 @@ const QuestionsSideNav: React.FC<Props> = ({
   answers,
   setActiveQuestion,
   handleSubmit,
+  timer,
+  setTimer,
+  handleStartTimer,
 }) => {
-  const countdown = false;
-  const [timer, setTimer] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+  // const countdown = false;
+  // const [isActive, setIsActive] = useState(true);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+  // useEffect(() => {
+  //   let interval: NodeJS.Timeout | null = null;
 
-    if (isActive) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => (countdown ? prevTimer - 1 : prevTimer + 1));
-      }, 1000);
-    } else {
-      clearInterval(interval!);
-    }
+  //   if (isActive) {
+  //     interval = setInterval(() => {
+  //       setTimer((prevTimer) => (countdown ? prevTimer - 1 : prevTimer + 1));
+  //     }, 1000);
+  //   } else {
+  //     clearInterval(interval!);
+  //   }
 
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isActive, countdown]);
+  //   return () => {
+  //     if (interval) clearInterval(interval);
+  //   };
+  // }, [isActive, countdown]);
 
-  const handleStartTimer = () => {
-    setIsActive((prevIsActive) => !prevIsActive);
-  };
+  // const handleStartTimer = () => {
+  //   setIsActive((prevIsActive) => !prevIsActive);
+  // };
 
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);

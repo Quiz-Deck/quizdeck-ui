@@ -115,8 +115,8 @@ Button.Green = ({
         className
       }
     >
-      {title ?? "Title"}
-      {/* {loading && <RiLoader5Fill size={24} className="animate-spin ml-4" />} */}
+      {/* {title ?? "Title"} */}
+      {loading ? "Loading..." : title}
     </button>
   );
 };

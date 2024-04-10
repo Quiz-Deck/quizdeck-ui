@@ -3,10 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/rectangle.jpg";
+import { _getUser } from "utils/Auth";
 import {
   useGetSingleDeckQuery,
   useDeleteSingleDeckMutation,
-} from "../../../features/api/deck/deckSlice";
+} from "../../../features/api/deck/deckApi";
 
 interface TimeAgoProps {
   time?: string; // Accepts a string representation of the time
@@ -20,6 +21,9 @@ export const TimeAgo: React.FC<TimeAgoProps> = ({ time }) => {
 export default function Question() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const user = _getUser();
+
+  console.log("user", user);
 
   const [deleteSingleDeck] = useDeleteSingleDeckMutation();
   const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
@@ -61,6 +65,7 @@ export default function Question() {
                 </p>
               </div>
               <p className="text-xs">{data?.data?.[0]?.playCount} plays</p>
+              <p className="text-xs"> {data?.data?.[0]?.likeCount} Likes</p>
             </div>
 
             <div className="flex justify-between items-center pb-2 gap-2">
@@ -77,23 +82,22 @@ export default function Question() {
             </div>
           </div>
         </div>
-        <div className="px-2 flex flex-col justify-between">
-          <div className="flex justify-between pb-2 gap-2">
-            <p className="text-sm"> {data?.data?.[0]?.likeCount} Likes</p>
-            <p className="text-sm">Save</p>
+        {user?.data?._id === data?.data?.[0]?.createdBy && (
+          <div className="px-2 flex flex-col justify-between">
+            <div className="flex justify-between pb-2 gap-2">
+              <Button.Secondary
+                title={"Delete Deck"}
+                className="px-8 mt-4"
+                onClick={() => handleDelete(id || "")}
+              />
+              <Button.Primary
+                title={"Edit Deck"}
+                className="px-8 mt-4"
+                onClick={() => navigate(`/deck/create/${id}`)}
+              />
+            </div>
           </div>
-          <p className="text-sm text-right">Share</p>
-        </div>
-        <Button.Secondary
-          title={"Delete Deck"}
-          className="px-8 mt-4"
-          onClick={() => handleDelete(id || "")}
-        />
-        <Button.Primary
-          title={"Edit Deck"}
-          className="px-8 mt-4"
-          onClick={() => navigate(`/deck/create/${id}`)}
-        />
+        )}
       </div>
 
       <div className="my-10 md:max-w-[80%]">

@@ -1,7 +1,7 @@
 import { apiSlice } from "../apiSlice";
 import { AuthResponse, AddDeckQuestionRequest } from "./questionSliceTypes";
 
-const deckSlice = apiSlice.injectEndpoints({
+const deckApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     //Create a deck
     addQuestion: build.mutation<
@@ -38,4 +38,4 @@ export const {
   useAddQuestionMutation,
   useEditQuestionMutation,
   useDeleteQuestionMutation,
-} = deckSlice;
+} = deckApi;

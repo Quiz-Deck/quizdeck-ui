@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Input from "../../../components/input/Input";
 import Button from "../../../components/button/buttons";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
-import { useEditQuestionMutation } from "../../../features/api/question/questionSlice";
+import { deckActions } from "features/store/deckSlice";
+import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {
@@ -10,14 +12,14 @@ type CreateQuizProps = {
 };
 
 const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
+  const dispatch = useDispatch();
   const [editQuestion, { isLoading }] = useEditQuestionMutation();
-
-  console.log("answer", question);
+  const [showDetails, setShowDetails] = useState(false);
 
   const [data, setData] = useState({
-    question: "",
+    question: question?.question,
     type: "QNA",
-    answer: "",
+    answer: question?.answer,
   });
 
   useEffect(() => {
@@ -42,8 +44,8 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
       payload: { ...data },
     })
       .unwrap()
-      .then((res) => {
-        console.log("res", res);
+      .then((res: any) => {
+        dispatch(deckActions.editADeckQuestion(res?.data));
       })
       .catch((err) => {
         console.log("i am err", err);
@@ -52,45 +54,44 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
   };
 
   return (
-    <div className="p-5 w-full">
+    <div
+      className="p-5 w-full hover:shadow-lg cursor-pointer"
+      onClick={() => setShowDetails(true)}
+    >
       <Input.Textarea
         title={""}
         name="question"
         defaultValue={data?.question}
         placeholder="Type your question here..."
-        className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+        className="rounded-md mb-5 min-h-[60px] bg-[#FAFAFF]"
         autoComplete="off"
         minLength={12}
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
-      {/* <textarea
-        name="question"
-        rows={4}
-       
-        placeholder="Type your question here..."
-        className="mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[60px] px-4 py-2 mb-4 border border-gray-300 rounded-md"
-        onChange={(e: any) => handleChange(e)}
-      /> */}
 
-      <Input.Label
-        title={"Answer"}
-        name="answer"
-        placeholder={"Enter the answer"}
-        defaultValue={data?.answer}
-        className="rounded-md mb-5 bg-[#FAFAFF]"
-        autoComplete="off"
-        onChange={(e: any) => handleChange(e)}
-      />
+      {showDetails && (
+        <div>
+          <Input.Label
+            title={"Answer"}
+            name="answer"
+            placeholder={"Enter the answer"}
+            defaultValue={data?.answer}
+            className="rounded-md mb-5 bg-[#FAFAFF]"
+            autoComplete="off"
+            onChange={(e: any) => handleChange(e)}
+          />
 
-      <div className="flex items-center justify-end">
-        <Button.Primary
-          title={"Edit Question"}
-          className="mt-4"
-          loading={isLoading}
-          onClick={handleSubmit}
-        />
-      </div>
+          <div className="flex items-center justify-end">
+            <Button.Primary
+              title={"Edit Question"}
+              className="mt-4"
+              loading={isLoading}
+              onClick={handleSubmit}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

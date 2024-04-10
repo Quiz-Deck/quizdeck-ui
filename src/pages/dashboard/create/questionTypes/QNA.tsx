@@ -1,8 +1,10 @@
-import React, { useState,  } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Input from "../../../../components/input/Input";
 import Button from "../../../../components/button/buttons";
-import { useAddQuestionMutation } from "../../../../features/api/question/questionSlice";
+import successHandler from "handlers/successHandler";
+import errorHandler from "handlers/errorHandler";
+import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
 type CreateQuizProps = {
   handleClose: () => void;
@@ -29,28 +31,26 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose }) => {
       payload: { ...data },
     })
       .unwrap()
-      .then((res) => {
-        // navigate("/auth/login");
-        console.log("res", res);
+      .then((res: any) => {
         setData({
           question: "",
           type: "QNA",
           answer: "",
         });
+        successHandler(res, true);
       })
       .catch((err) => {
-        console.log("i am err", err);
-        // errorHandler(err?.data?.message || "Something went wrong", true);
+        errorHandler(err?.data, true);
       });
   };
 
   return (
-    <div className="mt-5 p-5 border w-full">
+    <div className="mt-5 p-5 border border-t-4 border-t-primary w-full">
       <Input.Textarea
         title={""}
         name="question"
         placeholder="Type your question here..."
-        className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+        className="rounded-md mb-5 min-h-[80px] bg-[#FAFAFF]"
         autoComplete="off"
         minLength={12}
         rows={2}

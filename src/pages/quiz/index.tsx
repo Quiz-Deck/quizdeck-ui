@@ -1,26 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Button from "components/button/buttons";
 import QuestionsSideNav from "./QuestionsSideNav";
-import MultipleChoice from "./questionTypes/MultipleChoice";
+import QuizQuestionType from "./questionTypes";
+import { TestResultsModal } from "components/modals/TestResultsModal";
 import { CloseTestModal } from "components/modals/CloseTestModal";
-import { useGetSingleDeckQuery } from "../../features/api/deck/deckSlice";
-
-// Explicitly import the types for JSX
-type CreateQuizProps = {};
+import { useGetSingleDeckQuery } from "../../features/api/deck/deckApi";
 
 interface AnswerFormat {
   [key: number]: string;
 }
 
-const QuizTaker: React.FC<CreateQuizProps> = () => {
+const QuizTaker: React.FC = () => {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answers, setAnswers] = useState<AnswerFormat>({});
   const [score, setScore] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
+  const [openResults, setOpenResults] = useState(false);
+  const [timer, setTimer] = useState<number>(0);
 
   const { id } = useParams();
-  const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
+  const { data, isLoading } = useGetSingleDeckQuery(id || "");
+
+  const countdown = false;
+  const [isActive, setIsActive] = useState(true);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+
+    if (isActive) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => (countdown ? prevTimer - 1 : prevTimer + 1));
+      }, 1000);
+    } else {
+      clearInterval(interval!);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isActive, countdown]);
+
+  const handleStartTimer = () => {
+    setIsActive((prevIsActive) => !prevIsActive);
+  };
 
   const openModal = () => {
     setOpen(true);
@@ -28,6 +51,14 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
 
   const closeModal = () => {
     setOpen(false);
+  };
+
+  const openResultsModal = () => {
+    setOpenResults(true);
+  };
+
+  const closeResultsModal = () => {
+    setOpenResults(false);
   };
 
   const handleSubmit = () => {
@@ -38,6 +69,8 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
       }
     });
     setScore(correctCount);
+    openResultsModal();
+    handleStartTimer();
   };
 
   return (
@@ -56,10 +89,7 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
           </p>
           <p className="text-sm">{data?.data?.[0]?.title}</p>
         </div>
-        <Button.Secondary
-          title={"Close"}
-          onClick={() => openModal()}
-        />
+        <Button.Secondary title={"Close"} onClick={() => openModal()} />
       </div>
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 mt-16">
@@ -71,30 +101,35 @@ const QuizTaker: React.FC<CreateQuizProps> = () => {
                 answers={answers}
                 setActiveQuestion={setActiveQuestion}
                 handleSubmit={handleSubmit}
+                timer={timer}
+                setTimer={setTimer}
+                handleStartTimer={handleStartTimer}
               />
             )}
           </div>
           <div className="w-full">
-            <MultipleChoice
+            <QuizQuestionType
               data={data?.data ? data?.data?.[0]?.questions : []}
               activeQuestion={activeQuestion}
               setActiveQuestion={setActiveQuestion}
               answers={answers}
               setAnswers={setAnswers}
               handleSubmit={handleSubmit}
+              handleStartTimer={handleStartTimer}
             />
           </div>
         </div>
-        {score !== null && (
-          <div className="mt-4">
-            <h2 className="text-lg font-semibold mb-2">Results:</h2>
-            <p>
-              You scored {score} out of {data?.data?.[0]?.questions?.length}.
-            </p>
-          </div>
-        )}
       </div>
+
       <CloseTestModal open={open} setClose={closeModal} />
+      <TestResultsModal
+        open={openResults}
+        setClose={closeResultsModal}
+        score={score}
+        data={data}
+        timer={timer}
+        answers={answers}
+      />
     </div>
   );
 };

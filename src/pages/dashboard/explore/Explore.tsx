@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Dummy from "../../../assets/images/rectangle.jpg";
-import { useGetUserDeckQuery } from "../../../features/api/deck/deckSlice";
-import { useGetPublicDecksQuery } from "../../../features/api/deck/deckSlice";
+import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
+import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
 
 export default function Explore() {
   const navigate = useNavigate();
@@ -13,12 +13,12 @@ export default function Explore() {
     <div>
       <div className="mb-10">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-primary text-2xl font-bold">My recent decks</h3>
+          <h3 className="text-primary text-2xl font-bold">My Recent Decks</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {userDecks?.data &&
             userDecks?.data?.length > 0 &&
-            userDecks?.data.slice(0, 4).map((item, index) => (
+            userDecks?.data.slice(0, 3).map((item, index) => (
               <div
                 key={index}
                 onClick={() => navigate(`/dashboard/question/${item?._id}`)}
@@ -40,12 +40,35 @@ export default function Explore() {
                 </div>
               </div>
             ))}
+
+          <div
+            onClick={() => navigate(`/deck/create`)}
+            className="border border-4 border-[#D6E4FD] border-dotted rounded-lg cursor-pointer h-[250px] mx-auto w-full flex items-center justify-center"
+          >
+            <div>
+              <svg
+                fill="#D6E4FD"
+                height="80px"
+                width="80px"
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 455 455"
+                className="mx-auto mb-4"
+              >
+                <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 " />
+              </svg>
+              <p className="text-center text-[#444444] py-2">
+                Create a new deck
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="mb-10">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-primary text-2xl font-bold">All public decks</h3>
+          <h3 className="text-primary text-2xl font-bold">All Public Decks</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {data?.data &&

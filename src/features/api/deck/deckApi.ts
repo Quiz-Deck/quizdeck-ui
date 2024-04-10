@@ -6,7 +6,7 @@ import {
   CreateDeckResponse,
 } from "./deckSliceTypes";
 
-const deckSlice = apiSlice.injectEndpoints({
+const deckApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     //Create a deck
     createDeck: build.mutation<CreateDeckResponse, Partial<CreateDeckRequest>>({
@@ -24,7 +24,7 @@ const deckSlice = apiSlice.injectEndpoints({
     >({
       query: ({ deckId, payload }) => ({
         url: `/deck/edit/${deckId}`,
-        method: "POST",
+        method: "PUT",
         body: payload,
       }),
     }),
@@ -71,4 +71,4 @@ export const {
   useGetSingleDeckQuery,
   useGetPublicDecksQuery,
   useDeleteSingleDeckMutation,
-} = deckSlice;
+} = deckApi;

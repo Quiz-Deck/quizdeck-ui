@@ -1,14 +1,24 @@
 import React from "react";
-
-const navigation = [
-  { name: "Explore", href: "/dashboard/explore" },
-  { name: "My Library", href: "/dashboard/my-library" },
-  // { name: "Report", href: "#" },
-  // { name: "Profile", href: "#" },
-  // { name: "Notification", href: "#" },
-];
+import { useParams } from "react-router-dom";
 
 export default function SidenavDashboard() {
+  const params = useParams();
+
+  const navigation = [
+    {
+      name: "Explore",
+      href: "/dashboard/explore",
+      current: params["*"] && params["*"].includes("explore"),
+    },
+    {
+      name: "My Library",
+      href: "/dashboard/my-library",
+      current: params["*"] && params["*"].includes("library"),
+    },
+    // { name: "Report", href: "#" },
+    // { name: "Profile", href: "#" },
+    // { name: "Notification", href: "#" },
+  ];
   return (
     <div className="max-w-[300px] w-full h-screen hidden sm:block sm:fixed">
       <div className="h-full">
@@ -29,7 +39,9 @@ export default function SidenavDashboard() {
               <a
                 key={item.name}
                 href={item.href}
-                className="font-medium text-white py-4 px-5 hover:rounded-l-3xl hover:bg-white hover:text-secondary block"
+                className={`${
+                  item?.current ? "text-secondary bg-white" : "text-white"
+                } font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-white hover:text-secondary block`}
               >
                 {item.name}
               </a>

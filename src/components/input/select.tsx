@@ -59,7 +59,7 @@ export const SelectInput = ({
           onChange={onChange}
           autoComplete="off"
           className={
-            "mt-2 block pl-3 pr-10 w-full text-base focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 " +
+            "mt-2 block pl-3 pr-10 w-full text-base focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 " +
             className
           }
         >

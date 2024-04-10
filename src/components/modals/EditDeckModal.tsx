@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Modal } from "./index";
 import Input from "components/input/Input";
 import { SelectInput } from "components/input/select";
 import Button from "components/button/buttons";
 import { SingleDeck } from "features/api/deck/deckSliceTypes";
-import { useEditDeckMutation } from "features/api/deck/deckSlice";
+import { useEditDeckMutation } from "features/api/deck/deckApi";
+import { deckActions } from "features/store/deckSlice";
 
 interface Props {
   open: boolean;
@@ -15,6 +17,8 @@ interface Props {
 
 export const EditDeckModal = ({ open, setClose, deck }: Props) => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+
   const [editDeck, { isLoading }] = useEditDeckMutation();
   const [data, setData] = useState({
     title: "",
@@ -47,7 +51,8 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
       payload: data,
     })
       .unwrap()
-      .then(() => {
+      .then((res: any) => {
+        dispatch(deckActions.editADeck(res?.data));
         setClose();
       })
       .catch((err) => {
