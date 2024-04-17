@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Input from "../../../../components/input/Input";
 import Button from "../../../../components/button/buttons";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
+import { deckActions } from "features/store/deckSlice";
 import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
 type CreateQuizProps = {
@@ -12,6 +14,7 @@ type CreateQuizProps = {
 
 const QNA: React.FC<CreateQuizProps> = ({ handleClose }) => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
 
   const [data, setData] = useState({
@@ -32,12 +35,14 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose }) => {
     })
       .unwrap()
       .then((res: any) => {
+        dispatch(deckActions.addADeckQuestion(res?.data));
         setData({
           question: "",
           type: "QNA",
           answer: "",
         });
         successHandler(res, true);
+        handleClose();
       })
       .catch((err) => {
         errorHandler(err?.data, true);

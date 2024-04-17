@@ -1,7 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import CreateQuiz from "../pages/dashboard/create";
-import CreateDeckQuestions from 'pages/dashboard/create/AddDeckQuestions';
+import CreateDeckQuestions from "pages/dashboard/create/AddDeckQuestions";
+import AddAIQuestions from "pages/dashboard/create/AddAIQuestions";
 import NavbarDashboard from "../components/navigation/NavbarDashboard";
 
 export default function CreateQuizLayout() {
@@ -24,6 +25,7 @@ export default function CreateQuizLayout() {
         <Routes>
           <Route path="*" element={<CreateQuiz />} />
           <Route path="/:id" element={<CreateDeckQuestions />} />
+          <Route path="/ai/:id" element={<AddAIQuestions />} />
         </Routes>
       </div>
     </div>

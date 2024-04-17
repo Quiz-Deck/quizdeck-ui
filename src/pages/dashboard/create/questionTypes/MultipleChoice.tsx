@@ -1,9 +1,11 @@
 import React, { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Input from "../../../../components/input/Input";
 import Button from "../../../../components/button/buttons";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
+import { deckActions } from "features/store/deckSlice";
 import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
@@ -13,6 +15,7 @@ type CreateQuizProps = {
 
 const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
 
   const [data, setData] = useState({
@@ -47,7 +50,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
   };
 
   const handleSelectAnswer = (answer: string) => {
-    setData({ ...data, ["answer"]: answer });
+    setData({ ...data, answer: answer });
   };
 
   const handleSubmit = () => {
@@ -57,6 +60,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
     })
       .unwrap()
       .then((res: any) => {
+        dispatch(deckActions.addADeckQuestion(res?.data));
         setData({
           question: "",
           type: "MULTI_CHOICE",
@@ -65,6 +69,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
         });
         setAnswerFields(["option 1", "option 2"]);
         successHandler(res, true);
+        handleClose();
       })
       .catch((err) => {
         errorHandler(err?.data, true);

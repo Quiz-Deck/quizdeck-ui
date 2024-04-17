@@ -16,6 +16,7 @@ const links = [
 ];
 
 export default function FooterCommon() {
+  const currentYear = new Date().getFullYear();
   return (
     <Disclosure as="nav" className="bg-primary text-white py-8">
       {({ open }) => (
@@ -32,8 +33,9 @@ export default function FooterCommon() {
                   </div>
                 </div>
               </div>
+              <p>©️ Ogwugo Limited 2017–{currentYear}</p>
 
-              <div className="lg:ml-4 lg:items-center flex flex-col sm:flex-row gap-8">
+              {/* <div className="lg:ml-4 lg:items-center flex flex-col sm:flex-row gap-8">
                 <div className="block">
                   <h3 className="mb-4">Categories</h3>
                   {categories.map((item) => (
@@ -71,7 +73,7 @@ export default function FooterCommon() {
                     </a>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </>

@@ -13,19 +13,16 @@ export default function About() {
               </h2>
               <h4 className="text-3xl text-primary mb-4">
                 Everything you can do in a physical classroom,{" "}
-                <span className="text-secondary">you can do with Skilline</span>
+                <span className="text-secondary">you can do with QuizDeck</span>
               </h4>
               <p className="text-xl tracking-wide">
-                Skilline’s school management software helps traditional and
-                online schools manage scheduling, attendance, payments and
-                virtual classrooms all in one secure cloud-based system.
+                Dive into the world of self-discovery and knowledge exploration
+                with our innovative quiz app. Whether you want to craft your own
+                quiz or let our AI generate one for you, we've got you covered.
+                Unveil fascinating insights about yourself or challenge your
+                friends to see who knows you best. Get started now and embark on
+                a journey of fun, discovery, and learning!
               </p>
-
-              <div className="mt-6">
-                <a href="/" className="underline">
-                  Learn more
-                </a>
-              </div>
             </div>
 
             <div>

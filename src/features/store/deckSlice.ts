@@ -65,14 +65,18 @@ export const deckSlice = createSlice({
         },
       };
     },
-    addADeckQuestion: (state, action: PayloadAction<SingleDeck>) => {
-      const newData = state.singleDeck.data.map((item: SingleDeck) => {
-        if (item._id === action.payload?._id) {
+    addADeckQuestion: (state, action: PayloadAction<DeckQuestion>) => {
+      console.log("action.payload", action.payload);
+
+      const newData = state.singleDeck.data.map((item: SingleDeck, index) => {
+        if (index === 0) {
           // Assuming there's an id to compare
-          // Retain the existing questions property from state
-          const { questions, ...restOfPayload } = action.payload;
+          console.log("item", item, item.questions);
+          console.log("state.singleDeck.data", state.singleDeck.data);
+          const oldQuestions = item.questions;
+          const updatedQuestions = [...oldQuestions, action.payload];
           // Merge the rest of the payload with the original item
-          return { ...item, ...restOfPayload };
+          return { ...item, questions: updatedQuestions };
         }
         return item;
       });

@@ -10,7 +10,6 @@ import EditMultipleChoice from "../editQuestionTypes/EditMultipleChoice";
 import EditQNA from "../editQuestionTypes/EditQNA";
 import Button from "../../../components/button/buttons";
 import { EditDeckModal } from "components/modals/EditDeckModal";
-import { GenerateDeckModal } from "components/modals/GenerateDeckModal";
 import { fetchSingleDeck } from "features/store/deckSlice";
 import { deckActions } from "features/store/deckSlice";
 import { useDeleteQuestionMutation } from "features/api/question/questionApi";
@@ -19,7 +18,7 @@ import {
   DeckQuestion,
 } from "features/api/deck/deckSliceTypes";
 
-const AddDeckQuestions: React.FC = () => {
+const AddAIQuestions: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch: ThunkDispatch<SingleDeckResponse, any, AnyAction> =
@@ -30,7 +29,6 @@ const AddDeckQuestions: React.FC = () => {
   const [deleteQuestion] = useDeleteQuestionMutation();
 
   const [open, setOpen] = useState(false);
-  const [openPrompt, setOpenPrompt] = useState(false);
   const [view, setView] = useState({ status: false, type: "" });
 
   useEffect(() => {
@@ -65,10 +63,15 @@ const AddDeckQuestions: React.FC = () => {
     setOpen(false);
   };
 
-  const closePromptModal = () => {
-    setOpenPrompt(false);
-  };
+  // async function main() {
+  //   const completion = await openai.chat.completions.create({
+  //     messages: [{ role: "system", content: "You are a helpful assistant." }],
+  //     model: "gpt-3.5-turbo",
+  //   });
 
+  //   console.log(completion.choices[0]);
+  // }
+  // main();
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <button
@@ -150,15 +153,6 @@ const AddDeckQuestions: React.FC = () => {
         )}
 
         <QuestionsMenu setView={setViewType} />
-
-        <div>
-          <p>Or</p>
-          <Button.Primary
-            title={"Generate Deck with AI"}
-            className="px-8 mt-4"
-            onClick={() => setOpenPrompt(true)}
-          />
-        </div>
       </>
 
       <EditDeckModal
@@ -166,9 +160,8 @@ const AddDeckQuestions: React.FC = () => {
         setClose={closeModal}
         deck={singleDeck?.data && singleDeck?.data?.[0]}
       />
-      <GenerateDeckModal open={openPrompt} setClose={closePromptModal} />
     </div>
   );
 };
 
-export default AddDeckQuestions;
+export default AddAIQuestions;
