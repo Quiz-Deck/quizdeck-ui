@@ -80,6 +80,12 @@ export interface SingleDeck {
 }
 
 export interface SingleDeckResponse {
+  data: SingleDeck;
+  message: string;
+}
+
+
+export interface DeckListResponse {
   data: SingleDeck[];
   message: string;
 }

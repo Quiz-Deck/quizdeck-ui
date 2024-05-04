@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast, ToastPosition } from "react-toastify";
 
 interface ErrorResponse {
   response?: {
@@ -109,20 +109,11 @@ const handler = (
       // Return a response
       return handlerResponse("Something went wrong!", errorObject);
     } else {
-      if (
-        errorObject.message.includes(
-          "Wallet transaction failed, we could not credit the wallet"
-        )
-      ) {
-        console.log("Error handler hit");
-        // Do nothing
-      } else {
-        shouldDispatchAlert &&
-          toast.error(errorObject.message, {
-            position: "top-right",
-            theme: "colored",
-          });
-      }
+      shouldDispatchAlert &&
+        toast.error(errorObject.message, {
+          position: "top-right" as ToastPosition,
+          theme: "colored",
+        });
 
       // Return a response
       return handlerResponse("Something went wrong!", errorObject);

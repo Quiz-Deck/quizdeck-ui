@@ -2,6 +2,8 @@ import React, { useState, Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Input from "../../../components/input/Input";
 import Button from "../../../components/button/buttons";
+import errorHandler from "handlers/errorHandler";
+import successHandler from "handlers/successHandler";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 import { deckActions } from "features/store/deckSlice";
 import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
@@ -77,11 +79,11 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
     })
       .unwrap()
       .then((res: any) => {
+        successHandler(res, true);
         dispatch(deckActions.editADeckQuestion(res?.data));
       })
       .catch((err) => {
-        console.log("i am err", err);
-        // errorHandler(err?.data?.message || "Something went wrong", true);
+        errorHandler(err?.data || "Something went wrong", true);
       });
   };
 

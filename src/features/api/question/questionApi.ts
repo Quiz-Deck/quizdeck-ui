@@ -1,5 +1,9 @@
 import { apiSlice } from "../apiSlice";
-import { AuthResponse, AddDeckQuestionRequest } from "./questionSliceTypes";
+import {
+  AuthResponse,
+  AddDeckQuestion,
+  AddDeckQuestionRequest,
+} from "./questionSliceTypes";
 
 const deckApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -16,7 +20,7 @@ const deckApi = apiSlice.injectEndpoints({
     }),
     editQuestion: build.mutation<
       AuthResponse,
-      { deckId?: string; payload: Partial<AddDeckQuestionRequest> }
+      { deckId?: string; payload: Partial<AddDeckQuestion> }
     >({
       query: ({ deckId, payload }) => ({
         url: `/question/edit/${deckId}`,

@@ -5,7 +5,12 @@ import { Modal } from "./index";
 import Input from "components/input/Input";
 import { SelectInput } from "components/input/select";
 import Button from "components/button/buttons";
-import { SingleDeck } from "features/api/deck/deckSliceTypes";
+import errorHandler from "handlers/errorHandler";
+import successHandler from "handlers/successHandler";
+import {
+  SingleDeck,
+  CreateDeckRequest,
+} from "features/api/deck/deckSliceTypes";
 import { useEditDeckMutation } from "features/api/deck/deckApi";
 import { deckActions } from "features/store/deckSlice";
 
@@ -20,7 +25,7 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
   const dispatch = useDispatch();
 
   const [editDeck, { isLoading }] = useEditDeckMutation();
-  const [data, setData] = useState({
+  const [data, setData] = useState<CreateDeckRequest>({
     title: "",
     description: "",
     type: "",
@@ -42,7 +47,13 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+   
+    if (name === "timer") {
+      const timer = parseInt(value, 10);
+      setData({ ...data, [name]: timer });
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   const handleSubmit = () => {
@@ -53,11 +64,11 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
       .unwrap()
       .then((res: any) => {
         dispatch(deckActions.editADeck(res?.data));
+        successHandler(res, true);
         setClose();
       })
       .catch((err) => {
-        console.log("i am err", err);
-        // errorHandler(err?.data?.message || "Something went wrong", true);
+        errorHandler(err?.data || "Something went wrong", true);
       });
   };
 

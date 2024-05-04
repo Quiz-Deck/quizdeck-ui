@@ -12,7 +12,25 @@ interface IInitialState {
 }
 
 export const initialState: IInitialState = {
-  singleDeck: { data: [], message: "" },
+  singleDeck: {
+    data: {
+      createdBy: "",
+      createdOn: "",
+      deckGuests: [],
+      description: "",
+      likeCount: 0,
+      playCount: 0,
+      questions: [],
+      status: "",
+      timer: 0,
+      title: "",
+      type: "",
+      updatedBy: "",
+      updatedOn: "",
+      _id: "",
+    },
+    message: "",
+  },
   status: "",
   error: {},
 };
@@ -47,16 +65,10 @@ export const deckSlice = createSlice({
       state.singleDeck = action.payload;
     },
     editADeck: (state, action: PayloadAction<SingleDeck>) => {
-      const newData = state.singleDeck.data.map((item: SingleDeck) => {
-        if (item._id === action.payload?._id) {
-          // Assuming there's an id to compare
-          // Retain the existing questions property from state
-          const { questions, ...restOfPayload } = action.payload;
-          // Merge the rest of the payload with the original item
-          return { ...item, ...restOfPayload };
-        }
-        return item;
-      });
+      const newState = state.singleDeck.data;
+      const { questions, ...restOfPayload } = action.payload;
+      const newData = { ...newState, ...restOfPayload };
+
       return {
         ...state,
         singleDeck: {
@@ -65,21 +77,11 @@ export const deckSlice = createSlice({
         },
       };
     },
-    addADeckQuestion: (state, action: PayloadAction<DeckQuestion>) => {
-      console.log("action.payload", action.payload);
+    addADeckQuestion: (state, action: PayloadAction<DeckQuestion[]>) => {
+      // const oldQuestions = state.singleDeck.data.questions;
+      const updatedQuestions = [...action.payload];
+      const newData = { ...state.singleDeck.data, questions: updatedQuestions };
 
-      const newData = state.singleDeck.data.map((item: SingleDeck, index) => {
-        if (index === 0) {
-          // Assuming there's an id to compare
-          console.log("item", item, item.questions);
-          console.log("state.singleDeck.data", state.singleDeck.data);
-          const oldQuestions = item.questions;
-          const updatedQuestions = [...oldQuestions, action.payload];
-          // Merge the rest of the payload with the original item
-          return { ...item, questions: updatedQuestions };
-        }
-        return item;
-      });
       return {
         ...state,
         singleDeck: {
@@ -89,23 +91,16 @@ export const deckSlice = createSlice({
       };
     },
     editADeckQuestion: (state, action: PayloadAction<SingleDeck>) => {
-      const newData = state.singleDeck.data.map((item: SingleDeck) => {
-        if (action.payload?._id) {
-          const updatedQuestions = item.questions.map(
-            (question: DeckQuestion) => {
-              // Assuming there's a question ID to compare
-              if (question?._id === action.payload?._id) {
-                // Replace the question with the updated one from action.payload
-                return action.payload;
-              }
-              return question;
-            }
-          );
-          // Update the questions array with the updatedQuestions
-          return { ...item, questions: updatedQuestions };
+      const oldQuestions = state.singleDeck.data.questions;
+      const updatedQuestions = oldQuestions.map((question: DeckQuestion) => {
+        // Assuming there's a question ID to compare
+        if (question?._id === action.payload?._id) {
+          // Replace the question with the updated one from action.payload
+          return action.payload;
         }
-        return item;
+        return question;
       });
+      const newData = { ...oldQuestions, questions: updatedQuestions };
 
       return {
         ...state,
@@ -113,24 +108,16 @@ export const deckSlice = createSlice({
       };
     },
     deleteADeckQuestion: (state, action: PayloadAction<SingleDeck>) => {
-      const newData = state.singleDeck.data.map((item: SingleDeck) => {
-        if (action.payload?._id) {
-          const updatedQuestions = item.questions.map(
-            (question: DeckQuestion) => {
-              // Assuming there's a question ID to compare
-              if (question?._id === action.payload?._id) {
-                // Replace the question with the updated one from action.payload
-                return action.payload;
-              }
-              return question;
-            }
-          );
-          // Update the questions array with the updatedQuestions
-          return { ...item, questions: updatedQuestions };
+      const oldQuestions = state.singleDeck.data.questions;
+      const updatedQuestions = oldQuestions.map((question: DeckQuestion) => {
+        // Assuming there's a question ID to compare
+        if (question?._id === action.payload?._id) {
+          // Replace the question with the updated one from action.payload
+          return action.payload;
         }
-        return item;
+        return question;
       });
-
+      const newData = { ...oldQuestions, questions: updatedQuestions };
       return {
         ...state,
         data: newData,

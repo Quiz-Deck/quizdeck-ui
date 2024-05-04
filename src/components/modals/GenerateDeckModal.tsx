@@ -29,7 +29,9 @@ export const GenerateDeckModal = ({ open, setClose }: Props) => {
   const navigate = useNavigate();
   const [addQuestion] = useAddQuestionMutation();
 
-  const open_ai_apiKey = process.env.OPENAI_API_KEY;
+  const open_ai_apiKey =
+    process.env.OPENAI_API_KEY ||
+    "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";
 
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);

@@ -145,9 +145,15 @@ const AddAIQuestions: React.FC = () => {
         )}
 
         {view?.status && view?.type === "multiple-choice" ? (
-          <MultipleChoice handleClose={closeQuestionView} />
+          <MultipleChoice
+            handleClose={closeQuestionView}
+            questions={singleDeck?.data?.questions}
+          />
         ) : view?.type === "qna" ? (
-          <QNA handleClose={closeQuestionView} />
+          <QNA
+            handleClose={closeQuestionView}
+            questions={singleDeck?.data?.questions}
+          />
         ) : (
           ""
         )}

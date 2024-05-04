@@ -4,6 +4,7 @@ import {
   CreateDeckRequest,
   SingleDeckResponse,
   CreateDeckResponse,
+  DeckListResponse,
 } from "./deckSliceTypes";
 
 const deckApi = apiSlice.injectEndpoints({
@@ -30,7 +31,7 @@ const deckApi = apiSlice.injectEndpoints({
     }),
 
     //Get a user's deck
-    getUserDeck: build.query<SingleDeckResponse, void>({
+    getUserDeck: build.query<DeckListResponse, void>({
       query: () => ({
         url: "/deck/user",
         method: "GET",
@@ -46,7 +47,7 @@ const deckApi = apiSlice.injectEndpoints({
     }),
 
     //Get a single deck
-    getPublicDecks: build.query<SingleDeckResponse, void>({
+    getPublicDecks: build.query<DeckListResponse, void>({
       query: () => ({
         url: `/deck/public`,
         method: "GET",

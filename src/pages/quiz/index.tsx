@@ -63,7 +63,7 @@ const QuizTaker: React.FC = () => {
 
   const handleSubmit = () => {
     let correctCount = 0;
-    data?.data?.[0]?.questions.forEach((question, index) => {
+    data?.data?.questions.forEach((question, index) => {
       if (question.answer === answers[index]) {
         correctCount++;
       }
@@ -85,9 +85,9 @@ const QuizTaker: React.FC = () => {
         </div>
         <div className="text-center">
           <p className="text-sm font-bold">
-            {activeQuestion + 1} / {data?.data?.[0]?.questions?.length}
+            {activeQuestion + 1} / {data?.data?.questions?.length}
           </p>
-          <p className="text-sm">{data?.data?.[0]?.title}</p>
+          <p className="text-sm">{data?.data?.title}</p>
         </div>
         <Button.Secondary title={"Close"} onClick={() => openModal()} />
       </div>
@@ -95,9 +95,9 @@ const QuizTaker: React.FC = () => {
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 mt-16">
         <div className="flex gap-8">
           <div className="max-w-[350px] w-full">
-            {data?.data?.[0]?.questions && (
+            {data?.data?.questions && (
               <QuestionsSideNav
-                data={data?.data?.[0]?.questions}
+                data={data?.data?.questions}
                 answers={answers}
                 setActiveQuestion={setActiveQuestion}
                 handleSubmit={handleSubmit}
@@ -109,7 +109,7 @@ const QuizTaker: React.FC = () => {
           </div>
           <div className="w-full">
             <QuizQuestionType
-              data={data?.data ? data?.data?.[0]?.questions : []}
+              data={data?.data ? data?.data?.questions : []}
               activeQuestion={activeQuestion}
               setActiveQuestion={setActiveQuestion}
               answers={answers}

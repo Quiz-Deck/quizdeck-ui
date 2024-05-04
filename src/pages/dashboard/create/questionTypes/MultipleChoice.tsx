@@ -11,9 +11,13 @@ import { useAddQuestionMutation } from "../../../../features/api/question/questi
 // Explicitly import the types for JSX
 type CreateQuizProps = {
   handleClose: () => void;
+  questions: any;
 };
 
-const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
+const MultipleChoice: React.FC<CreateQuizProps> = ({
+  handleClose,
+  questions,
+}) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
@@ -54,9 +58,11 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({ handleClose }) => {
   };
 
   const handleSubmit = () => {
+    const newData = { ...data, multichoiceOptions: answerFields };
     addQuestion({
       deckId: id,
-      payload: { ...data, multichoiceOptions: answerFields },
+      // payload: { ...data, multichoiceOptions: answerFields },
+      payload: [...questions, newData],
     })
       .unwrap()
       .then((res: any) => {

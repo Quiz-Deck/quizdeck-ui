@@ -18,9 +18,12 @@ interface MultichoiceOptions {
   answer: string;
 }
 
-export interface AddDeckQuestionRequest {
+export interface AddDeckQuestion {
   question: string;
   type: string; //"MULTI_CHOICE" || "QNA" || "IMAGE" || "AUDIO" || "VIDEO" || "FILE"
   multichoiceOptions: string[]; //optional if type is multi-choice ,
   answer: string;
 }
+
+export interface AddDeckQuestionRequest extends Array<AddDeckQuestion> {}
+

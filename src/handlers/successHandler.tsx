@@ -32,7 +32,17 @@ const handler = (
   shouldDispatchAlert: boolean = false
 ): string => {
   try {
-    if (successObject.data) {
+    if (successObject.message) {
+      // Send found success message to alert
+      shouldDispatchAlert &&
+        toast.success(successObject?.message, {
+          position: "top-right" as ToastPosition,
+          theme: "colored",
+        });
+
+      // Return a response
+      return handlerResponse("Request was successful!", successObject);
+    } else if (successObject.data) {
       if (successObject.data.message) {
         // Send found success message to alert
         shouldDispatchAlert &&
@@ -48,16 +58,6 @@ const handler = (
             theme: "colored",
           });
       }
-
-      // Return a response
-      return handlerResponse("Request was successful!", successObject);
-    } else if (successObject.message) {
-      // Send found success message to alert
-      shouldDispatchAlert &&
-        toast.success(successObject?.message, {
-          position: "top-right" as ToastPosition,
-          theme: "colored",
-        });
 
       // Return a response
       return handlerResponse("Request was successful!", successObject);

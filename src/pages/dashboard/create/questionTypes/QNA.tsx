@@ -6,13 +6,15 @@ import Button from "../../../../components/button/buttons";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
 import { deckActions } from "features/store/deckSlice";
+// import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
 type CreateQuizProps = {
   handleClose: () => void;
+  questions: any;
 };
 
-const QNA: React.FC<CreateQuizProps> = ({ handleClose }) => {
+const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
@@ -31,7 +33,8 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose }) => {
   const handleSubmit = () => {
     addQuestion({
       deckId: id,
-      payload: { ...data },
+      // payload: { ...data },
+      payload: [...questions, data],
     })
       .unwrap()
       .then((res: any) => {
