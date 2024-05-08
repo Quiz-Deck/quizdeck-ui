@@ -70,10 +70,7 @@ const AddDeckQuestions: React.FC = () => {
 
   const closePromptModal = () => {
     setOpenPrompt(false);
-  };
-
-  console.log("singleDeck?.data?.questions", singleDeck?.data?.questions);
-  
+  };  
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -177,7 +174,11 @@ const AddDeckQuestions: React.FC = () => {
         setClose={closeModal}
         deck={singleDeck?.data && singleDeck?.data}
       />
-      <GenerateDeckModal open={openPrompt} setClose={closePromptModal} />
+      <GenerateDeckModal
+        open={openPrompt}
+        setClose={closePromptModal}
+        questions={singleDeck?.data?.questions}
+      />
     </div>
   );
 };

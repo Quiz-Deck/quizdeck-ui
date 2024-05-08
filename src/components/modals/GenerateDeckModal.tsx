@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Modal } from "./index";
 import OpenAI from "openai";
 import Input from "components/input/Input";
@@ -12,6 +11,7 @@ import { useAddQuestionMutation } from "features/api/question/questionApi";
 interface Props {
   open: boolean;
   setClose: () => void;
+  questions: any;
 }
 
 interface Question {
@@ -23,15 +23,16 @@ interface Question {
 
 type DebounceFunction = (...args: any[]) => void;
 
-export const GenerateDeckModal = ({ open, setClose }: Props) => {
+export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [addQuestion] = useAddQuestionMutation();
 
-  const open_ai_apiKey =
-    process.env.OPENAI_API_KEY ||
-    "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";
+  // const open_ai_apiKey =
+  //   process.env.OPENAI_API_KEY ||
+  //   "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";
+
+  const open_ai_apiKey = process.env.OPENAI_API_KEY;
 
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +74,7 @@ export const GenerateDeckModal = ({ open, setClose }: Props) => {
         messages: [
           {
             role: "user",
-            content: `Generate a quiz with 10 questions, each question should have 3 options one of them is the correct answer. Indicate the quesion title, options and correct answer. This is the topic:${prompt}`,
+            content: `Generate a quiz with 10 questions, each question should have 3 options one of them is the correct answer. Indicate the quesion title, options and correct answer. The generated result should be in form of an array with objects {question,options:[],answer:""}. This is the topic:${prompt}`,
           },
         ],
         temperature: 0,
@@ -86,6 +87,11 @@ export const GenerateDeckModal = ({ open, setClose }: Props) => {
       if (response?.choices) {
         setIsLoading(false);
       }
+
+      console.log(
+        "response?.choices[0]?.message?.content",
+        response?.choices[0]?.message?.content
+      );
 
       // Format response as JSON
       const formattedQuiz = parseQuestions(
@@ -103,35 +109,41 @@ export const GenerateDeckModal = ({ open, setClose }: Props) => {
 
   // Format response as JSON
   const parseQuestions = (questionsString: string): Question[] => {
-    return questionsString.split("\n\n").map((question, index) => {
-      const [questionText, optionsAndCorrectAnswerText] =
-        question.split("\nCorrect Answer:");
+    // return questionsString.split("\n\n").map((question, index) => {
+    //   const [questionText, optionsAndCorrectAnswerText] =
+    //     question.split("\nanswer:");
 
-      // const questionNumber = parseInt(questionText.match(/\d+/)![0]);
-      const questionNumberMatch = questionText.match(/^\d+/);
-      const questionNumber = questionNumberMatch
-        ? parseInt(questionNumberMatch[0])
-        : -1; // Or any default value you prefer
-      const [questionContent, optionsText] = questionText.split("\nOptions:");
+    //   // const questionNumber = parseInt(questionText.match(/\d+/)![0]);
+    //   const questionNumberMatch = questionText.match(/^\d+/);
+    //   const questionNumber = questionNumberMatch
+    //     ? parseInt(questionNumberMatch[0])
+    //     : -1; // Or any default value you prefer
+    //   const [questionContent, optionsText] = questionText.split("\noptions:");
 
-      const options = optionsText ? optionsText.split("\n").slice(1) : [];
-      const correctAnswer = optionsAndCorrectAnswerText
-        ? optionsAndCorrectAnswerText.trim()
-        : "";
+    //   const options = optionsText ? optionsText.split("\n").slice(1) : [];
+    //   const correctAnswer = optionsAndCorrectAnswerText
+    //     ? optionsAndCorrectAnswerText.trim()
+    //     : "";
 
-      return {
-        questionNumber,
-        questionContent,
-        options,
-        correctAnswer,
-      };
-    });
+    //   return {
+    //     questionNumber,
+    //     questionContent,
+    //     options,
+    //     correctAnswer,
+    //   };
+    // });
+    const contentData = eval(questionsString);
+    const result = contentData.map((item: any) => ({
+      questionContent: item.question,
+      options: item.options,
+      correctAnswer: item.answer,
+    }));
+
+    return result;
   };
 
   const transformQuestions = (questions: Question[]): any[] => {
     return questions.map((question) => {
-      console.log("question", question);
-
       return {
         question: question.questionContent,
         type: "MULTI_CHOICE",
@@ -142,21 +154,21 @@ export const GenerateDeckModal = ({ open, setClose }: Props) => {
   };
 
   const createAIGeneratedQuestions = (questionSetsArray: any[]) => {
-    questionSetsArray.forEach((questionSet, index) => {
-      console.log("index", index);
+    // questionSetsArray.forEach((questionSet, index) => {
+    //   console.log("index", index);
 
-      addQuestion({
-        deckId: id,
-        payload: questionSet,
+    addQuestion({
+      deckId: id,
+      payload: [...questions, ...questionSetsArray],
+    })
+      .unwrap()
+      .then((res: any) => {
+        dispatch(deckActions.addADeckQuestion(res?.data));
       })
-        .unwrap()
-        .then((res: any) => {
-          dispatch(deckActions.addADeckQuestion(res?.data));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
+      .catch((err) => {
+        console.log(err);
+      });
+    // });
 
     setClose();
     // navigate(`/deck/create/ai/${id}`);

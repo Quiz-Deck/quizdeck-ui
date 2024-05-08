@@ -21,10 +21,10 @@ export default function NavbarCommon() {
               <div className="flex px-2 lg:px-0">
                 <div className="flex-shrink-0 flex items-center">
                   <div className="block lg:hidden h-8 w-auto text-primary text-3xl font-bold">
-                    QuizDeck
+                    Quiryfy
                   </div>
                   <div className="hidden lg:block h-8 w-auto text-primary text-3xl font-bold">
-                    QuizDeck
+                    Quiryfy
                   </div>
                 </div>
                 {/* <div className="hidden lg:ml-6 lg:flex lg:space-x-8">

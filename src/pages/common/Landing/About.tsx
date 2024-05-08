@@ -9,11 +9,11 @@ export default function About() {
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
             <div className="max-w-[560px]">
               <h2 className="mt-2 mb-8 text-3xl leading-8 font-extrabold tracking-tight text-primary sm:text-4xl">
-                About QuizDeck
+                About Quiryfy
               </h2>
               <h4 className="text-3xl text-primary mb-4">
                 Everything you can do in a physical classroom,{" "}
-                <span className="text-secondary">you can do with QuizDeck</span>
+                <span className="text-secondary">you can do with Quiryfy</span>
               </h4>
               <p className="text-xl tracking-wide">
                 Dive into the world of self-discovery and knowledge exploration

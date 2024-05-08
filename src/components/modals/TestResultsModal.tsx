@@ -36,6 +36,7 @@ export const TestResultsModal = ({
   };
 
   console.log("answers", answers);
+  console.log("data", data);
 
   return (
     <Modal open={open} width={"652px"}>
@@ -58,8 +59,8 @@ export const TestResultsModal = ({
           </div>
 
           {data?.data &&
-            data?.data?.[0]?.questions?.length > 0 &&
-            data?.data?.[0]?.questions.map(
+            data?.data?.questions?.length > 0 &&
+            data?.data?.questions.map(
               (question: DeckQuestion, index: number) => (
                 <div key={question?._id} className="w-full mb-6">
                   <div className="flex gap-3 items-center mb-1">
@@ -68,10 +69,11 @@ export const TestResultsModal = ({
                   </div>
                   <div
                     className={`
-                      ${question?.answer === answers[index]
-                        ? "bg-[#abefab]"
-                        : "bg-[#efabab]"} py-2 px-3`
-                    }
+                      ${
+                        question?.answer === answers[index]
+                          ? "bg-[#abefab]"
+                          : "bg-[#efabab]"
+                      } py-2 px-3`}
                   >
                     <p>{question?.answer}</p>
                   </div>

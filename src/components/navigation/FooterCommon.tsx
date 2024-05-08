@@ -26,10 +26,10 @@ export default function FooterCommon() {
               <div className="flex px-2 lg:px-0">
                 <div className="flex-shrink-0 flex items-center">
                   <div className="block lg:hidden h-8 w-auto text-white text-2xl font-bold">
-                    QuizDeck
+                    Quiryfy
                   </div>
                   <div className="hidden lg:block h-8 w-auto text-white text-2xl font-bold">
-                    QuizDeck
+                    Quiryfy
                   </div>
                 </div>
               </div>
