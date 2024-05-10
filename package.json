@@ -28,10 +28,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "serve -s build",
-    "start:dev": "env-cmd -f .env react-scripts start",
-    "build": "react-scripts build",
-    "build:dev": "env-cmd -f .env react-scripts build",
+    "start": "env-cmd -f .env react-scripts start",
+    "build": "env-cmd -f .env react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .jsx,.js,.ts,.tsx src/ --fix"
