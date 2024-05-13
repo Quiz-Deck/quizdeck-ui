@@ -12,7 +12,7 @@ export default function Landing() {
       <Hero />
       <Services />
       <About />
-      <Categories />
+      {/* <Categories /> */}
       <Quizes />
       <Testimonial />
     </>

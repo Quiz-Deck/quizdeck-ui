@@ -37,12 +37,22 @@ export default function Quizes() {
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10 items-center">
             <div>
               <h2 className="mt-2 mb-8 text-[70px] font-extrabold tracking-tight text-primary capitalize">
-                Get access to unlimited fun quiz!
+                Ready, Set, Go! 
               </h2>
               <p className="max-w-[540px] text-lg">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                consectetur adipiscing elit.
+                It's Time to Unleash Your Full Potential.
               </p>
+              <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+              <div className="rounded-md shadow">
+                <a
+                  href="/"
+                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primaryDark md:py-4 md:text-lg md:px-10"
+                >
+                  Get started
+                </a>
+              </div>
+            </div>
+
             </div>
 
             <div className="flex justify-center">
