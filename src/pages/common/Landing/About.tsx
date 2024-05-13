@@ -12,16 +12,16 @@ export default function About() {
                 About Quiryfy
               </h2>
               <h4 className="text-3xl text-primary mb-4">
-                Everything you can do in a physical classroom,{" "}
-                <span className="text-secondary">you can do with Quiryfy</span>
+                Collaborative learning experiences that rival{" "}
+                <span className="text-secondary">traditional classroom dynamics.</span>
               </h4>
               <p className="text-xl tracking-wide">
-                Dive into the world of self-discovery and knowledge exploration
-                with our innovative quiz app. Whether you want to craft your own
-                quiz or let our AI generate one for you, we've got you covered.
-                Unveil fascinating insights about yourself or challenge your
-                friends to see who knows you best. Get started now and embark on
-                a journey of fun, discovery, and learning!
+                Quiryfy revolutionizes quiz creation and collaboration, 
+                offering a seamless platform for individuals and teams alike. 
+                With intuitive features and user-friendly design, we empower users to craft, share, and enhance quizzes effortlessly. 
+                Whether you're studying, training, or simply looking to test your knowledge, 
+                Quiryfy makes learning enjoyable and effective. 
+                Join us and elevate your learning experience today!"
               </p>
             </div>
 

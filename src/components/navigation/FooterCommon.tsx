@@ -33,7 +33,7 @@ export default function FooterCommon() {
                   </div>
                 </div>
               </div>
-              <p>©️ Ogwugo Limited 2017–{currentYear}</p>
+              <p>©️ Quiryfy 2024–{currentYear}</p>
 
               {/* <div className="lg:ml-4 lg:items-center flex flex-col sm:flex-row gap-8">
                 <div className="block">

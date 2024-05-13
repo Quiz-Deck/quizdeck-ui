@@ -6,9 +6,6 @@ export default function Testimonial() {
     <div className="py-12 bg-white max-w-7xl mx-auto  bg-white flex items-center">
       <div className="px-4 sm:px-6 lg:px-8">
         <div>
-          <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
-            Transactions
-          </h2>
           <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
             What they say?
           </p>
