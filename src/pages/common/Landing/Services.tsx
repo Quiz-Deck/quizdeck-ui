@@ -5,22 +5,22 @@ import { ReactComponent as Publish } from "../../../assets/icons/publish-quiz.sv
 
 const people = [
   {
-    name: "Create Quiz",
+    name: "Craft Your Quiz",
     description:
-      "Simple and secure control of your organization’s financial and legal transactions. Send customized invoices and contracts",
+    "Craft questions and customize settings effortlessly with Quiryfy's intuitive interface. Plus, generate quizzes from your content in minutes!",
     imageUrl: Create,
   },
   {
-    name: "Take Quiz",
+    name: "Hone Your Skills",
     description:
-      "Schedule and reserve classrooms at one campus or multiple campuses. Keep detailed records of student attendance",
-    imageUrl: Take,
+      "Refine Your Skills: Practice Quizzes Anytime, Track Progress, and Improve Your Weak Areas- Even with Limited Internet Access!",
+    imageUrl: Publish,
   },
   {
-    name: "Publish Quiz",
+    name: "Teamwork in Action",
     description:
-      "Automate and track emails to individuals or groups. Skilline’s built-in system helps organize your organization ",
-    imageUrl: Publish,
+    "Collaborate Seamlessly: Invite Friends to Join, Create Questions Together, Take Quizzes Together, and Study Anywhere, Anytime.",
+    imageUrl: Take,
   },
 ];
 
@@ -30,11 +30,10 @@ export default function Services() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="lg:text-center mb-20">
           <h2 className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-primary sm:text-4xl">
-            Our Services
+            How it works 
           </h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-            Starting learning for free with a wide range of free online quizes
-            covering
+            From start to finish, Quiryfy simplifies your journey. It's that easy!
           </p>
         </div>
 
