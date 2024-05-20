@@ -26,12 +26,12 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
 
   useEffect(() => {
     if (question) {
-      setData({
+      setData((data) => ({
         ...data,
         question: question?.question,
         type: question?.type,
         answer: question?.answer,
-      });
+      }));
     }
   }, [question]);
 
@@ -47,7 +47,7 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
     })
       .unwrap()
       .then((res: any) => {
-         successHandler(res, true);
+        successHandler(res, true);
         dispatch(deckActions.editADeckQuestion(res?.data));
       })
       .catch((err) => {

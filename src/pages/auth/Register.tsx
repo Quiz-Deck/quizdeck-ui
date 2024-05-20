@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/buttons";
-import SocialLogin from "./SocialLogin";
-// import errorHandler from "../../handlers/errorHandler";
+import errorHandler from "handlers/errorHandler";
+// import successHandler from "handlers/successHandler";
 import { useSignUpMutation } from "../../features/api/authSlice";
 
 const Register = (): JSX.Element => {
   const navigate = useNavigate();
   const [data, setData] = useState({ email: "", password: "", userName: "" });
-  const [errMsg, setErr] = useState<string>("");
 
   const [registerUser, { isLoading }] = useSignUpMutation();
 
@@ -22,13 +21,11 @@ const Register = (): JSX.Element => {
     registerUser(data)
       .unwrap()
       .then((res) => {
-        localStorage.setItem("user", JSON.stringify(res.data));
+        // successHandler(res, true);
         navigate("/auth/login");
       })
       .catch((err) => {
-        console.log("i am err", err);
-        // errorHandler(err?.data?.message || "Something went wrong", true);
-        setErr(err?.data?.message || "Something went wrong");
+        errorHandler(err?.data || "Something went wrong", true);
       });
   };
 
@@ -64,7 +61,7 @@ const Register = (): JSX.Element => {
           className="rounded-md"
           onChange={(e: any) => handleChange(e)}
         />
-        <p className="error"> {errMsg}</p>
+
         <Button.Primary
           title={"Sign Up"}
           className="w-full mt-4"
@@ -79,13 +76,7 @@ const Register = (): JSX.Element => {
         </div>
       </form>
 
-      <div className="flex gap-8 items-center my-12">
-        <div className="border border-t border-[#D0D0D0] w-full" />
-        <span className="text-[#D0D0D0]">OR</span>
-        <div className="border border-t border-[#D0D0D0] w-full" />
-      </div>
-
-      <SocialLogin />
+      {/* <SocialLogin /> */}
     </div>
   );
 };

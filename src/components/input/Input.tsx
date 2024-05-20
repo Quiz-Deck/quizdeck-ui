@@ -1,4 +1,5 @@
 import React from "react";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 const Input = ({ children }: any) => {
   return (
@@ -24,7 +25,6 @@ Input.Label = ({
   disabled,
   autoComplete,
 }: any) => {
-
   return (
     <div>
       <label
@@ -90,7 +90,7 @@ Input.Password = ({
       >
         {title ?? "Title"}
       </label>
-      <div className="mt-2">
+      <div className="mt-2 relative">
         <input
           type={"password"}
           name={name}
@@ -105,11 +105,12 @@ Input.Password = ({
           onChange={onChange}
           disabled={disabled}
         />
-        <i
-          className="absolute top-[43px] right-4 fa-solid fa-eye"
-          onClick={toggleFunction}
-          id="eye"
-        ></i>
+
+        <EyeIcon
+          className="absolute top-3 right-4 h-5 w-5 cursor-pointer"
+          aria-hidden="true"
+          onClick={(e: any) => toggleFunction(e)}
+        />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigate, useParams } from "react-router-dom";
+import { TrashIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import QNA from "./questionTypes/QNA";
 import MultipleChoice from "./questionTypes/MultipleChoice";
 import QuestionsMenu from "./QuestionsMenu";
@@ -44,10 +45,9 @@ const AddDeckQuestions: React.FC = () => {
       .unwrap()
       .then((res: any) => {
         successHandler(res, true);
-        dispatch(deckActions.deleteADeckQuestion(res?.data));
+        dispatch(deckActions.deleteADeckQuestion(id));
       })
       .catch((err) => {
-        console.log("i am err", err);
         errorHandler(err?.data, true);
       });
   };
@@ -70,15 +70,16 @@ const AddDeckQuestions: React.FC = () => {
 
   const closePromptModal = () => {
     setOpenPrompt(false);
-  };  
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <button
         onClick={() => navigate(`/dashboard/question/${id}`)}
-        className="text-primary font-medium mb-5"
+        className="text-primary font-medium mb-5 flex items-center gap-2"
       >
-        {"<  Back"}
+        <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+        {"Back"}
       </button>
 
       <div className="mb-12 border border-[#D6E4FD] rounded-md px-4 py-4">
@@ -122,9 +123,9 @@ const AddDeckQuestions: React.FC = () => {
             (question: DeckQuestion, index: number) => (
               <div key={question?._id} className="border w-full mb-8">
                 <div className="p-5 flex items-center justify-between border-b py-2">
-                  <p>{index + 1}</p>
+                  <p>{index + 1}.</p>
                   <button onClick={() => handleDelete(question?._id)}>
-                    del
+                    <TrashIcon className="h-5 w-5" aria-hidden="true" />
                   </button>
                 </div>
 

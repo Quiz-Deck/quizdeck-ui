@@ -1,8 +1,15 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { logOut } from "features/store/authReducer";
 
 export default function SidenavDashboard() {
   const params = useParams();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logOut());
+  };
 
   const navigation = [
     {
@@ -41,11 +48,21 @@ export default function SidenavDashboard() {
                 href={item.href}
                 className={`${
                   item?.current ? "text-secondary bg-white" : "text-white"
-                } font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-white hover:text-secondary block`}
+                } font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-[#1977e4] block`}
               >
                 {item.name}
               </a>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                handleLogout();
+                console.log("clicked");
+              }}
+              className={`text-white text-left font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-[#1977e4] block w-full`}
+            >
+              Log Out
+            </button>
           </div>
         </div>
       </div>

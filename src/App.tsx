@@ -9,15 +9,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Redux
 import { Provider } from "react-redux";
-import { store } from "./app/store"
+import { store } from "./app/store";
 
 // Layouts
 import AdminLayout from "./layouts/AdminLayout";
 import AuthLayout from "./layouts/AuthLayout";
-// import UserLayout from "./layouts/UserLayout";
 import CommonLayout from "./layouts/CommonLayout";
 import CreateQuizLayout from "./layouts/CreateQuizLayout";
 import QuizTaker from "./pages/quiz/index";
+import PrivateRoute from "utils/privateRoute";
 
 function App() {
   return (
@@ -34,8 +34,22 @@ function App() {
           <Routes>
             <Route path="/*" element={<CommonLayout />} />
             <Route path="/auth/*" element={<AuthLayout />} />
-            <Route path="/dashboard/*" element={<AdminLayout />} />
-            <Route path="/deck/create/*" element={<CreateQuizLayout />} />
+            <Route
+              path="/dashboard/*"
+              element={
+                <PrivateRoute>
+                  <AdminLayout />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/deck/create/*"
+              element={
+                <PrivateRoute>
+                  <CreateQuizLayout />
+                </PrivateRoute>
+              }
+            />
             <Route path="/deck/practise/:id" element={<QuizTaker />} />
           </Routes>
         </BrowserRouter>

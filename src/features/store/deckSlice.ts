@@ -107,20 +107,24 @@ export const deckSlice = createSlice({
         data: newData,
       };
     },
-    deleteADeckQuestion: (state, action: PayloadAction<SingleDeck>) => {
+    deleteADeckQuestion: (state, action: PayloadAction<string>) => {
       const oldQuestions = state.singleDeck.data.questions;
-      const updatedQuestions = oldQuestions.map((question: DeckQuestion) => {
-        // Assuming there's a question ID to compare
-        if (question?._id === action.payload?._id) {
-          // Replace the question with the updated one from action.payload
-          return action.payload;
-        }
-        return question;
-      });
-      const newData = { ...oldQuestions, questions: updatedQuestions };
+      console.log("action.payload", action.payload);
+
+      // Filter out the question with the ID matching action.payload
+      const updatedQuestions = oldQuestions.filter(
+        (question: DeckQuestion) => question?._id !== action.payload
+      );
+
+      // Create the new state with updated questions
+      const newData = { ...state.singleDeck.data, questions: updatedQuestions };
+
       return {
         ...state,
-        data: newData,
+        singleDeck: {
+          ...state.singleDeck,
+          data: newData,
+        },
       };
     },
   },

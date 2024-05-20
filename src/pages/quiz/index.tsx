@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Button from "components/button/buttons";
+import PageLoader from "utils/PageLoader";
 import QuestionsSideNav from "./QuestionsSideNav";
 import QuizQuestionType from "./questionTypes";
 import { TestResultsModal } from "components/modals/TestResultsModal";
@@ -93,32 +94,38 @@ const QuizTaker: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 mt-16">
-        <div className="flex gap-8">
-          <div className="max-w-[350px] w-full">
-            {data?.data?.questions && (
-              <QuestionsSideNav
-                data={data?.data?.questions}
-                answers={answers}
+        {isLoading ? (
+          <div className="h-full w-full flex items-center justify-center">
+            <PageLoader />
+          </div>
+        ) : (
+          <div className="flex gap-8">
+            <div className="max-w-[350px] w-full">
+              {data?.data?.questions && (
+                <QuestionsSideNav
+                  data={data?.data?.questions}
+                  answers={answers}
+                  setActiveQuestion={setActiveQuestion}
+                  handleSubmit={handleSubmit}
+                  timer={timer}
+                  setTimer={setTimer}
+                  handleStartTimer={handleStartTimer}
+                />
+              )}
+            </div>
+            <div className="w-full">
+              <QuizQuestionType
+                data={data?.data ? data?.data?.questions : []}
+                activeQuestion={activeQuestion}
                 setActiveQuestion={setActiveQuestion}
+                answers={answers}
+                setAnswers={setAnswers}
                 handleSubmit={handleSubmit}
-                timer={timer}
-                setTimer={setTimer}
                 handleStartTimer={handleStartTimer}
               />
-            )}
+            </div>
           </div>
-          <div className="w-full">
-            <QuizQuestionType
-              data={data?.data ? data?.data?.questions : []}
-              activeQuestion={activeQuestion}
-              setActiveQuestion={setActiveQuestion}
-              answers={answers}
-              setAnswers={setAnswers}
-              handleSubmit={handleSubmit}
-              handleStartTimer={handleStartTimer}
-            />
-          </div>
-        </div>
+        )}
       </div>
 
       <CloseTestModal open={open} setClose={closeModal} />

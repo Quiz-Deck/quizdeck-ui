@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/buttons";
-import SocialLogin from "./SocialLogin";
+// import SocialLogin from "./SocialLogin";
+import errorHandler from "handlers/errorHandler";
+// import successHandler from "handlers/successHandler";
 import { useLogInMutation } from "../../features/api/authSlice";
 
 const Login: React.FC = () => {
@@ -21,13 +23,12 @@ const Login: React.FC = () => {
       .unwrap()
       .then((res) => {
         localStorage.setItem("user", JSON.stringify(res));
-        console.log("user", res);
-
         // successHandler(res, true);
         navigate("/dashboard/explore");
       })
       .catch((err) => {
         console.log(err);
+        errorHandler(err?.data || "Something went wrong", true);
       });
   };
 
@@ -70,18 +71,9 @@ const Login: React.FC = () => {
         </div>
       </form>
 
-      <div className="flex gap-8 items-center my-12">
-        <div className="border border-t border-[#D0D0D0] w-full" />
-        <span className="text-[#D0D0D0]">OR</span>
-        <div className="border border-t border-[#D0D0D0] w-full" />
-      </div>
-
-      <SocialLogin />
+      {/* <SocialLogin /> */}
     </div>
   );
 };
 
 export default Login;
-function successHandler(response: any, arg1: boolean) {
-  throw new Error("Function not implemented.");
-}

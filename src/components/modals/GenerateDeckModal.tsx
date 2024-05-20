@@ -32,7 +32,7 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
   //   process.env.OPENAI_API_KEY ||
   //   "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";
 
-  const open_ai_apiKey = process.env.OPENAI_API_KEY;
+  const open_ai_apiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);

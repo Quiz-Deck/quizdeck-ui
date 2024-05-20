@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  AnnotationIcon,
+  // AnnotationIcon,
   GlobeAltIcon,
-  LightningBoltIcon,
+  // LightningBoltIcon,
   ScaleIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 
 const features = [
   {
@@ -23,13 +23,13 @@ const features = [
     name: "Graphics Designing",
     description:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendi.",
-    icon: LightningBoltIcon,
+    icon: ScaleIcon,
   },
   {
     name: "App Development",
     description:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendi.",
-    icon: AnnotationIcon,
+    icon: ScaleIcon,
   },
 ];
 

@@ -4,7 +4,7 @@ import Services from "./Services";
 import About from "./About";
 import Categories from "./Categories";
 import Quizes from "./Quizes";
-import Testimonial from "./Testimonial";
+// import Testimonial from "./Testimonial";
 
 export default function Landing() {
   return (
@@ -14,7 +14,7 @@ export default function Landing() {
       <About />
       <Categories />
       <Quizes />
-      <Testimonial />
+      {/* <Testimonial /> */}
     </>
   );
 }

@@ -30,12 +30,12 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
   );
 
   useEffect(() => {
-    setData({
+    setData((data) => ({
       ...data,
       question: question?.question,
       type: question?.type,
       answer: question?.answer,
-    });
+    }));
     setAnswerFields(question?.multichoiceOptions);
   }, [question]);
 

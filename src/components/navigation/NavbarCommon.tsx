@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "About Us", href: "#" },
-  { name: "Services", href: "#" },
-  { name: "Contact Us", href: "#" },
-];
+// const navigation = [
+//   { name: "Home", href: "#" },
+//   { name: "About Us", href: "#" },
+//   { name: "Services", href: "#" },
+//   { name: "Contact Us", href: "#" },
+// ];
 
 export default function NavbarCommon() {
   const navigate = useNavigate();
@@ -60,16 +60,16 @@ export default function NavbarCommon() {
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>
 
               <div className="hidden lg:ml-4 lg:flex lg:items-center">
                 <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
-                  {navigation.map((item) => (
+                  {/* {navigation.map((item) => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -77,7 +77,7 @@ export default function NavbarCommon() {
                     >
                       {item.name}
                     </a>
-                  ))}
+                  ))} */}
                   <a
                     href="/auth/login"
                     className="font-medium text-primary hover:text-indigo-500"

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import { _getUser } from "utils/Auth";
+import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/rectangle.jpg";
-import { _getUser } from "utils/Auth";
 import errorHandler from "handlers/errorHandler";
 import {
   useGetSingleDeckQuery,
@@ -24,12 +25,8 @@ export default function Question() {
   const { id } = useParams();
   const user = _getUser();
 
-  console.log("user", user);
-
   const [deleteSingleDeck] = useDeleteSingleDeckMutation();
-  const { data, error, isLoading } = useGetSingleDeckQuery(id || "");
-  console.log("data", data);
-  
+  const { data, isLoading } = useGetSingleDeckQuery(id || "");
 
   const handleDelete = (id: string) => {
     deleteSingleDeck(id)
@@ -44,75 +41,86 @@ export default function Question() {
 
   return (
     <div>
-      <div className="border border-[#D6E4FD] rounded-lg flex justify-between p-3">
-        <div className="flex gap-3">
-          <img
-            src={Dummy}
-            alt="Dummy"
-            className="h-[220px] w-[240px] object-cover rounded-lg"
-          />
-          <div className="px-2 flex flex-col justify-between h-full">
-            <div>
-              <h3 className="text-2xl font-semibold mb-2">
-                {data?.data?.title}
-              </h3>
-              <div className="flex justify-between pb-2">
-                <p className="text-sm font-semibold">
-                  {data?.data?.questions?.length} Questions
-                </p>
-                <p className="text-sm font-semibold">
-                  {data?.data?.timer && data?.data?.timer > 0
-                    ? data?.data?.timer
-                    : "No timer"}
-                </p>
-              </div>
-              <p className="text-xs">{data?.data?.playCount} plays</p>
-              <p className="text-xs"> {data?.data?.likeCount} Likes</p>
-            </div>
-
-            <div className="flex justify-between items-center pb-2 gap-2">
+      {isLoading ? (
+        <div className="h-screen w-full flex items-center justify-center">
+          <PageLoader />
+        </div>
+      ) : (
+        <Fragment>
+          <div className="border border-[#D6E4FD] rounded-lg flex justify-between p-3">
+            <div className="flex gap-3">
               <img
                 src={Dummy}
-                alt="Avatar"
-                className="h-[52px] w-[52px] object-cover rounded-full"
+                alt="Dummy"
+                className="h-[220px] w-[240px] object-cover rounded-lg"
               />
-              <p className="text-sm">Author’s Name</p>
-              <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
-              <p className="text-sm">
-                {<TimeAgo time={data?.data?.createdOn} />}
-              </p>
-            </div>
-          </div>
-        </div>
-        {user?.data?._id === data?.data?.createdBy && (
-          <div className="px-2 flex flex-col justify-between">
-            <div className="flex justify-between pb-2 gap-2">
-              <Button.Secondary
-                title={"Delete Deck"}
-                className="px-8 mt-4"
-                onClick={() => handleDelete(id || "")}
-              />
-              <Button.Primary
-                title={"Edit Deck"}
-                className="px-8 mt-4"
-                onClick={() => navigate(`/deck/create/${id}`)}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+              <div className="px-2 flex flex-col justify-between h-full">
+                <div>
+                  <h3 className="text-2xl font-semibold mb-2">
+                    {data?.data?.title}
+                  </h3>
+                  <div className="flex justify-between pb-2">
+                    <p className="text-sm font-semibold">
+                      {data?.data?.questions?.length} Questions
+                    </p>
+                    <p className="text-sm font-semibold">
+                      {data?.data?.timer && data?.data?.timer > 0
+                        ? data?.data?.timer
+                        : "No timer"}
+                    </p>
+                  </div>
+                  <p className="text-xs">{data?.data?.playCount} plays</p>
+                  <p className="text-xs"> {data?.data?.likeCount} Likes</p>
+                </div>
 
-      <div className="my-10 md:max-w-[80%]">
-        <h3 className="font-semibold text-lg mb-3">Description:</h3>
-        <p>{data?.data?.description}</p>
-      </div>
-      <button
-        type="button"
-        onClick={() => navigate(`/deck/practise/${data?.data?._id}`)}
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary focus:outline-none"
-      >
-        Take Quiz
-      </button>
+                <div className="flex justify-between items-center pb-2 gap-2">
+                  <img
+                    src={Dummy}
+                    alt="Avatar"
+                    className="h-[52px] w-[52px] object-cover rounded-full"
+                  />
+                  <p className="text-sm">Author’s Name</p>
+                  <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
+                  <p className="text-sm">
+                    {<TimeAgo time={data?.data?.createdOn} />}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {user?.data?._id === data?.data?.createdBy && (
+              <div className="px-2 flex flex-col justify-between">
+                <div className="flex justify-between pb-2 gap-2">
+                  <Button.Secondary
+                    title={"Delete Deck"}
+                    className="px-8 mt-4"
+                    onClick={() => handleDelete(id || "")}
+                  />
+                  <Button.Primary
+                    title={"Edit Deck"}
+                    className="px-8 mt-4"
+                    onClick={() => navigate(`/deck/create/${id}`)}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="my-10 md:max-w-[80%]">
+            <h3 className="font-semibold text-lg mb-3">Description:</h3>
+            <p>{data?.data?.description}</p>
+          </div>
+
+          {data?.data && data?.data?.questions?.length > 0 && (
+            <button
+              type="button"
+              onClick={() => navigate(`/deck/practise/${data?.data?._id}`)}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary focus:outline-none"
+            >
+              Take Quiz
+            </button>
+          )}
+        </Fragment>
+      )}
     </div>
   );
 }

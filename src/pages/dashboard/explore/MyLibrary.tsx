@@ -18,7 +18,7 @@ export const TimeAgo: React.FC<TimeAgoProps> = ({ time }) => {
 
 export default function MyLibrary() {
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetUserDeckQuery();
+  const { data, isLoading } = useGetUserDeckQuery();
 
   return (
     <div>
@@ -27,7 +27,9 @@ export default function MyLibrary() {
       </div>
 
       {isLoading ? (
-        <PageLoader />
+        <div className="h-screen w-full flex items-center justify-center">
+          <PageLoader />
+        </div>
       ) : (
         <>
           {data?.data && data?.data?.length > 0 ? (
