@@ -14,13 +14,13 @@ const people = [
     name: "Hone Your Skills",
     description:
       "Refine Your Skills: Practice Quizzes Anytime, Track Progress, and Improve Your Weak Areas- Even with Limited Internet Access!",
-    imageUrl: Publish,
+    imageUrl: Take,
   },
   {
     name: "Teamwork in Action",
     description:
     "Collaborate Seamlessly: Invite Friends to Join, Create Questions Together, Take Quizzes Together, and Study Anywhere, Anytime.",
-    imageUrl: Take,
+    imageUrl: Publish,
   },
 ];
 

@@ -15,7 +15,7 @@ export default function About() {
                 Collaborative learning experiences that rival{" "}
                 <span className="text-secondary">traditional classroom dynamics.</span>
               </h4>
-              <p className="text-xl tracking-wide">
+              <p className="text-lg">
                 Quiryfy revolutionizes quiz creation and collaboration, 
                 offering a seamless platform for individuals and teams alike. 
                 With intuitive features and user-friendly design, we empower users to craft, share, and enhance quizzes effortlessly. 
