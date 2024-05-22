@@ -132,7 +132,8 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
     //     correctAnswer,
     //   };
     // });
-    const contentData = eval(questionsString);
+    // const contentData = eval(questionsString);
+    const contentData = JSON.parse(questionsString);
     const result = contentData.map((item: any) => ({
       questionContent: item.question,
       options: item.options,

@@ -10,7 +10,7 @@ export default function Quizes() {
   const navigate = useNavigate();
   const { data, isLoading } = useGetPublicDecksQuery();
   return (
-    <div className="py-12 bg-white relative">
+    <div className="py-12 bg-white relative mb-8">
       {/* <Wavy className="absolute" /> */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mt-10">
@@ -35,7 +35,7 @@ export default function Quizes() {
             </div>
 
             <div className="flex justify-center">
-              <img src={Girl} alt="girl" className="max-h-[580px]" />
+              <img src={Girl} alt="girl" className="max-h-[480px]" />
             </div>
           </dl>
         </div>
@@ -51,27 +51,6 @@ export default function Quizes() {
         <div className="mt-10">
           {/* <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-10 md:gap-y-10"> */}
           <dl>
-            {/* {features.map((feature) => (
-              <div
-                key={feature.name}
-                className="shadow-lg px-5 rounded-lg pb-6"
-              >
-                <dt>
-                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                    <feature.icon className="h-6 w-6" aria-hidden="true" />
-                  </div>
-                  <h4 className="text-lg leading-6 font-medium text-gray-900 mt-6">
-                    {feature.name}
-                  </h4>
-                </dt>
-                <dd className="mt-2 text-base text-gray-500">
-                  {feature.description}
-                </dd>
-                <div className="flex justify-end mt-4">
-                  <p>500+ students</p>
-                </div>
-              </div>
-            ))} */}
             {isLoading ? (
               <div className="h-full w-full flex items-center justify-center">
                 <PageLoader />
