@@ -155,9 +155,6 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
   };
 
   const createAIGeneratedQuestions = (questionSetsArray: any[]) => {
-    // questionSetsArray.forEach((questionSet, index) => {
-    //   console.log("index", index);
-
     addQuestion({
       deckId: id,
       payload: [...questions, ...questionSetsArray],
@@ -172,7 +169,6 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
     // });
 
     setClose();
-    // navigate(`/deck/create/ai/${id}`);
   };
 
   return (
