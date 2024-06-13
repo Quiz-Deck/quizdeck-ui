@@ -1,15 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/rectangle.jpg";
-import errorHandler from "handlers/errorHandler";
-import {
-  useGetSingleDeckQuery,
-  useDeleteSingleDeckMutation,
-} from "../../../features/api/deck/deckApi";
+import { DeleteDeckModal } from "components/modals/DeleteDeckModal";
+import { useGetSingleDeckQuery } from "../../../features/api/deck/deckApi";
 
 interface TimeAgoProps {
   time?: string; // Accepts a string representation of the time
@@ -24,20 +21,12 @@ export default function Question() {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = _getUser();
-
-  const [deleteSingleDeck] = useDeleteSingleDeckMutation();
-  const { data, isLoading } = useGetSingleDeckQuery(id || "");
-
-  const handleDelete = (id: string) => {
-    deleteSingleDeck(id)
-      .unwrap()
-      .then(() => {
-        navigate(-1);
-      })
-      .catch((err) => {
-        errorHandler(err?.data || "Something went wrong", true);
-      });
+  const [openModal, setOpenModal] = useState(false);
+  const closeModal = () => {
+    setOpenModal(false);
   };
+
+  const { data, isLoading } = useGetSingleDeckQuery(id || "");
 
   return (
     <div>
@@ -93,7 +82,7 @@ export default function Question() {
                   <Button.Secondary
                     title={"Delete Deck"}
                     className="px-8 mt-4"
-                    onClick={() => handleDelete(id || "")}
+                    onClick={() => setOpenModal(true)}
                   />
                   <Button.Primary
                     title={"Edit Deck"}
@@ -121,6 +110,11 @@ export default function Question() {
           )}
         </Fragment>
       )}
+      <DeleteDeckModal
+        open={openModal}
+        setClose={closeModal}
+        deck_id={id || ""}
+      />
     </div>
   );
 }
