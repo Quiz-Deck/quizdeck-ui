@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { logOut } from "features/store/authReducer";
+import Logo from "../../assets/icons/logo-black.png";
 
 export default function SidenavDashboard() {
   const params = useParams();
@@ -32,10 +33,10 @@ export default function SidenavDashboard() {
         <div className="flex w-full px-2 lg:px-0 h-14">
           <div className="flex-shrink-0 flex w-full items-center justify-center py-3">
             <div className="block lg:hidden h-8 w-auto text-primary text-3xl font-bold">
-              Quiryfy
+              <img src={Logo} alt="Logo" className="max-w-[180px]" />
             </div>
             <div className="hidden lg:block h-8 w-auto text-primary text-3xl font-bold">
-              Quiryfy
+              <img src={Logo} alt="Logo" className="max-w-[180px]" />
             </div>
           </div>
         </div>
