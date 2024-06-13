@@ -73,18 +73,27 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
   };
 
   const handleSubmit = (e: any) => {
-    editQuestion({
-      deckId: question?._id,
-      payload: { ...data, multichoiceOptions: answerFields },
-    })
-      .unwrap()
-      .then((res: any) => {
-        successHandler(res, true);
-        dispatch(deckActions.editADeckQuestion(res?.data));
+    if (answerFields?.length < 2) {
+      errorHandler(
+        {
+          message: "Multichoice questions should have a minimum of 2 options",
+        },
+        true
+      );
+    } else {
+      editQuestion({
+        deckId: question?._id,
+        payload: { ...data, multichoiceOptions: answerFields },
       })
-      .catch((err) => {
-        errorHandler(err?.data || "Something went wrong", true);
-      });
+        .unwrap()
+        .then((res: any) => {
+          successHandler(res, true);
+          dispatch(deckActions.editADeckQuestion(res?.data));
+        })
+        .catch((err) => {
+          errorHandler(err?.data || "Something went wrong", true);
+        });
+    }
   };
 
   return (
