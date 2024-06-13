@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
+import Logo from "../../assets/icons/logo-black.png";
 import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 // const navigation = [
@@ -21,10 +22,10 @@ export default function NavbarCommon() {
               <div className="flex px-2 lg:px-0">
                 <div className="flex-shrink-0 flex items-center">
                   <div className="block lg:hidden h-8 w-auto text-primary text-3xl font-bold">
-                    Quiryfy
+                    <img src={Logo} alt="Logo" className="max-w-[180px]" />
                   </div>
                   <div className="hidden lg:block h-8 w-auto text-primary text-3xl font-bold">
-                    Quiryfy
+                    <img src={Logo} alt="Logo" className="max-w-[180px]" />
                   </div>
                 </div>
                 {/* <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
