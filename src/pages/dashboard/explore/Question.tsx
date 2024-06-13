@@ -4,6 +4,7 @@ import moment from "moment";
 import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import Dummy from "../../../assets/images/rectangle.jpg";
 import { DeleteDeckModal } from "components/modals/DeleteDeckModal";
 import { useGetSingleDeckQuery } from "../../../features/api/deck/deckApi";
@@ -52,11 +53,15 @@ export default function Question() {
                     <p className="text-sm font-semibold">
                       {data?.data?.questions?.length} Questions
                     </p>
-                    <p className="text-sm font-semibold">
-                      {data?.data?.timer && data?.data?.timer > 0
-                        ? data?.data?.timer
-                        : "No timer"}
-                    </p>
+
+                    <div className="flex items-center gap-1">
+                      <ClockIcon className="h-4 w-4" aria-hidden="true" />
+                      <p className="text-sm font-semibold">
+                        {data?.data?.timer && data?.data?.timer > 0
+                          ? Math.floor(Number(data?.data?.timer) / 60) + " mins"
+                          : "No timer"}
+                      </p>
+                    </div>
                   </div>
                   <p className="text-xs">{data?.data?.playCount} plays</p>
                   <p className="text-xs"> {data?.data?.likeCount} Likes</p>
