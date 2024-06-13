@@ -30,7 +30,10 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
   };
 
   const handleSubmit = () => {
-    createDeck(data)
+    const timer_to_seconds = Number(data.timer * 60);
+    const new_data = { ...data, timer: timer_to_seconds };
+
+    createDeck(new_data)
       .unwrap()
       .then((res: any) => {
         successHandler(res, true);
