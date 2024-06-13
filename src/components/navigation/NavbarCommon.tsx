@@ -4,13 +4,6 @@ import { Disclosure } from "@headlessui/react";
 import Logo from "../../assets/icons/logo-black.png";
 import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-// const navigation = [
-//   { name: "Home", href: "#" },
-//   { name: "About Us", href: "#" },
-//   { name: "Services", href: "#" },
-//   { name: "Contact Us", href: "#" },
-// ];
-
 export default function NavbarCommon() {
   const navigate = useNavigate();
   return (
@@ -20,7 +13,10 @@ export default function NavbarCommon() {
           <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex px-2 lg:px-0">
-                <div className="flex-shrink-0 flex items-center">
+                <div
+                  className="flex-shrink-0 flex items-center"
+                  onClick={() => navigate("/dashboard/explore")}
+                >
                   <div className="block lg:hidden h-8 w-auto text-primary text-3xl font-bold">
                     <img src={Logo} alt="Logo" className="max-w-[180px]" />
                   </div>
