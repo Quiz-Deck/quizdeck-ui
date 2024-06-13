@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { ClockIcon } from '@heroicons/react/24/outline';
+import { ClockIcon } from "@heroicons/react/24/outline";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/rectangle.jpg";
@@ -56,7 +56,7 @@ export default function MyLibrary() {
                           {deck?.questions?.length} Questions
                         </p>
                         <p className="text-sm font-semibold">
-                          {deck?.timer} mins
+                          {Math.floor(Number(deck?.timer) / 60)} mins
                         </p>
                         <p className="text-sm font-semibold">
                           {deck?.playCount} plays
@@ -72,10 +72,12 @@ export default function MyLibrary() {
                       />
                       <p className="text-sm">Author</p>
                       <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
-                      <p className="text-sm">
+                      <div className="flex items-center gap-1">
                         <ClockIcon className="h-4 w-4" aria-hidden="true" />
-                        {<TimeAgo time={deck?.createdOn} />}
-                      </p>
+                        <p className="text-sm">
+                          {<TimeAgo time={deck?.createdOn} />}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -108,7 +108,7 @@ const AddDeckQuestions: React.FC = () => {
           </div>
           <div>
             <label className="text-sm text-[#444444]">Deck timer:</label>
-            <h2>{singleDeck?.data?.timer} minutes</h2>
+            <h2>{Math.floor(Number(singleDeck?.data?.timer) / 60)} minutes</h2>
           </div>
         </div>
       </div>
