@@ -59,27 +59,35 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
 
   const handleSubmit = () => {
     const newData = { ...data, multichoiceOptions: answerFields };
-    addQuestion({
-      deckId: id,
-      // payload: { ...data, multichoiceOptions: answerFields },
-      payload: [...questions, newData],
-    })
-      .unwrap()
-      .then((res: any) => {
-        dispatch(deckActions.addADeckQuestion(res?.data));
-        setData({
-          question: "",
-          type: "MULTI_CHOICE",
-          multichoiceOptions: [],
-          answer: "",
-        });
-        setAnswerFields(["option 1", "option 2"]);
-        successHandler(res, true);
-        handleClose();
+
+    if (answerFields?.length < 2) {
+      errorHandler(
+        { message: "Multichoice questions should have a minimum of 2 options" },
+        true
+      );
+    } else {
+      addQuestion({
+        deckId: id,
+        // payload: { ...data, multichoiceOptions: answerFields },
+        payload: [...questions, newData],
       })
-      .catch((err) => {
-        errorHandler(err?.data, true);
-      });
+        .unwrap()
+        .then((res: any) => {
+          dispatch(deckActions.addADeckQuestion(res?.data));
+          setData({
+            question: "",
+            type: "MULTI_CHOICE",
+            multichoiceOptions: [],
+            answer: "",
+          });
+          setAnswerFields(["option 1", "option 2"]);
+          successHandler(res, true);
+          handleClose();
+        })
+        .catch((err) => {
+          errorHandler(err?.data, true);
+        });
+    }
   };
 
   return (
