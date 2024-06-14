@@ -17,10 +17,10 @@ export default function CreateQuizLayout() {
             className="flex-shrink-0 flex w-full items-center justify-center py-3"
           >
             <div className="block lg:hidden h-8 w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[180px]" />
+              <img src={Logo} alt="Logo" className="max-w-[150px]" />
             </div>
             <div className="hidden lg:block h-8 w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[180px]" />
+              <img src={Logo} alt="Logo" className="max-w-[150px]" />
             </div>
           </div>
         </div>

@@ -38,7 +38,6 @@ const handler = (
     if (errorObject.response && errorObject.response.data) {
       let errors = errorObject.response.data.errors;
       let message = errorObject.response.data.message;
-      console.log("errorObject", errorObject);
 
       if (errors) {
         // Map through errors

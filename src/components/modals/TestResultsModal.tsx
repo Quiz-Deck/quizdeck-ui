@@ -35,9 +35,6 @@ export const TestResultsModal = ({
     }${seconds}`;
   };
 
-  console.log("answers", answers);
-  console.log("data", data);
-
   return (
     <Modal open={open} width={"652px"}>
       <div className="max-w-7xl mx-auto px-4 mt-12">
@@ -52,7 +49,7 @@ export const TestResultsModal = ({
             <div>
               <h3 className="text-xl font-bold">Good Result!</h3>
               <p>
-                You scored {score} out of {data?.data?.[0]?.questions?.length}.
+                You scored {score} out of {data?.data?.questions?.length}.
               </p>
               <p>{formatTime(timer)}</p>
             </div>

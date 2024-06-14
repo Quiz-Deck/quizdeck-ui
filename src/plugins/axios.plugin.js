@@ -9,9 +9,6 @@ import errorHandler from "../handlers/errorHandler";
 import Cookies from "js-cookie";
 
 const baseURL = process.env.REACT_APP_API_URL;
-// const baseURL = "http://localhost:3000";
-
-// console.log("baseURL", baseURL);
 
 const headers = {
   Accept: "application/json",
@@ -31,7 +28,6 @@ if (isAuthenticatedUser()) {
   ] = `Bearer ${getToken()}`;
   axiosInstance.defaults.headers.common["Team"] = `${getTeamFromCookies()}`;
 }
-console.log("isAuthenticatedUser", isAuthenticatedUser());
 
 export const logoutUserLocallyAction = () => {
   Cookies.remove("token");

@@ -33,10 +33,10 @@ export default function SidenavDashboard() {
         <div className="flex w-full px-2 lg:px-0 h-14">
           <div className="flex-shrink-0 flex w-full items-center justify-center py-3">
             <div className="block lg:hidden w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[180px]" />
+              <img src={Logo} alt="Logo" className="max-w-[160px]" />
             </div>
             <div className="hidden lg:block w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[180px]" />
+              <img src={Logo} alt="Logo" className="max-w-[160px]" />
             </div>
           </div>
         </div>
@@ -58,7 +58,6 @@ export default function SidenavDashboard() {
               type="button"
               onClick={() => {
                 handleLogout();
-                console.log("clicked");
               }}
               className={`text-white text-left font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-[#1977e4] block w-full`}
             >

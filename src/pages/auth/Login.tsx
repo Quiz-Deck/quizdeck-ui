@@ -27,7 +27,6 @@ const Login: React.FC = () => {
         navigate("/dashboard/explore");
       })
       .catch((err) => {
-        console.log(err);
         errorHandler(err?.data || "Something went wrong", true);
       });
   };

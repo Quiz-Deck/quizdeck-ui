@@ -4,6 +4,7 @@ import Button from "components/button/buttons";
 import PageLoader from "utils/PageLoader";
 import QuestionsSideNav from "./QuestionsSideNav";
 import QuizQuestionType from "./questionTypes";
+import Logo from "../../assets/icons/logo-black.png";
 import { TestResultsModal } from "components/modals/TestResultsModal";
 import { CloseTestModal } from "components/modals/CloseTestModal";
 import { useGetSingleDeckQuery } from "../../features/api/deck/deckApi";
@@ -18,13 +19,16 @@ const QuizTaker: React.FC = () => {
   const [score, setScore] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [openResults, setOpenResults] = useState(false);
-  const [timer, setTimer] = useState<number>(0);
+  // const [timer, setTimer] = useState<number>(0);
 
   const { id } = useParams();
   const { data, isLoading } = useGetSingleDeckQuery(id || "");
 
-  const countdown = false;
+  // const countdown = false;
   const [isActive, setIsActive] = useState(true);
+  const initialTimerValue = data?.data?.timer ?? 0; // Default to 0 if undefined
+  const [timer, setTimer] = useState<number>(initialTimerValue); // Initialize timer with the value from data
+  const [countdown, setCountdown] = useState<boolean>(initialTimerValue > 0); // Determine initial mode
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -41,6 +45,13 @@ const QuizTaker: React.FC = () => {
       if (interval) clearInterval(interval);
     };
   }, [isActive, countdown]);
+
+  useEffect(() => {
+    if (initialTimerValue > 0) {
+      setTimer(initialTimerValue);
+      setCountdown(true);
+    }
+  }, [data?.data?.timer]);
 
   const handleStartTimer = () => {
     setIsActive((prevIsActive) => !prevIsActive);
@@ -79,8 +90,8 @@ const QuizTaker: React.FC = () => {
       <div className="mx-auto px-2 sm:px-4 lg:px-8 flex items-center justify-between w-full shadow-sm">
         <div className="flex max-w-[300px] w-full px-2 lg:px-0 h-14">
           <div className="flex-shrink-0 flex w-full items-center py-3">
-            <div className="h-8 w-auto text-primary text-3xl font-bold">
-              Quiryfy
+            <div className="w-auto text-primary text-3xl font-bold">
+              <img src={Logo} alt="Logo" className="max-w-[130px]" />
             </div>
           </div>
         </div>

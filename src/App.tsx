@@ -5,11 +5,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Router
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Redux
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+import { isAuthenticatedUser } from "utils/Auth";
 
 // Layouts
 import AdminLayout from "./layouts/AdminLayout";
@@ -20,6 +21,7 @@ import QuizTaker from "./pages/quiz/index";
 import PrivateRoute from "utils/privateRoute";
 
 function App() {
+  const isAuth = isAuthenticatedUser();
   return (
     <Provider store={store}>
       {/* <Provider> */}
@@ -50,6 +52,13 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/"
+              element={
+                isAuth ? <Navigate to="/dashboard/explore" /> : <CommonLayout />
+              }
+            />
+           
             <Route path="/deck/practise/:id" element={<QuizTaker />} />
           </Routes>
         </BrowserRouter>

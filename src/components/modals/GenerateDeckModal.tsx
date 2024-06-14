@@ -88,11 +88,6 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
         setIsLoading(false);
       }
 
-      console.log(
-        "response?.choices[0]?.message?.content",
-        response?.choices[0]?.message?.content
-      );
-
       // Format response as JSON
       const formattedQuiz = parseQuestions(
         response?.choices[0]?.message?.content || ""

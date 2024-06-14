@@ -109,7 +109,6 @@ export const deckSlice = createSlice({
     },
     deleteADeckQuestion: (state, action: PayloadAction<string>) => {
       const oldQuestions = state.singleDeck.data.questions;
-      console.log("action.payload", action.payload);
 
       // Filter out the question with the ID matching action.payload
       const updatedQuestions = oldQuestions.filter(
