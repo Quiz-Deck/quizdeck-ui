@@ -4,7 +4,7 @@ import moment from "moment";
 import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
-import { ClockIcon } from "@heroicons/react/24/outline";
+import { ClockIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
 import Dummy from "../../../assets/images/rectangle.jpg";
 import { DeleteDeckModal } from "components/modals/DeleteDeckModal";
 import { useGetSingleDeckQuery } from "../../../features/api/deck/deckApi";
@@ -63,8 +63,16 @@ export default function Question() {
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs">{data?.data?.playCount} plays</p>
-                  <p className="text-xs"> {data?.data?.likeCount} Likes</p>
+
+                  <div className="flex items-center gap-1">
+                    <PlayIcon className="h-4 w-4" aria-hidden="true" />
+                    <p className="text-xs">{data?.data?.playCount} Plays</p>
+                  </div>
+
+                  <div className="flex items-center gap-1">
+                    <HeartIcon className="h-4 w-4" aria-hidden="true" />
+                    <p className="text-xs"> {data?.data?.likeCount} Likes</p>
+                  </div>
                 </div>
 
                 <div className="flex justify-between items-center pb-2 gap-2">
