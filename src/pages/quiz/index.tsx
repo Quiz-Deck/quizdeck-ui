@@ -4,6 +4,7 @@ import Button from "components/button/buttons";
 import PageLoader from "utils/PageLoader";
 import QuestionsSideNav from "./QuestionsSideNav";
 import QuizQuestionType from "./questionTypes";
+import Logo from "../../assets/icons/logo-black.png";
 import { TestResultsModal } from "components/modals/TestResultsModal";
 import { CloseTestModal } from "components/modals/CloseTestModal";
 import { useGetSingleDeckQuery } from "../../features/api/deck/deckApi";
@@ -89,8 +90,8 @@ const QuizTaker: React.FC = () => {
       <div className="mx-auto px-2 sm:px-4 lg:px-8 flex items-center justify-between w-full shadow-sm">
         <div className="flex max-w-[300px] w-full px-2 lg:px-0 h-14">
           <div className="flex-shrink-0 flex w-full items-center py-3">
-            <div className="h-8 w-auto text-primary text-3xl font-bold">
-              Quiryfy
+            <div className="w-auto text-primary text-3xl font-bold">
+              <img src={Logo} alt="Logo" className="max-w-[130px]" />
             </div>
           </div>
         </div>
