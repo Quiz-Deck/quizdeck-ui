@@ -47,7 +47,7 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-   
+
     if (name === "timer") {
       const timer = parseInt(value, 10);
       setData({ ...data, [name]: timer });
@@ -57,9 +57,11 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
   };
 
   const handleSubmit = () => {
+    const timer_to_seconds = data.timer && Number(data.timer * 60);
+    const new_data = { ...data, timer: timer_to_seconds };
     editDeck({
       deckId: id,
-      payload: data,
+      payload: new_data,
     })
       .unwrap()
       .then((res: any) => {
