@@ -12,7 +12,7 @@ export default function Explore() {
 
   return (
     <div>
-      <div className="mb-10">
+      <div className="mb-12">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-primary text-2xl font-bold">My Recent Decks</h3>
         </div>
@@ -67,7 +67,7 @@ export default function Explore() {
         </div>
       </div>
 
-      <div className="mb-10">
+      <div className="mb-12">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-primary text-2xl font-bold">All Public Decks</h3>
         </div>

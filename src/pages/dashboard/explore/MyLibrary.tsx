@@ -38,7 +38,7 @@ export default function MyLibrary() {
               <div
                 key={index}
                 onClick={() => navigate(`/dashboard/question/${deck?._id}`)}
-                className="border border-[#D6E4FD] rounded-lg flex justify-between p-3 mb-4 cursor-pointer"
+                className="border border-[#D6E4FD] rounded-lg flex justify-between p-3 mb-5 cursor-pointer hover:shadow-md"
               >
                 <div className="flex gap-3">
                   <img
