@@ -52,7 +52,7 @@ export const TestResultsModal = ({
             <div>
               <h3 className="text-xl font-bold">Good Result!</h3>
               <p>
-                You scored {score} out of {data?.data?.[0]?.questions?.length}.
+                You scored {score} out of {data?.data?.questions?.length}.
               </p>
               <p>{formatTime(timer)}</p>
             </div>
