@@ -72,8 +72,6 @@ const AddDeckQuestions: React.FC = () => {
     setOpenPrompt(false);
   };
 
-  console.log("singleDeck", singleDeck?.data);
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <button

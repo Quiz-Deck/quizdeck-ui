@@ -19,7 +19,6 @@ const authReducerSlice = createSlice({
       return action.payload;
     },
     logOut: () => {
-      console.log('kkkk');
       window.location.replace("/");
       localStorage.clear();
     },

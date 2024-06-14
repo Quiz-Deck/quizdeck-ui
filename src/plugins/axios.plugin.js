@@ -28,7 +28,6 @@ if (isAuthenticatedUser()) {
   ] = `Bearer ${getToken()}`;
   axiosInstance.defaults.headers.common["Team"] = `${getTeamFromCookies()}`;
 }
-console.log("isAuthenticatedUser", isAuthenticatedUser());
 
 export const logoutUserLocallyAction = () => {
   Cookies.remove("token");

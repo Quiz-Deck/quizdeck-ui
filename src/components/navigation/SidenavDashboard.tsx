@@ -58,7 +58,6 @@ export default function SidenavDashboard() {
               type="button"
               onClick={() => {
                 handleLogout();
-                console.log("clicked");
               }}
               className={`text-white text-left font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-[#1977e4] block w-full`}
             >

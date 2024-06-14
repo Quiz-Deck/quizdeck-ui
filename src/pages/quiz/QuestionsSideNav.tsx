@@ -43,9 +43,6 @@ const QuestionsSideNav: React.FC<Props> = ({
   //   setIsActive((prevIsActive) => !prevIsActive);
   // };
 
-  console.log("timer", timer);
-  
-
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;

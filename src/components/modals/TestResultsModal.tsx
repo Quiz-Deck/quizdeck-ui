@@ -35,9 +35,6 @@ export const TestResultsModal = ({
     }${seconds}`;
   };
 
-  console.log("answers", answers);
-  console.log("data", data);
-
   return (
     <Modal open={open} width={"652px"}>
       <div className="max-w-7xl mx-auto px-4 mt-12">
