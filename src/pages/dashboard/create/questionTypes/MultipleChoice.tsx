@@ -105,7 +105,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
-      {submitted && data?.question === "" && <div>Questioon is needed</div>}
+      {submitted && data?.question === "" && <div>Question is needed</div>}
 
       {answerFields.map((inputField, index) => (
         <Fragment key={index}>

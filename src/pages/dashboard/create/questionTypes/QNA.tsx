@@ -18,6 +18,7 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
+  const [submitted, setSubmitted] = useState(false);
 
   const [data, setData] = useState({
     question: "",
@@ -31,25 +32,31 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
   };
 
   const handleSubmit = () => {
-    addQuestion({
-      deckId: id,
-      // payload: { ...data },
-      payload: [...questions, data],
-    })
-      .unwrap()
-      .then((res: any) => {
-        dispatch(deckActions.addADeckQuestion(res?.data));
-        setData({
-          question: "",
-          type: "QNA",
-          answer: "",
-        });
-        successHandler(res, true);
-        handleClose();
+    if (data?.question === "" || data?.answer === "") {
+      setSubmitted(true);
+    } else {
+      setSubmitted(false);
+      addQuestion({
+        deckId: id,
+        // payload: { ...data },
+        payload: [...questions, data],
       })
-      .catch((err) => {
-        errorHandler(err?.data, true);
-      });
+        .unwrap()
+        .then((res: any) => {
+          dispatch(deckActions.addADeckQuestion(res?.data));
+          setData({
+            question: "",
+            type: "QNA",
+            answer: "",
+          });
+          successHandler(res, true);
+          handleClose();
+        })
+        .catch((err) => {
+          errorHandler(err?.data, true);
+        });
+    }
+    
   };
 
   return (
@@ -64,6 +71,7 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
+      {submitted && data?.question === "" && <div>Question is needed</div>}
 
       <Input.Label
         title={"Answer"}
@@ -73,6 +81,9 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
         autoComplete="off"
         onChange={(e: any) => handleChange(e)}
       />
+      {submitted && data?.answer === "" && (
+        <div>Select an answer for this question</div>
+      )}
 
       <div className="flex items-center justify-end gap-5">
         <Button.Secondary
