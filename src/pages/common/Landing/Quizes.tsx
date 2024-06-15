@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Girl from "../../../assets/images/landing/girl.png";
-import Dummy from "../../../assets/images/rectangle.jpg";
+import Dummy from "../../../assets/images/quiz-default1.jpeg";
 // import { ReactComponent as Wavy } from "../../../assets/decorations/wavy-lines.svg";
 import { useGetPublicDecksQuery } from "features/api/deck/deckApi";
 import PageLoader from "utils/PageLoader";

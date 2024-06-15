@@ -4,7 +4,7 @@ import moment from "moment";
 import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
-import Dummy from "../../../assets/images/rectangle.jpg";
+import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
 import { ClockIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
 import errorHandler from "handlers/errorHandler";
@@ -27,13 +27,20 @@ export default function Question() {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = _getUser();
+
+  const [likeSingleDeck] = useLikeSingleDeckMutation();
+  const { data, isLoading } = useGetSingleDeckQuery(id || "");
+
   const [openModal, setOpenModal] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
   const closeModal = () => {
     setOpenModal(false);
   };
 
-  const { data, isLoading } = useGetSingleDeckQuery(id || "");
-  const [likeSingleDeck] = useLikeSingleDeckMutation();
+  const toggleLiked = () => {
+    setIsLiked(!isLiked);
+  };
 
   console.log("isLoading", isLoading);
 
@@ -89,18 +96,26 @@ export default function Question() {
                   </div>
 
                   <div className="flex items-center gap-1">
-                    <button type="button" onClick={() => handleLike(id || "")}>
+                    <button
+                      type="button"
+                      className={`like-button ${isLiked ? "active" : ""}`}
+                      onClick={() => {
+                        toggleLiked();
+                        handleLike(id || "");
+                      }}
+                    >
                       {data?.data?.userLiked ? (
                         <SolidHeart className="h-4 w-4" aria-hidden="true" />
                       ) : (
-                        <HeartIcon
-                          className="h-4 w-4 fill-[#ffffff]"
-                          aria-hidden="true"
-                        />
+                        <HeartIcon className="h-4 w-4" aria-hidden="true" />
                       )}
                     </button>
 
-                    <p className="text-xs"> {data?.data?.likeCount} Likes</p>
+                    <p className="text-xs">
+                      {" "}
+                      {data?.data?.likeCount}{" "}
+                      {data && data?.data?.likeCount > 1 ? "Likes" : "Like"}
+                    </p>
                   </div>
                 </div>
 

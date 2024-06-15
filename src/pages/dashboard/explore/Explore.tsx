@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Dummy from "../../../assets/images/rectangle.jpg";
+import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import PageLoader from "utils/PageLoader";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
