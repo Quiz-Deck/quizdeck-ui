@@ -4,7 +4,7 @@ import moment from "moment";
 import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
-import Dummy from "../../../assets/images/rectangle.jpg";
+import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
 import { ClockIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
 import errorHandler from "handlers/errorHandler";

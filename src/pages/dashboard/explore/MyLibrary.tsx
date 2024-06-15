@@ -4,7 +4,7 @@ import moment from "moment";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
-import Dummy from "../../../assets/images/rectangle.jpg";
+import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import EmptyState from "../../../assets/images/empty-state.svg";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 
