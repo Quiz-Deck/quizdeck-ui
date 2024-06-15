@@ -4,10 +4,15 @@ import moment from "moment";
 import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
-import { ClockIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
 import Dummy from "../../../assets/images/rectangle.jpg";
+import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
+import { ClockIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
+import errorHandler from "handlers/errorHandler";
 import { DeleteDeckModal } from "components/modals/DeleteDeckModal";
-import { useGetSingleDeckQuery } from "../../../features/api/deck/deckApi";
+import {
+  useGetSingleDeckQuery,
+  useLikeSingleDeckMutation,
+} from "../../../features/api/deck/deckApi";
 
 interface TimeAgoProps {
   time?: string; // Accepts a string representation of the time
@@ -28,6 +33,20 @@ export default function Question() {
   };
 
   const { data, isLoading } = useGetSingleDeckQuery(id || "");
+  const [likeSingleDeck] = useLikeSingleDeckMutation();
+
+  console.log("isLoading", isLoading);
+
+  const handleLike = (id: string) => {
+    likeSingleDeck(id)
+      .unwrap()
+      .then((res: any) => {
+        console.log("res", res);
+      })
+      .catch((err) => {
+        errorHandler(err?.data || "Something went wrong", true);
+      });
+  };
 
   return (
     <div>
@@ -70,7 +89,17 @@ export default function Question() {
                   </div>
 
                   <div className="flex items-center gap-1">
-                    <HeartIcon className="h-4 w-4" aria-hidden="true" />
+                    <button type="button" onClick={() => handleLike(id || "")}>
+                      {data?.data?.userLiked ? (
+                        <SolidHeart className="h-4 w-4" aria-hidden="true" />
+                      ) : (
+                        <HeartIcon
+                          className="h-4 w-4 fill-[#ffffff]"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </button>
+
                     <p className="text-xs"> {data?.data?.likeCount} Likes</p>
                   </div>
                 </div>

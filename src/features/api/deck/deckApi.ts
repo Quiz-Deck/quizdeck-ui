@@ -61,6 +61,14 @@ const deckApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+
+    //Like a single deck
+    likeSingleDeck: build.mutation<SingleDeckResponse, string>({
+      query: (id) => ({
+        url: `/deck/${id}/like`,
+        method: "PUT",
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -72,4 +80,5 @@ export const {
   useGetSingleDeckQuery,
   useGetPublicDecksQuery,
   useDeleteSingleDeckMutation,
+  useLikeSingleDeckMutation
 } = deckApi;

@@ -28,6 +28,7 @@ export const initialState: IInitialState = {
       updatedBy: "",
       updatedOn: "",
       _id: "",
+      userLiked: false,
     },
     message: "",
   },
