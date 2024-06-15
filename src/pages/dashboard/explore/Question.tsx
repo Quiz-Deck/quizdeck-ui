@@ -27,13 +27,20 @@ export default function Question() {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = _getUser();
+
+  const [likeSingleDeck] = useLikeSingleDeckMutation();
+  const { data, isLoading } = useGetSingleDeckQuery(id || "");
+
   const [openModal, setOpenModal] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
   const closeModal = () => {
     setOpenModal(false);
   };
 
-  const { data, isLoading } = useGetSingleDeckQuery(id || "");
-  const [likeSingleDeck] = useLikeSingleDeckMutation();
+  const toggleLiked = () => {
+    setIsLiked(!isLiked);
+  };
 
   console.log("isLoading", isLoading);
 
@@ -89,14 +96,18 @@ export default function Question() {
                   </div>
 
                   <div className="flex items-center gap-1">
-                    <button type="button" onClick={() => handleLike(id || "")}>
+                    <button
+                      type="button"
+                      className={`like-button ${isLiked ? "active" : ""}`}
+                      onClick={() => {
+                        toggleLiked();
+                        // handleLike(id || "");
+                      }}
+                    >
                       {data?.data?.userLiked ? (
                         <SolidHeart className="h-4 w-4" aria-hidden="true" />
                       ) : (
-                        <HeartIcon
-                          className="h-4 w-4 fill-[#ffffff]"
-                          aria-hidden="true"
-                        />
+                        <HeartIcon className="h-4 w-4" aria-hidden="true" />
                       )}
                     </button>
 
