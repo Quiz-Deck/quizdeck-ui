@@ -51,6 +51,7 @@ const QuizTaker: React.FC = () => {
       setTimer(initialTimerValue);
       setCountdown(true);
     }
+    // eslint-disable-next-line
   }, [data?.data?.timer]);
 
   const handleStartTimer = () => {
