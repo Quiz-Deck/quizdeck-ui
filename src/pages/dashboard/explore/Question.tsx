@@ -101,7 +101,7 @@ export default function Question() {
                       className={`like-button ${isLiked ? "active" : ""}`}
                       onClick={() => {
                         toggleLiked();
-                        // handleLike(id || "");
+                        handleLike(id || "");
                       }}
                     >
                       {data?.data?.userLiked ? (
@@ -111,7 +111,11 @@ export default function Question() {
                       )}
                     </button>
 
-                    <p className="text-xs"> {data?.data?.likeCount} Likes</p>
+                    <p className="text-xs">
+                      {" "}
+                      {data?.data?.likeCount}{" "}
+                      {data && data?.data?.likeCount > 1 ? "Likes" : "Like"}
+                    </p>
                   </div>
                 </div>
 
