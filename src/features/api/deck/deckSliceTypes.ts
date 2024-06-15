@@ -76,6 +76,7 @@ export interface SingleDeck {
   type: string;
   updatedBy: string;
   updatedOn: string;
+  userLiked: boolean;
   _id: string;
 }
 
@@ -83,7 +84,6 @@ export interface SingleDeckResponse {
   data: SingleDeck;
   message: string;
 }
-
 
 export interface DeckListResponse {
   data: SingleDeck[];
