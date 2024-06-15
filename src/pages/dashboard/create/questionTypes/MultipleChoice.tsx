@@ -21,6 +21,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
   const { id } = useParams();
   const dispatch = useDispatch();
   const [addQuestion, { isLoading }] = useAddQuestionMutation();
+  const [submitted, setSubmitted] = useState(false);
 
   const [data, setData] = useState({
     question: "",
@@ -65,6 +66,8 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
         { message: "Multichoice questions should have a minimum of 2 options" },
         true
       );
+    } else if (data?.question === "" || data?.answer === "") {
+      setSubmitted(true);
     } else {
       addQuestion({
         deckId: id,
@@ -102,13 +105,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
-      {/* <textarea
-        name="question"
-        
-        placeholder=''
-        className="mt-2 block pl-3 pr-10 w-full text-base bg-[#FFFFFF] focus:ring-2 focus:ring-red-600 focus:border-red-600 focus:outline-none sm:text-sm h-[60px] px-4 py-2 mb-4 border border-gray-300 rounded-md"
-        onChange={(e: any) => handleChange(e)}
-      /> */}
+      {submitted && data?.question === "" && <div>Questioon is needed</div>}
 
       {answerFields.map((inputField, index) => (
         <Fragment key={index}>
@@ -164,6 +161,10 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
           />
         </div>
       </div>
+
+      {submitted && data?.answer === "" && (
+        <div>Select an answer for this question</div>
+      )}
     </div>
   );
 };
