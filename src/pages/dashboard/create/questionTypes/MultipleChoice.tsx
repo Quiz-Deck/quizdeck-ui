@@ -5,6 +5,7 @@ import Input from "../../../../components/input/Input";
 import Button from "../../../../components/button/buttons";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
+import ErrorValidation from "pages/common/ErrorValidation";
 import { deckActions } from "features/store/deckSlice";
 import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
@@ -105,7 +106,9 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
-      {submitted && data?.question === "" && <div>Question is needed</div>}
+      {submitted && data?.question === "" && (
+        <ErrorValidation message="Question is needed" />
+      )}
 
       {answerFields.map((inputField, index) => (
         <Fragment key={index}>
