@@ -5,6 +5,7 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
+import Avatar from "../../../assets/images/rectangle.jpg";
 import EmptyState from "../../../assets/images/empty-state.svg";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 
@@ -51,7 +52,7 @@ export default function MyLibrary() {
                       <h3 className="text-2xl font-semibold mb-2">
                         {deck?.title}
                       </h3>
-                      <div className="flex justify-between pb-2">
+                      <div className="flex justify-between pb-2 max-w-[240px] min-w-[240px] w-full">
                         <p className="text-sm font-semibold">
                           {deck?.questions?.length} Questions
                         </p>
@@ -64,13 +65,16 @@ export default function MyLibrary() {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center pb-2 gap-2">
-                      <img
-                        src={Dummy}
-                        alt="Avatar"
-                        className="h-[36px] w-[36px] object-cover rounded-full"
-                      />
-                      <p className="text-sm">Author</p>
+                    <div className="flex justify-between items-center pb-2 gap-2 max-w-[240px] min-w-[240px] w-full">
+                      <div className="flex justify-between items-center gap-1">
+                        <img
+                          src={Avatar}
+                          alt="Avatar"
+                          className="h-[28px] w-[28px] object-cover rounded-full"
+                        />
+                        <p className="text-sm">{deck?.createdBy?.userName}</p>
+                      </div>
+
                       <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
                       <div className="flex items-center gap-1">
                         <ClockIcon className="h-4 w-4" aria-hidden="true" />
