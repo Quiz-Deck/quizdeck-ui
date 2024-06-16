@@ -7,9 +7,15 @@ import Button from "components/button/buttons";
 import Placeholder from "../../../assets/images/quiz-default1.jpeg";
 import Avatar from "../../../assets/images/rectangle.jpg";
 import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
-import { ClockIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
+import {
+  ClockIcon,
+  HeartIcon,
+  PlayIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
 import errorHandler from "handlers/errorHandler";
 import { DeleteDeckModal } from "components/modals/DeleteDeckModal";
+import { InviteDeckUserModal } from "components/modals/InviteDeckUserModal";
 import {
   useGetSingleDeckQuery,
   useLikeSingleDeckMutation,
@@ -33,10 +39,15 @@ export default function Question() {
   const { data, isLoading } = useGetSingleDeckQuery(id || "");
 
   const [openModal, setOpenModal] = useState(false);
+  const [openShareModal, setOpenShareModal] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);
+  };
+
+  const closeShareModal = () => {
+    setOpenShareModal(false);
   };
 
   const toggleLiked = () => {
@@ -113,7 +124,6 @@ export default function Question() {
                     </button>
 
                     <p className="text-xs">
-                      {" "}
                       {data?.data?.likeCount}{" "}
                       {data && data?.data?.likeCount > 1 ? "Likes" : "Like"}
                     </p>
@@ -135,7 +145,7 @@ export default function Question() {
               </div>
             </div>
             {user?.data?._id === data?.data?.createdBy?._id && (
-              <div className="px-2 flex flex-col justify-between">
+              <div className="px-2 flex flex-col justify-between items-end">
                 <div className="flex justify-between pb-2 gap-2">
                   <Button.Secondary
                     title={"Delete Deck"}
@@ -148,6 +158,14 @@ export default function Question() {
                     onClick={() => navigate(`/deck/create/${id}`)}
                   />
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setOpenShareModal(true)}
+                  className="flex gap-2 items-center w-fit bg-secondary px-3 py-1 mb-2 rounded-xl text-white"
+                >
+                  <UsersIcon className="h-4 w-4" aria-hidden="true" />
+                  Share
+                </button>
               </div>
             )}
           </div>
@@ -173,6 +191,7 @@ export default function Question() {
         setClose={closeModal}
         deck_id={id || ""}
       />
+      <InviteDeckUserModal open={openShareModal} setClose={closeShareModal} />
     </div>
   );
 }

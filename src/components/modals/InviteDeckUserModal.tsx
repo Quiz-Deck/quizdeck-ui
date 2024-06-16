@@ -1,7 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { Modal } from "./index";
 import Button from "components/button/buttons";
+import Input from "components/input/Input";
+import Avatar from "../../assets/images/rectangle.jpg";
 
 interface Props {
   open: boolean;
@@ -9,8 +10,6 @@ interface Props {
 }
 
 export const InviteDeckUserModal = ({ open, setClose }: Props) => {
-  const navigate = useNavigate();
-
   return (
     <Modal open={open} width={"652px"}>
       <div className="max-w-xl mx-auto px-4 mt-12">
@@ -18,30 +17,80 @@ export const InviteDeckUserModal = ({ open, setClose }: Props) => {
           style={{
             boxShadow: "0px 2px 3px 0px #D6E4FD",
           }}
-          className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2.5rem] py-[3.125rem]"
+          className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2rem] py-[3.125rem]"
         >
-          <div className="flex justify-center items-center mb-8">
-            <h2 className="text-2xl font-bold">Close Test</h2>
+          <div className="flex justify-center items-center mb-6">
+            <h2 className="text-2xl">
+              Share "Abafor Amalachukwu - Resume(PDF)"
+            </h2>
           </div>
 
-          <p className="text-center">
-            Are you sure you want to close this test? You will lose your
-            progress
-          </p>
-
-          <div className="flex mt-4 justify-center items-center gap-5">
-            <Button.Primary
-              title={"Close"}
-              className="mt-4"
-              onClick={() => {
-                setClose();
-                navigate(-1);
-              }}
+          <div className="mb-8">
+            <Input.Label
+              title={""}
+              name="title"
+              placeholder={"Enter user email"}
+              // defaultValue={data?.title}
+              className="rounded-md mb-5 bg-[#FAFAFF]"
+              autoComplete="off"
+              // onChange={(e: any) => handleChange(e)}
             />
+          </div>
+
+          <div>
+            <h3 className="mb-4 font-semibold">People with access</h3>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={Avatar}
+                    alt="Avatar"
+                    className="h-[36px] w-[36px] object-cover rounded-full"
+                  />
+                  <p className="text-sm">Amy Abafor</p>
+                </div>
+                <p>Owner</p>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={Avatar}
+                    alt="Avatar"
+                    className="h-[36px] w-[36px] object-cover rounded-full"
+                  />
+                  <p className="text-sm">Amy Abafor</p>
+                </div>
+                <p>Collaborator</p>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={Avatar}
+                    alt="Avatar"
+                    className="h-[36px] w-[36px] object-cover rounded-full"
+                  />
+                  <p className="text-sm">Amy Abafor</p>
+                </div>
+                <p>User</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex mt-8 justify-between items-center gap-5">
             <Button.Secondary
               title={"Cancel"}
-              className="mt-4"
+              className="min-w-[120px]"
               onClick={() => setClose()}
+            />
+            <Button.Primary
+              title={"Send"}
+              className="min-w-[120px]"
+              onClick={() => {
+                setClose();
+              }}
             />
           </div>
         </div>
