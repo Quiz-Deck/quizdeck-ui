@@ -6,6 +6,7 @@ import Button from "../../../../components/button/buttons";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
 import { deckActions } from "features/store/deckSlice";
+import ErrorValidation from 'pages/common/ErrorValidation';
 // import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
@@ -71,7 +72,9 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
-      {submitted && data?.question === "" && <div>Question is needed</div>}
+      {submitted && data?.question === "" && (
+        <ErrorValidation message="Question is required" />
+      )}
 
       <Input.Label
         title={"Answer"}
@@ -82,7 +85,7 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
         onChange={(e: any) => handleChange(e)}
       />
       {submitted && data?.answer === "" && (
-        <div>Select an answer for this question</div>
+        <ErrorValidation message="Enter an answer for this question" />
       )}
 
       <div className="flex items-center justify-end gap-5">
