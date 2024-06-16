@@ -62,8 +62,14 @@ export interface DeckQuestion {
   _id: string;
 }
 
+export interface CreatedBy {
+  _id: string;
+  email: string;
+  userName: string;
+}
+
 export interface SingleDeck {
-  createdBy: string;
+  createdBy: CreatedBy;
   createdOn: string;
   deckGuests: string[];
   description: string;

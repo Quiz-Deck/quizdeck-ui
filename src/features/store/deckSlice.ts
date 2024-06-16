@@ -14,7 +14,11 @@ interface IInitialState {
 export const initialState: IInitialState = {
   singleDeck: {
     data: {
-      createdBy: "",
+      createdBy: {
+        _id: "",
+        email: "",
+        userName: "",
+      },
       createdOn: "",
       deckGuests: [],
       description: "",

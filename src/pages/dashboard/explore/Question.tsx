@@ -4,7 +4,8 @@ import moment from "moment";
 import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
-import Dummy from "../../../assets/images/quiz-default1.jpeg";
+import Placeholder from "../../../assets/images/quiz-default1.jpeg";
+import Avatar from "../../../assets/images/rectangle.jpg";
 import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
 import { ClockIcon, HeartIcon, PlayIcon } from "@heroicons/react/24/outline";
 import errorHandler from "handlers/errorHandler";
@@ -66,8 +67,8 @@ export default function Question() {
           <div className="border border-[#D6E4FD] rounded-lg flex justify-between p-3">
             <div className="flex gap-3">
               <img
-                src={Dummy}
-                alt="Dummy"
+                src={Placeholder}
+                alt="Placeholder"
                 className="h-[220px] w-[240px] object-cover rounded-lg"
               />
               <div className="px-2 flex flex-col justify-between h-full">
@@ -121,11 +122,11 @@ export default function Question() {
 
                 <div className="flex justify-between items-center pb-2 gap-2">
                   <img
-                    src={Dummy}
+                    src={Avatar}
                     alt="Avatar"
-                    className="h-[52px] w-[52px] object-cover rounded-full"
+                    className="h-[36px] w-[36px] object-cover rounded-full"
                   />
-                  <p className="text-sm">Author’s Name</p>
+                  <p className="text-sm">{data?.data?.createdBy?.userName}</p>
                   <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
                   <p className="text-sm">
                     {<TimeAgo time={data?.data?.createdOn} />}
@@ -133,7 +134,7 @@ export default function Question() {
                 </div>
               </div>
             </div>
-            {user?.data?._id === data?.data?.createdBy && (
+            {user?.data?._id === data?.data?.createdBy?._id && (
               <div className="px-2 flex flex-col justify-between">
                 <div className="flex justify-between pb-2 gap-2">
                   <Button.Secondary
