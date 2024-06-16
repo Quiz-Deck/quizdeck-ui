@@ -43,8 +43,6 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
   };
 
   const handleSubmit = (e: any) => {
-    console.log("data", data);
-
     if (data?.question === "" || data?.answer === "") {
       setSubmitted(true);
     } else {

@@ -30,7 +30,7 @@ const AddDeckQuestions: React.FC = () => {
 
   const { singleDeck } = useSelector((state: any) => state.deck);
 
-  const [deleteQuestion] = useDeleteQuestionMutation();
+  const [deleteQuestion, { isLoading }] = useDeleteQuestionMutation();
 
   const [open, setOpen] = useState(false);
   const [openPrompt, setOpenPrompt] = useState(false);
@@ -124,8 +124,37 @@ const AddDeckQuestions: React.FC = () => {
               <div key={question?._id} className="border w-full mb-8">
                 <div className="p-5 flex items-center justify-between border-b py-2">
                   <p>{index + 1}.</p>
-                  <button onClick={() => handleDelete(question?._id)}>
-                    <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                  <button
+                    className={`${isLoading ? "animate-spin" : ""}`}
+                    onClick={() => handleDelete(question?._id)}
+                  >
+                    {isLoading ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="24"
+                        width="24"
+                      >
+                        <circle
+                          cy="12"
+                          cx="12"
+                          r="10"
+                          fill="transparent"
+                          stroke="#d1d5db"
+                          strokeWidth="2px"
+                        ></circle>
+                        <circle
+                          cy="12"
+                          cx="12"
+                          r="10"
+                          fill="transparent"
+                          stroke="#116cd6"
+                          strokeWidth="2px"
+                          strokeDasharray={30}
+                        ></circle>
+                      </svg>
+                    ) : (
+                      <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                    )}
                   </button>
                 </div>
 
