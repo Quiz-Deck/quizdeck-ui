@@ -31,20 +31,50 @@ const QuizTaker: React.FC = () => {
   const [timer, setTimer] = useState<number>(initialTimerValue); // Initialize timer with the value from data
   const [countdown, setCountdown] = useState<boolean>(initialTimerValue > 0); // Determine initial mode
 
+  // useEffect(() => {
+  //   let interval: NodeJS.Timeout | null = null;
+
+  //   if (isActive) {
+  //     interval = setInterval(() => {
+  //       setTimer((prevTimer) => (countdown ? prevTimer - 1 : prevTimer + 1));
+  //     }, 1000);
+  //   } else {
+  //     clearInterval(interval!);
+  //   }
+
+  //   return () => {
+  //     if (interval) clearInterval(interval);
+  //   };
+  // }, [isActive, countdown]);
+
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
     if (isActive) {
       interval = setInterval(() => {
-        setTimer((prevTimer) => (countdown ? prevTimer - 1 : prevTimer + 1));
+        setTimer((prevTimer) => {
+          if (countdown) {
+            if (prevTimer <= 1) {
+              clearInterval(interval!);
+              setIsActive(false);
+              handleSubmit(); // Open the modal when the timer reaches zero
+              return 0;
+            } else {
+              return prevTimer - 1;
+            }
+          } else {
+            return prevTimer + 1;
+          }
+        });
       }, 1000);
-    } else {
-      clearInterval(interval!);
+    } else if (interval) {
+      clearInterval(interval);
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
+    // eslint-disable-next-line
   }, [isActive, countdown]);
 
   useEffect(() => {
