@@ -15,6 +15,7 @@ interface Props {
   data: any;
   timer: number;
   answers: AnswerFormat;
+  scorePercentage: number | null;
 }
 
 export const TestResultsModal = ({
@@ -24,6 +25,7 @@ export const TestResultsModal = ({
   data,
   timer,
   answers,
+  scorePercentage,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -35,6 +37,31 @@ export const TestResultsModal = ({
     }${seconds}`;
   };
 
+  const showGrade = () => {
+    if (scorePercentage && scorePercentage < 30) {
+      return <div>You can do better</div>;
+    } else if (
+      scorePercentage &&
+      scorePercentage > 30 &&
+      scorePercentage < 60
+    ) {
+      return <div>Nice Attempt</div>;
+    } else if (
+      scorePercentage &&
+      scorePercentage > 60 &&
+      scorePercentage < 80
+    ) {
+      return <div>Great Attempt</div>;
+    } else if (
+      scorePercentage &&
+      scorePercentage > 80 &&
+      scorePercentage < 90
+    ) {
+      return <div>You're a genius</div>;
+    } else if (scorePercentage && scorePercentage === 100) {
+      return <div>Excellent</div>;
+    }
+  };
   return (
     <Modal open={open} width={"652px"}>
       <div className="max-w-7xl mx-auto px-4 mt-12">
@@ -45,9 +72,9 @@ export const TestResultsModal = ({
           className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2.5rem] py-[3.125rem]"
         >
           <div className="mt-4 flex items-center gap-5 px-4 mb-6">
-            <div className="text-4xl font-bold">{score}</div>
+            <div className="text-4xl font-bold">{scorePercentage}%</div>
             <div>
-              <h3 className="text-xl font-bold">Good Result!</h3>
+              <h3 className="text-xl font-bold">{showGrade()}</h3>
               <p>
                 You scored {score} out of {data?.data?.questions?.length}.
               </p>
