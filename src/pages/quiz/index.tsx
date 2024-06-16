@@ -74,6 +74,7 @@ const QuizTaker: React.FC = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
+    // eslint-disable-next-line
   }, [isActive, countdown]);
 
   useEffect(() => {
