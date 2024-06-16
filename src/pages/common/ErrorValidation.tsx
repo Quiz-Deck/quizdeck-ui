@@ -5,5 +5,5 @@ interface Props {
 }
 
 export default function ErrorValidation({ message }: Props) {
-  return <div className="text-red-500 text-sm">{message}</div>;
+  return <div className="text-red-500 text-xs">* {message}</div>;
 }

@@ -107,7 +107,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
         onChange={(e: any) => handleChange(e)}
       />
       {submitted && data?.question === "" && (
-        <ErrorValidation message="Question is needed" />
+        <ErrorValidation message="Question is required" />
       )}
 
       {answerFields.map((inputField, index) => (
@@ -142,6 +142,10 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
         </Fragment>
       ))}
 
+      {submitted && data?.answer === "" && (
+        <ErrorValidation message="Select an answer for this question" />
+      )}
+
       <div className="flex items-center justify-between">
         <button
           className="text-primary mt-4"
@@ -164,10 +168,6 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
           />
         </div>
       </div>
-
-      {submitted && data?.answer === "" && (
-        <div>Select an answer for this question</div>
-      )}
     </div>
   );
 };

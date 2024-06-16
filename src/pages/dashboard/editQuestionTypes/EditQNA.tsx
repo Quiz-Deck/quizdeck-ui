@@ -6,6 +6,7 @@ import errorHandler from "handlers/errorHandler";
 import successHandler from "handlers/successHandler";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 import { deckActions } from "features/store/deckSlice";
+import ErrorValidation from "pages/common/ErrorValidation";
 import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
@@ -17,6 +18,7 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
   const dispatch = useDispatch();
   const [editQuestion, { isLoading }] = useEditQuestionMutation();
   const [showDetails, setShowDetails] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const [data, setData] = useState({
     question: question?.question,
@@ -41,18 +43,25 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
   };
 
   const handleSubmit = (e: any) => {
-    editQuestion({
-      deckId: question?._id,
-      payload: { ...data },
-    })
-      .unwrap()
-      .then((res: any) => {
-        successHandler(res, true);
-        dispatch(deckActions.editADeckQuestion(res?.data));
+    console.log("data", data);
+
+    if (data?.question === "" || data?.answer === "") {
+      setSubmitted(true);
+    } else {
+      setSubmitted(false);
+      editQuestion({
+        deckId: question?._id,
+        payload: { ...data },
       })
-      .catch((err) => {
-        errorHandler(err?.data || "Something went wrong", true);
-      });
+        .unwrap()
+        .then((res: any) => {
+          successHandler(res, true);
+          dispatch(deckActions.editADeckQuestion(res?.data));
+        })
+        .catch((err) => {
+          errorHandler(err?.data || "Something went wrong", true);
+        });
+    }
   };
 
   return (
@@ -71,6 +80,9 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
+      {submitted && data?.question === "" && (
+        <ErrorValidation message="Question is required" />
+      )}
 
       {showDetails && (
         <div>
@@ -83,6 +95,9 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
             autoComplete="off"
             onChange={(e: any) => handleChange(e)}
           />
+          {submitted && data?.answer === "" && (
+            <ErrorValidation message="Enter an answer for this question" />
+          )}
 
           <div className="flex items-center justify-end">
             <Button.Primary
