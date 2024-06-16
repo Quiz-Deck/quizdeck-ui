@@ -46,7 +46,7 @@ export const InviteDeckUserModal = ({ open, setClose }: Props) => {
                   <img
                     src={Avatar}
                     alt="Avatar"
-                    className="h-[36px] w-[36px] object-cover rounded-full"
+                    className="h-[32px] w-[32px] object-cover rounded-full"
                   />
                   <p className="text-sm">Amy Abafor</p>
                 </div>
@@ -58,7 +58,7 @@ export const InviteDeckUserModal = ({ open, setClose }: Props) => {
                   <img
                     src={Avatar}
                     alt="Avatar"
-                    className="h-[36px] w-[36px] object-cover rounded-full"
+                    className="h-[32px] w-[32px] object-cover rounded-full"
                   />
                   <p className="text-sm">Amy Abafor</p>
                 </div>
@@ -70,7 +70,7 @@ export const InviteDeckUserModal = ({ open, setClose }: Props) => {
                   <img
                     src={Avatar}
                     alt="Avatar"
-                    className="h-[36px] w-[36px] object-cover rounded-full"
+                    className="h-[32px] w-[32px] object-cover rounded-full"
                   />
                   <p className="text-sm">Amy Abafor</p>
                 </div>

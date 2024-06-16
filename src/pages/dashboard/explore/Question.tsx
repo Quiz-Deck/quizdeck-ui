@@ -164,7 +164,7 @@ export default function Question() {
                   className="flex gap-2 items-center w-fit bg-secondary px-3 py-1 mb-2 rounded-xl text-white"
                 >
                   <UsersIcon className="h-4 w-4" aria-hidden="true" />
-                  Share
+                  Invite
                 </button>
               </div>
             )}

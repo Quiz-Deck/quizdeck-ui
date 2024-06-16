@@ -17,6 +17,7 @@ const QuizTaker: React.FC = () => {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answers, setAnswers] = useState<AnswerFormat>({});
   const [score, setScore] = useState<number | null>(null);
+  const [scorePercentage, setScorePercentage] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [openResults, setOpenResults] = useState(false);
   // const [timer, setTimer] = useState<number>(0);
@@ -76,12 +77,16 @@ const QuizTaker: React.FC = () => {
 
   const handleSubmit = () => {
     let correctCount = 0;
+    let questionsCount = data?.data?.questions.length || 0;
     data?.data?.questions.forEach((question, index) => {
       if (question.answer === answers[index]) {
         correctCount++;
       }
     });
     setScore(correctCount);
+    let percentage = Math.round((correctCount / questionsCount) * 100);
+    setScorePercentage(percentage);
+
     openResultsModal();
     handleStartTimer();
   };
@@ -148,6 +153,7 @@ const QuizTaker: React.FC = () => {
         data={data}
         timer={timer}
         answers={answers}
+        scorePercentage={scorePercentage}
       />
     </div>
   );
