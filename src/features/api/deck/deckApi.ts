@@ -82,6 +82,14 @@ const deckApi = apiSlice.injectEndpoints({
         body: payload,
       }),
     }),
+
+    //Like a single deck
+    playDeck: build.mutation<SingleDeckResponse, string>({
+      query: (id) => ({
+        url: `/deck/${id}/play`,
+        method: "PUT",
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -95,4 +103,5 @@ export const {
   useDeleteSingleDeckMutation,
   useLikeSingleDeckMutation,
   useInviteDeckUserMutation,
+  usePlayDeckMutation,
 } = deckApi;
