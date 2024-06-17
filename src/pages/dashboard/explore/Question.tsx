@@ -54,8 +54,6 @@ export default function Question() {
     setIsLiked(!isLiked);
   };
 
-  console.log("isLoading", isLoading);
-
   const handleLike = (id: string) => {
     likeSingleDeck(id)
       .unwrap()

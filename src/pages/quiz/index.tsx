@@ -28,7 +28,7 @@ const QuizTaker: React.FC = () => {
   const { data, isLoading } = useGetSingleDeckQuery(id || "");
 
   // const countdown = false;
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
   const initialTimerValue = data?.data?.timer ?? 0; // Default to 0 if undefined
   const [timer, setTimer] = useState<number>(initialTimerValue); // Initialize timer with the value from data
   const [countdown, setCountdown] = useState<boolean>(initialTimerValue > 0); // Determine initial mode
@@ -86,6 +86,13 @@ const QuizTaker: React.FC = () => {
     }
     // eslint-disable-next-line
   }, [data?.data?.timer]);
+
+  useEffect(() => {
+    if (!openWarning) {
+      setIsActive(true);
+    }
+    // eslint-disable-next-line
+  }, [openWarning]);
 
   const handleStartTimer = () => {
     setIsActive((prevIsActive) => !prevIsActive);
