@@ -5,6 +5,7 @@ import {
   SingleDeckResponse,
   CreateDeckResponse,
   DeckListResponse,
+  InviteUserRequest,
 } from "./deckSliceTypes";
 
 const deckApi = apiSlice.injectEndpoints({
@@ -69,6 +70,26 @@ const deckApi = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
+
+    //Invite deck user
+    inviteDeckUser: build.mutation<
+      SingleDeckResponse,
+      Partial<InviteUserRequest>
+    >({
+      query: (payload) => ({
+        url: `/deck/invite`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+
+    //Like a single deck
+    playDeck: build.mutation<SingleDeckResponse, string>({
+      query: (id) => ({
+        url: `/deck/${id}/play`,
+        method: "PUT",
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -80,5 +101,7 @@ export const {
   useGetSingleDeckQuery,
   useGetPublicDecksQuery,
   useDeleteSingleDeckMutation,
-  useLikeSingleDeckMutation
+  useLikeSingleDeckMutation,
+  useInviteDeckUserMutation,
+  usePlayDeckMutation,
 } = deckApi;

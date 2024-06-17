@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal } from "./index";
 import Button from "components/button/buttons";
 import Input from "components/input/Input";
-import Avatar from "../../assets/images/rectangle.jpg";
+// import Avatar from "../../assets/images/rectangle.jpg";
+import errorHandler from "handlers/errorHandler";
+import successHandler from "handlers/successHandler";
+import { useInviteDeckUserMutation } from "features/api/deck/deckApi";
 
 interface Props {
   open: boolean;
   setClose: () => void;
+  data: any;
 }
 
-export const InviteDeckUserModal = ({ open, setClose }: Props) => {
+export const InviteDeckUserModal = ({ open, setClose, data }: Props) => {
+  const [inviteDeckUser, { isLoading }] = useInviteDeckUserMutation();
+  const [input, setInput] = useState({ email: "" });
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setInput({ ...input, [name]: value });
+  };
+
+  const handleInvite = () => {
+    inviteDeckUser({ ...input, deckId: data?._id })
+      .unwrap()
+      .then((res: any) => {
+        successHandler(res, true);
+        setClose();
+      })
+      .catch((err) => {
+        errorHandler(err?.data || "Something went wrong", true);
+      });
+  };
+
   return (
     <Modal open={open} width={"652px"}>
       <div className="max-w-xl mx-auto px-4 mt-12">
@@ -19,25 +43,28 @@ export const InviteDeckUserModal = ({ open, setClose }: Props) => {
           }}
           className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2rem] py-[3.125rem]"
         >
-          <div className="flex justify-center items-center mb-6">
-            <h2 className="text-2xl">
-              Share "Abafor Amalachukwu - Resume(PDF)"
+          <div className="mb-6">
+            <h2 className="text-2xl mb-1">
+              Invite users to "{data?.title}" deck
             </h2>
+            <p className="text-sm text-gray-500">
+              Note: You can only share this deck with registered quizdeck users.
+            </p>
           </div>
 
           <div className="mb-8">
             <Input.Label
               title={""}
-              name="title"
+              type="email"
+              name="email"
               placeholder={"Enter user email"}
-              // defaultValue={data?.title}
               className="rounded-md mb-5 bg-[#FAFAFF]"
               autoComplete="off"
-              // onChange={(e: any) => handleChange(e)}
+              onChange={(e: any) => handleChange(e)}
             />
           </div>
 
-          <div>
+          {/* <div>
             <h3 className="mb-4 font-semibold">People with access</h3>
 
             <div className="flex flex-col gap-2">
@@ -77,7 +104,7 @@ export const InviteDeckUserModal = ({ open, setClose }: Props) => {
                 <p>User</p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex mt-8 justify-between items-center gap-5">
             <Button.Secondary
@@ -87,9 +114,10 @@ export const InviteDeckUserModal = ({ open, setClose }: Props) => {
             />
             <Button.Primary
               title={"Send"}
+              loading={isLoading}
               className="min-w-[120px]"
               onClick={() => {
-                setClose();
+                handleInvite();
               }}
             />
           </div>

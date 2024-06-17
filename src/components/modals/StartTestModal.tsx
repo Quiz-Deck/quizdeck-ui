@@ -21,8 +21,9 @@ export const StartTestModal = ({ open, setClose, data }: Props) => {
           }}
           className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2.5rem] py-[3.125rem]"
         >
-          <div className="flex justify-center items-center mb-8">
-            <h2 className="text-2xl font-bold">Start Test</h2>
+          <div className="flex flex-col justify-center items-center mb-8">
+            <h2 className="text-2xl font-bold">Start Quiz</h2>
+            <p className='text-grey-500 text-sm'>Do not refresh this page, you will loose all your progress</p>
           </div>
 
           <p className="font-semibold text-left text-lg mb-4">
@@ -30,7 +31,7 @@ export const StartTestModal = ({ open, setClose, data }: Props) => {
           </p>
 
           <p className="text-left mb-2">
-            You are about to start this test, It contains{" "}
+            You are about to start this quiz, It contains{" "}
             <b>{data?.data?.questions?.length}</b> questions.
           </p>
           <p className="text-left mb-3">
@@ -38,7 +39,7 @@ export const StartTestModal = ({ open, setClose, data }: Props) => {
               ? `The time allocated for this quiz is ${Math.floor(
                   Number(data?.data?.timer) / 60
                 )} minutes, so use your time wisely. Try to attempt all questions within the time!`
-              : "There is no timer for this test, so take your time to answer these questions."}
+              : "There is no timer for this quiz, so take your time to answer these questions."}
           </p>
           <p className="text-left mb-1">
             Click on <b>"Start"</b> button to begin this quiz.
