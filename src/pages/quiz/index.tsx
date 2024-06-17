@@ -5,6 +5,7 @@ import PageLoader from "utils/PageLoader";
 import QuestionsSideNav from "./QuestionsSideNav";
 import QuizQuestionType from "./questionTypes";
 import Logo from "../../assets/icons/logo-black.png";
+import { StartTestModal } from "components/modals/StartTestModal";
 import { TestResultsModal } from "components/modals/TestResultsModal";
 import { CloseTestModal } from "components/modals/CloseTestModal";
 import { useGetSingleDeckQuery } from "../../features/api/deck/deckApi";
@@ -20,6 +21,7 @@ const QuizTaker: React.FC = () => {
   const [scorePercentage, setScorePercentage] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [openResults, setOpenResults] = useState(false);
+  const [openWarning, setOpenWarning] = useState(true);
   // const [timer, setTimer] = useState<number>(0);
 
   const { id } = useParams();
@@ -105,6 +107,10 @@ const QuizTaker: React.FC = () => {
     setOpenResults(false);
   };
 
+  const closeWarningModal = () => {
+    setOpenWarning(false);
+  };
+
   const handleSubmit = () => {
     let correctCount = 0;
     let questionsCount = data?.data?.questions.length || 0;
@@ -176,6 +182,11 @@ const QuizTaker: React.FC = () => {
       </div>
 
       <CloseTestModal open={open} setClose={closeModal} />
+      <StartTestModal
+        open={openWarning}
+        setClose={closeWarningModal}
+        data={data}
+      />
       <TestResultsModal
         open={openResults}
         setClose={closeResultsModal}
