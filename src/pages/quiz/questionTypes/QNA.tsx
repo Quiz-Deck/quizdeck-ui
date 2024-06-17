@@ -38,7 +38,7 @@ const QNA: React.FC<Props> = ({
 
       <div>
         <p className="mb-6">{data[activeQuestion]?.question}</p>
-        {answers[activeQuestion] ?? " "}
+
         <Input.Label
           title={"Answer"}
           name="answer"
