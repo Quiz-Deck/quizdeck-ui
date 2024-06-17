@@ -21,8 +21,9 @@ export const StartTestModal = ({ open, setClose, data }: Props) => {
           }}
           className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2.5rem] py-[3.125rem]"
         >
-          <div className="flex justify-center items-center mb-8">
+          <div className="flex flex-col justify-center items-center mb-8">
             <h2 className="text-2xl font-bold">Start Quiz</h2>
+            <p className='text-grey-500 text-sm'>Do not refresh this page, you will loose all your progress</p>
           </div>
 
           <p className="font-semibold text-left text-lg mb-4">

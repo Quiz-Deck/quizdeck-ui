@@ -22,7 +22,6 @@ const QNA: React.FC<Props> = ({
 }: Props) => {
   const handleChange = (e: any) => {
     const { value } = e.target;
-
     setAnswers({
       ...answers,
       [activeQuestion]: value,
@@ -39,9 +38,11 @@ const QNA: React.FC<Props> = ({
 
       <div>
         <p className="mb-6">{data[activeQuestion]?.question}</p>
+        {answers[activeQuestion] ?? " "}
         <Input.Label
           title={"Answer"}
           name="answer"
+          value={answers[activeQuestion] ?? " "}
           placeholder={"Enter the answer"}
           className="rounded-md mb-5 bg-[#FAFAFF]"
           autoComplete="off"
@@ -62,7 +63,9 @@ const QNA: React.FC<Props> = ({
           <Button.Primary
             title={"Submit"}
             className="px-8 mt-4"
-            onClick={() => {handleSubmit()}}
+            onClick={() => {
+              handleSubmit();
+            }}
           />
         ) : (
           <Button.Primary
