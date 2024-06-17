@@ -189,7 +189,11 @@ export default function Question() {
         setClose={closeModal}
         deck_id={id || ""}
       />
-      <InviteDeckUserModal open={openShareModal} setClose={closeShareModal} />
+      <InviteDeckUserModal
+        open={openShareModal}
+        setClose={closeShareModal}
+        data={data?.data}
+      />
     </div>
   );
 }

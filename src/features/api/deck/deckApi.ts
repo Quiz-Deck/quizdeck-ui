@@ -5,6 +5,7 @@ import {
   SingleDeckResponse,
   CreateDeckResponse,
   DeckListResponse,
+  InviteUserRequest,
 } from "./deckSliceTypes";
 
 const deckApi = apiSlice.injectEndpoints({
@@ -73,7 +74,7 @@ const deckApi = apiSlice.injectEndpoints({
     //Invite deck user
     inviteDeckUser: build.mutation<
       SingleDeckResponse,
-      Partial<CreateDeckRequest>
+      Partial<InviteUserRequest>
     >({
       query: (payload) => ({
         url: `/deck/invite`,

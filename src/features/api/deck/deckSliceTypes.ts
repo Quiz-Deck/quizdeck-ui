@@ -95,3 +95,8 @@ export interface DeckListResponse {
   data: SingleDeck[];
   message: string;
 }
+
+export interface InviteUserRequest {
+  deckId: string;
+  email: string;
+}
