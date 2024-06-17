@@ -6,9 +6,10 @@ import Button from "components/button/buttons";
 interface Props {
   open: boolean;
   setClose: () => void;
+  data: any;
 }
 
-export const StartTestModal = ({ open, setClose }: Props) => {
+export const StartTestModal = ({ open, setClose, data }: Props) => {
   const navigate = useNavigate();
 
   return (
@@ -24,21 +25,29 @@ export const StartTestModal = ({ open, setClose }: Props) => {
             <h2 className="text-2xl font-bold">Start Test</h2>
           </div>
 
-          <p className="text-center">
-            You are about to start this test, It contains x number of questions.
-          </p>
-          <p className="text-center">
-            There is no timer/the time is x so use your time wisely
+          <p className="font-semibold text-left text-lg mb-4">
+            Title: {data?.data?.title}
           </p>
 
-          <p className="text-center">
-            Click on "Start" button to begin this quiz.
+          <p className="text-left mb-2">
+            You are about to start this test, It contains{" "}
+            <b>{data?.data?.questions?.length}</b> questions.
+          </p>
+          <p className="text-left mb-3">
+            {data?.data?.timer > 0
+              ? `The time allocated for this quiz is ${Math.floor(
+                  Number(data?.data?.timer) / 60
+                )} minutes, so use your time wisely. Try to attempt all questions within the time!`
+              : "There is no timer for this test, so take your time to answer these questions."}
+          </p>
+          <p className="text-left mb-1">
+            Click on <b>"Start"</b> button to begin this quiz.
           </p>
 
-          <div className="flex mt-4 justify-center items-center gap-5">
+          <div className="flex mt-6 justify-between items-center gap-5">
             <Button.Primary
               title={"Close"}
-              className="mt-4"
+              className="mt-4 px-6"
               onClick={() => {
                 setClose();
                 navigate(-1);
@@ -46,7 +55,7 @@ export const StartTestModal = ({ open, setClose }: Props) => {
             />
             <Button.Secondary
               title={"Start"}
-              className="mt-4"
+              className="mt-4 px-6"
               onClick={() => setClose()}
             />
           </div>
