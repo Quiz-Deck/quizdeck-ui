@@ -5,6 +5,7 @@ import PageLoader from "utils/PageLoader";
 import QuestionsSideNav from "./QuestionsSideNav";
 import QuizQuestionType from "./questionTypes";
 import Logo from "../../assets/icons/logo-black.png";
+import { StartTestModal } from "components/modals/StartTestModal";
 import { TestResultsModal } from "components/modals/TestResultsModal";
 import { CloseTestModal } from "components/modals/CloseTestModal";
 import { useGetSingleDeckQuery } from "../../features/api/deck/deckApi";
@@ -20,13 +21,14 @@ const QuizTaker: React.FC = () => {
   const [scorePercentage, setScorePercentage] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [openResults, setOpenResults] = useState(false);
+  const [openWarning, setOpenWarning] = useState(true);
   // const [timer, setTimer] = useState<number>(0);
 
   const { id } = useParams();
   const { data, isLoading } = useGetSingleDeckQuery(id || "");
 
   // const countdown = false;
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
   const initialTimerValue = data?.data?.timer ?? 0; // Default to 0 if undefined
   const [timer, setTimer] = useState<number>(initialTimerValue); // Initialize timer with the value from data
   const [countdown, setCountdown] = useState<boolean>(initialTimerValue > 0); // Determine initial mode
@@ -85,6 +87,13 @@ const QuizTaker: React.FC = () => {
     // eslint-disable-next-line
   }, [data?.data?.timer]);
 
+  useEffect(() => {
+    if (!openWarning) {
+      setIsActive(true);
+    }
+    // eslint-disable-next-line
+  }, [openWarning]);
+
   const handleStartTimer = () => {
     setIsActive((prevIsActive) => !prevIsActive);
   };
@@ -103,6 +112,10 @@ const QuizTaker: React.FC = () => {
 
   const closeResultsModal = () => {
     setOpenResults(false);
+  };
+
+  const closeWarningModal = () => {
+    setOpenWarning(false);
   };
 
   const handleSubmit = () => {
@@ -176,6 +189,11 @@ const QuizTaker: React.FC = () => {
       </div>
 
       <CloseTestModal open={open} setClose={closeModal} />
+      <StartTestModal
+        open={openWarning}
+        setClose={closeWarningModal}
+        data={data}
+      />
       <TestResultsModal
         open={openResults}
         setClose={closeResultsModal}
