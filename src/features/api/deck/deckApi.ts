@@ -69,6 +69,18 @@ const deckApi = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
+
+    //Invite deck user
+    inviteDeckUser: build.mutation<
+      SingleDeckResponse,
+      Partial<CreateDeckRequest>
+    >({
+      query: (payload) => ({
+        url: `/deck/invite`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
@@ -80,5 +92,6 @@ export const {
   useGetSingleDeckQuery,
   useGetPublicDecksQuery,
   useDeleteSingleDeckMutation,
-  useLikeSingleDeckMutation
+  useLikeSingleDeckMutation,
+  useInviteDeckUserMutation,
 } = deckApi;
