@@ -39,27 +39,29 @@ export const TestResultsModal = ({
 
   const showGrade = () => {
     if (scorePercentage && scorePercentage < 30) {
-      return <div>You can do better</div>;
+      return <div className="text-3xl">You can do better</div>;
     } else if (
       scorePercentage &&
       scorePercentage > 30 &&
       scorePercentage < 60
     ) {
-      return <div>Nice Attempt</div>;
+      return <div className="text-3xl">Nice Attempt</div>;
     } else if (
       scorePercentage &&
       scorePercentage > 60 &&
       scorePercentage < 80
     ) {
-      return <div>Great Attempt</div>;
+      return <div className="text-3xl">Great Attempt</div>;
     } else if (
       scorePercentage &&
       scorePercentage > 80 &&
       scorePercentage < 90
     ) {
-      return <div>You're a genius</div>;
+      return <div className="text-3xl">You're a genius</div>;
     } else if (scorePercentage && scorePercentage === 100) {
-      return <div>Excellent</div>;
+      return (
+        <div className="text-3xl">Excellent! Be proud of your performance!</div>
+      );
     }
   };
   return (
@@ -71,6 +73,7 @@ export const TestResultsModal = ({
           }}
           className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2.5rem] py-[3.125rem]"
         >
+          {/* Summary Layout: */}
           <div className="mt-4 flex items-center gap-5 px-4 mb-6">
             <div className="text-4xl font-bold">{scorePercentage}%</div>
             <div>
@@ -78,10 +81,13 @@ export const TestResultsModal = ({
               <p>
                 You scored {score} out of {data?.data?.questions?.length}.
               </p>
-              <p>{formatTime(timer)}</p>
+              <p>Your time: {formatTime(timer)}</p>
             </div>
           </div>
 
+          {/* Next Steps: */}
+
+          {/* Your answers */}
           {data?.data &&
             data?.data?.questions?.length > 0 &&
             data?.data?.questions.map(
