@@ -108,7 +108,7 @@ export default function Explore() {
                 ))}
             </div>
             <PaginationNoRoute
-              data={data?.data}
+              data={data}
               page={page}
               setPage={setPage}
             />

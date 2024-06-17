@@ -7,9 +7,9 @@ interface Props {
 }
 
 export const PaginationNoRoute = ({ data, page, setPage }: Props) => {
-  let last_page = data && data.last_page;
+  let last_page = data && data.totalPages;
   let first_page = 1;
-  let current_page = data && data.current_page;
+  let current_page = data && data.currPage;
 
   return (
     <div className=" flex justify-between items-center pt-6 px-3 sm:px-4 text-gray-500 sm:text-black text-base font-bold">
@@ -19,7 +19,7 @@ export const PaginationNoRoute = ({ data, page, setPage }: Props) => {
         </p>
       )}
 
-      {data && data.last_page !== 1 && (
+      {data && last_page !== 1 && (
         <div className="flex gap-8 ">
           <button
             className=" bg-gray-500 p-1 rounded-sm sm:p-0 sm:bg-inherit text-white sm:text-black"
