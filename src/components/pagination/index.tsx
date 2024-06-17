@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const Pagination = ({ data, route }) => {
+interface Props {
+  data: any;
+  route: string;
+}
+const Pagination = ({ data, route }: Props) => {
   const navigate = useNavigate();
   let params = useParams();
-  const [page, setPage] = useState(params.page);
+  const [page, setPage] = useState<number>(Number(params?.page) || 1);
 
   useEffect(() => {
-    setPage(params.page);
+    if (params?.page) {
+      setPage(Number(params?.page));
+    }
   }, [params.page]);
 
   let last_page = data && data.last_page;
