@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "./index";
 import Button from "components/button/buttons";
+import Logo from "../../assets/icons/logo-black.png";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 
 interface AnswerFormat {
@@ -78,8 +79,27 @@ export const TestResultsModal = ({
           style={{
             boxShadow: "0px 2px 3px 0px #D6E4FD",
           }}
-          className=" h-full overflow-y-scroll bg-white border border-[#D6E4FD] px-[2.5rem] py-[3.125rem]"
+          className=" h-full overflow-y-scroll bg-white border border-[#D6E4FD] px-[2.5rem] pb-[3.125rem]"
         >
+          {/* Logo: */}
+          <div className="mb-10 mx-auto px-2 sm:px-4 lg:px-8 flex items-center justify-between w-full shadow-sm">
+            <div className="flex max-w-[300px] w-full px-2 lg:px-0 h-14">
+              <div className="flex-shrink-0 flex w-full items-center py-3">
+                <div className="w-auto text-primary text-3xl font-bold">
+                  <img src={Logo} alt="Logo" className="max-w-[130px]" />
+                </div>
+              </div>
+            </div>
+
+            <Button.Secondary
+              title={"Close"}
+              onClick={() => {
+                setClose();
+                navigate(-1);
+              }}
+            />
+          </div>
+
           <div className="max-w-[700px] mx-auto">
             {/* Summary Layout: */}
             <h3 className="text-xl font-bold">{showGrade()}</h3>

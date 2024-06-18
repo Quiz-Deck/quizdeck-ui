@@ -127,8 +127,12 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
     //     correctAnswer,
     //   };
     // });
+
     // const contentData = eval(questionsString);
-    const contentData = JSON.parse(questionsString);
+
+    // eslint-disable-next-line
+    const contentData = new Function(`return ${questionsString}`)();
+
     const result = contentData.map((item: any) => ({
       questionContent: item.question,
       options: item.options,
