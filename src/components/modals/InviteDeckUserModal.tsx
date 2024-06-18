@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Modal } from "./index";
 import Button from "components/button/buttons";
 import Input from "components/input/Input";
-// import Avatar from "../../assets/images/rectangle.jpg";
+import Avatar from "../../assets/images/rectangle.jpg";
 import errorHandler from "handlers/errorHandler";
 import successHandler from "handlers/successHandler";
+import { DeckGuests } from "features/api/deck/deckSliceTypes";
 import { useInviteDeckUserMutation } from "features/api/deck/deckApi";
 
 interface Props {
@@ -64,47 +65,48 @@ export const InviteDeckUserModal = ({ open, setClose, data }: Props) => {
             />
           </div>
 
-          {/* <div>
-            <h3 className="mb-4 font-semibold">People with access</h3>
+          {data?.deckGuests?.length > 0 && (
+            <div>
+              <h3 className="mb-4 font-semibold">People with access</h3>
 
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={Avatar}
-                    alt="Avatar"
-                    className="h-[32px] w-[32px] object-cover rounded-full"
-                  />
-                  <p className="text-sm">Amy Abafor</p>
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={Avatar}
+                      alt="Avatar"
+                      className="h-[32px] w-[32px] object-cover rounded-full"
+                    />
+                    <div>
+                      <p className="text-sm">{data?.createdBy?.userName}</p>
+                      <p className="text-xs">{data?.createdBy?.email}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm">Owner</p>
                 </div>
-                <p>Owner</p>
-              </div>
 
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={Avatar}
-                    alt="Avatar"
-                    className="h-[32px] w-[32px] object-cover rounded-full"
-                  />
-                  <p className="text-sm">Amy Abafor</p>
-                </div>
-                <p>Collaborator</p>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={Avatar}
-                    alt="Avatar"
-                    className="h-[32px] w-[32px] object-cover rounded-full"
-                  />
-                  <p className="text-sm">Amy Abafor</p>
-                </div>
-                <p>User</p>
+                {data?.deckGuests?.map((guest: DeckGuests) => (
+                  <div
+                    key={guest?._id}
+                    className="flex justify-between items-center"
+                  >
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={Avatar}
+                        alt="Avatar"
+                        className="h-[32px] w-[32px] object-cover rounded-full"
+                      />
+                      <div>
+                        <p className="text-sm">{guest?.userName}</p>
+                        <p className="text-xs">{guest?.email}</p>
+                      </div>
+                    </div>
+                    <p className="text-sm">User</p>
+                  </div>
+                ))}
               </div>
             </div>
-          </div> */}
+          )}
 
           <div className="flex mt-8 justify-between items-center gap-5">
             <Button.Secondary
@@ -115,6 +117,7 @@ export const InviteDeckUserModal = ({ open, setClose, data }: Props) => {
             <Button.Primary
               title={"Send"}
               loading={isLoading}
+              disabled={input?.email === ""}
               className="min-w-[120px]"
               onClick={() => {
                 handleInvite();

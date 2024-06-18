@@ -71,7 +71,7 @@ export interface CreatedBy {
 export interface SingleDeck {
   createdBy: CreatedBy;
   createdOn: string;
-  deckGuests: string[];
+  deckGuests: DeckGuests[];
   description: string;
   likeCount: number;
   playCount: number;
@@ -99,4 +99,10 @@ export interface DeckListResponse {
 export interface InviteUserRequest {
   deckId: string;
   email: string;
+}
+
+export interface DeckGuests {
+  userName: string;
+  email: string;
+  _id: string;
 }
