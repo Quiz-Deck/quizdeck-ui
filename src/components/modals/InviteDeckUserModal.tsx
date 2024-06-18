@@ -49,7 +49,7 @@ export const InviteDeckUserModal = ({ open, setClose, data }: Props) => {
               Invite users to "{data?.title}" deck
             </h2>
             <p className="text-sm text-gray-500">
-              Note: You can only share this deck with registered quizdeck users.
+              Note: You can only share this deck with registered Quiryfy users.
             </p>
           </div>
 
@@ -65,27 +65,27 @@ export const InviteDeckUserModal = ({ open, setClose, data }: Props) => {
             />
           </div>
 
-          {data?.deckGuests?.length > 0 && (
-            <div>
-              <h3 className="mb-4 font-semibold">People with access</h3>
+          <div>
+            <h3 className="mb-4 font-semibold">People with access</h3>
 
-              <div className="flex flex-col gap-3">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={Avatar}
-                      alt="Avatar"
-                      className="h-[32px] w-[32px] object-cover rounded-full"
-                    />
-                    <div>
-                      <p className="text-sm">{data?.createdBy?.userName}</p>
-                      <p className="text-xs">{data?.createdBy?.email}</p>
-                    </div>
+            <div className="flex flex-col gap-3">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={Avatar}
+                    alt="Avatar"
+                    className="h-[32px] w-[32px] object-cover rounded-full"
+                  />
+                  <div>
+                    <p className="text-sm">{data?.createdBy?.userName}</p>
+                    <p className="text-xs">{data?.createdBy?.email}</p>
                   </div>
-                  <p className="text-sm">Owner</p>
                 </div>
+                <p className="text-sm">Owner</p>
+              </div>
 
-                {data?.deckGuests?.map((guest: DeckGuests) => (
+              {data?.deckGuests?.length > 0 &&
+                data?.deckGuests?.map((guest: DeckGuests) => (
                   <div
                     key={guest?._id}
                     className="flex justify-between items-center"
@@ -104,9 +104,8 @@ export const InviteDeckUserModal = ({ open, setClose, data }: Props) => {
                     <p className="text-sm">User</p>
                   </div>
                 ))}
-              </div>
             </div>
-          )}
+          </div>
 
           <div className="flex mt-8 justify-between items-center gap-5">
             <Button.Secondary

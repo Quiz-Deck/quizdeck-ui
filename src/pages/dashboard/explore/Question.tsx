@@ -36,7 +36,10 @@ export default function Question() {
   const user = _getUser();
 
   const [likeSingleDeck] = useLikeSingleDeckMutation();
-  const { data, isLoading } = useGetSingleDeckQuery(id || "");
+  const { data, isLoading } = useGetSingleDeckQuery({
+    id: id || "",
+    userId: user?.data?._id,
+  });
 
   const [openModal, setOpenModal] = useState(false);
   const [openShareModal, setOpenShareModal] = useState(false);

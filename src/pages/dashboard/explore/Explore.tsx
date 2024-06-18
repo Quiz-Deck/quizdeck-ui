@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import PageLoader from "utils/PageLoader";
-import { PaginationNoRoute } from "components/pagination/NoRoute";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
 
 export default function Explore() {
   const navigate = useNavigate();
-  const { data, isLoading } = useGetPublicDecksQuery();
-  const { data: userDecks } = useGetUserDeckQuery();
-
-  const [page, setPage] = useState(1);
+  const { data, isLoading } = useGetPublicDecksQuery("1");
+  const { data: userDecks } = useGetUserDeckQuery("1");
 
   return (
     <div>
@@ -19,7 +16,7 @@ export default function Explore() {
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-primary text-2xl font-bold">My Recent Decks</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {userDecks?.data &&
             userDecks?.data?.length > 0 &&
             userDecks?.data.slice(0, 2).map((item, index) => (
@@ -72,7 +69,16 @@ export default function Explore() {
 
       <div className="mb-12">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-primary text-2xl font-bold">All Public Decks</h3>
+          <h3 className="text-primary text-2xl font-bold">
+            Explore Public Decks
+          </h3>
+          <button
+            type="button"
+            className="text-primary"
+            onClick={() => navigate("/dashboard/public-decks")}
+          >
+            See all
+          </button>
         </div>
 
         {isLoading ? (
@@ -81,10 +87,10 @@ export default function Explore() {
           </div>
         ) : (
           <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {data?.data &&
                 data?.data?.length > 0 &&
-                data?.data?.map((item, index) => (
+                data?.data?.slice(0, 8).map((item, index) => (
                   <div
                     key={index}
                     onClick={() => navigate(`/dashboard/question/${item?._id}`)}
@@ -107,11 +113,6 @@ export default function Explore() {
                   </div>
                 ))}
             </div>
-            <PaginationNoRoute
-              data={data}
-              page={page}
-              setPage={setPage}
-            />
           </div>
         )}
       </div>

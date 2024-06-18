@@ -9,7 +9,7 @@ import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import Avatar from "../../../assets/images/rectangle.jpg";
 import EmptyState from "../../../assets/images/empty-state.svg";
 import Pagination from "components/pagination";
-import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
+import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
 
 interface TimeAgoProps {
   time: string; // Accepts a string representation of the time
@@ -24,16 +24,16 @@ const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-export default function MyLibrary() {
+export default function PublicDecks() {
   const navigate = useNavigate();
   const query = useQuery();
-  const page = query.get("page") || "1"; ;
-  const { data, isLoading } = useGetUserDeckQuery(page);
+  const page = query.get("page") || "1";
+  const { data, isLoading } = useGetPublicDecksQuery(page);
 
   return (
     <div>
       <div className="mt-10 mb-6">
-        <h2 className="text-2xl font-semibold">My Library</h2>
+        <h2 className="text-2xl font-semibold">All Public Decks</h2>
       </div>
 
       {isLoading ? (
@@ -115,7 +115,7 @@ export default function MyLibrary() {
                   </div>
                 </div>
               ))}
-              <Pagination data={data} route={"/dashboard/my-library"} />
+              <Pagination data={data} route={"/dashboard/public-decks"} />
             </div>
           ) : (
             <div className="text-center h-full">

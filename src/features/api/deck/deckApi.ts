@@ -32,25 +32,28 @@ const deckApi = apiSlice.injectEndpoints({
     }),
 
     //Get a user's deck
-    getUserDeck: build.query<DeckListResponse, void>({
-      query: () => ({
-        url: "/deck/user",
+    getUserDeck: build.query<DeckListResponse, string>({
+      query: (page) => ({
+        url: `/deck/user?page=${page}`,
         method: "GET",
       }),
     }),
 
     //Get a single deck
-    getSingleDeck: build.query<SingleDeckResponse, string>({
-      query: (id) => ({
-        url: `/deck/${id}`,
+    getSingleDeck: build.query<
+      SingleDeckResponse,
+      { id: string; userId: string }
+    >({
+      query: ({ id, userId }) => ({
+        url: `/deck/${id}?userId=${userId}`,
         method: "GET",
       }),
     }),
 
     //Get a single deck
-    getPublicDecks: build.query<DeckListResponse, void>({
-      query: () => ({
-        url: `/deck/public`,
+    getPublicDecks: build.query<DeckListResponse, string>({
+      query: (page) => ({
+        url: `/deck/public?page=${page}`,
         method: "GET",
       }),
     }),
