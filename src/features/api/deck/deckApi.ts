@@ -48,9 +48,9 @@ const deckApi = apiSlice.injectEndpoints({
     }),
 
     //Get a single deck
-    getPublicDecks: build.query<DeckListResponse, void>({
-      query: () => ({
-        url: `/deck/public`,
+    getPublicDecks: build.query<DeckListResponse, string>({
+      query: (page) => ({
+        url: `/deck/public?page=${page}`,
         method: "GET",
       }),
     }),

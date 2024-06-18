@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Explore from "../pages/dashboard/explore/Explore";
 import Question from "../pages/dashboard/explore/Question";
 import MyLibrary from "../pages/dashboard/explore/MyLibrary";
+import PublicDecks from 'pages/dashboard/explore/PublicDecks';
 import NavbarDashboard from "../components/navigation/NavbarDashboard";
 import SidenavDashboard from "../components/navigation/SidenavDashboard";
 
@@ -18,6 +19,7 @@ export default function AdminLayout() {
             <Route path="/explore" element={<Explore />} />
             <Route path="/question/:id" element={<Question />} />
             <Route path="/my-library" element={<MyLibrary />} />
+            <Route path="/public-decks" element={<PublicDecks />} />
           </Routes>
         </div>
       </div>

@@ -8,7 +8,7 @@ import PageLoader from "utils/PageLoader";
 
 export default function Quizes() {
   const navigate = useNavigate();
-  const { data, isLoading } = useGetPublicDecksQuery();
+  const { data, isLoading } = useGetPublicDecksQuery("1");
   return (
     <div className="py-12 bg-white relative mb-8">
       {/* <Wavy className="absolute" /> */}
