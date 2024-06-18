@@ -59,9 +59,9 @@ Button.Primary = ({ title, style, className, disabled, loading, onClick }) => {
       onClick={() => (onClick ? onClick() : {})}
       disabled={disabled || loading}
       className={
-        "p-2 rounded-md text-center text-white whitespace-nowrap " +
+        "p-2 rounded-md text-center whitespace-nowrap " +
         className +
-        (disabled ? " bg-[#FAFAFF]" : " bg-primary")
+        (disabled ? " bg-[#eaf0f9] text-gray-500" : " bg-primary text-white")
       }
     >
       {loading ? "Loading..." : title ?? "Title"}
