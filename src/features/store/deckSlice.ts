@@ -83,8 +83,8 @@ export const deckSlice = createSlice({
       };
     },
     addADeckQuestion: (state, action: PayloadAction<DeckQuestion[]>) => {
-      // const oldQuestions = state.singleDeck.data.questions;
-      const updatedQuestions = [...action.payload];
+      const oldQuestions = state.singleDeck.data.questions;
+      const updatedQuestions = [...oldQuestions, ...action.payload];
       const newData = { ...state.singleDeck.data, questions: updatedQuestions };
 
       return {

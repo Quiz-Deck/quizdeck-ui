@@ -6,7 +6,7 @@ import Button from "../../../../components/button/buttons";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
 import { deckActions } from "features/store/deckSlice";
-import ErrorValidation from 'pages/common/ErrorValidation';
+import ErrorValidation from "pages/common/ErrorValidation";
 // import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
@@ -25,6 +25,7 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
     question: "",
     type: "QNA",
     answer: "",
+    multichoiceOptions: [],
   });
 
   const handleChange = (e: any) => {
@@ -39,8 +40,7 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
       setSubmitted(false);
       addQuestion({
         deckId: id,
-        // payload: { ...data },
-        payload: [...questions, data],
+        payload: [data],
       })
         .unwrap()
         .then((res: any) => {
@@ -49,6 +49,7 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
             question: "",
             type: "QNA",
             answer: "",
+            multichoiceOptions: [],
           });
           successHandler(res, true);
           handleClose();
@@ -57,7 +58,6 @@ const QNA: React.FC<CreateQuizProps> = ({ handleClose, questions }) => {
           errorHandler(err?.data, true);
         });
     }
-    
   };
 
   return (

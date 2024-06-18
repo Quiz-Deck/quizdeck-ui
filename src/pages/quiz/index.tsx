@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Button from "components/button/buttons";
+import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import QuestionsSideNav from "./QuestionsSideNav";
 import QuizQuestionType from "./questionTypes";
+import Button from "components/button/buttons";
 import Logo from "../../assets/icons/logo-black.png";
 import { StartTestModal } from "components/modals/StartTestModal";
 import { TestResultsModal } from "components/modals/TestResultsModal";
@@ -25,7 +26,11 @@ const QuizTaker: React.FC = () => {
   // const [timer, setTimer] = useState<number>(0);
 
   const { id } = useParams();
-  const { data, isLoading } = useGetSingleDeckQuery(id || "");
+  const user = _getUser();
+  const { data, isLoading } = useGetSingleDeckQuery({
+    id: id || "",
+    userId: user?.data?._id,
+  });
 
   // const countdown = false;
   const [isActive, setIsActive] = useState(false);

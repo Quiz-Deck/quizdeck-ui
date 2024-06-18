@@ -33,10 +33,10 @@ export default function SidenavDashboard() {
         <div className="flex w-full px-2 lg:px-0 h-14">
           <div className="flex-shrink-0 flex w-full items-center justify-center py-3">
             <div className="block lg:hidden w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[160px]" />
+              <img src={Logo} alt="Logo" className="max-w-[145px]" />
             </div>
             <div className="hidden lg:block w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[160px]" />
+              <img src={Logo} alt="Logo" className="max-w-[145px]" />
             </div>
           </div>
         </div>

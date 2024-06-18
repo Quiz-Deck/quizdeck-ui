@@ -73,7 +73,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
       addQuestion({
         deckId: id,
         // payload: { ...data, multichoiceOptions: answerFields },
-        payload: [...questions, newData],
+        payload: [newData],
       })
         .unwrap()
         .then((res: any) => {

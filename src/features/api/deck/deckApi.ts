@@ -40,9 +40,12 @@ const deckApi = apiSlice.injectEndpoints({
     }),
 
     //Get a single deck
-    getSingleDeck: build.query<SingleDeckResponse, string>({
-      query: (id) => ({
-        url: `/deck/${id}`,
+    getSingleDeck: build.query<
+      SingleDeckResponse,
+      { id: string; userId: string }
+    >({
+      query: ({ id, userId }) => ({
+        url: `/deck/${id}?userId=${userId}`,
         method: "GET",
       }),
     }),
