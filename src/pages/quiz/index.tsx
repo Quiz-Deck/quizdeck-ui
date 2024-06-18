@@ -123,6 +123,8 @@ const QuizTaker: React.FC = () => {
     let questionsCount = data?.data?.questions.length || 0;
     data?.data?.questions.forEach((question, index) => {
       if (question.answer === answers[index]) {
+        console.log("true");
+
         correctCount++;
       }
     });

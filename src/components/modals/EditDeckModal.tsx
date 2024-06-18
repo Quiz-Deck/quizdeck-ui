@@ -35,12 +35,13 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
 
   useEffect(() => {
     if (deck) {
+      const min_timer = Math.floor(Number(deck?.timer) / 60);
       setData({
         title: deck?.title,
         description: deck?.description,
         type: deck?.type,
         status: deck?.status,
-        timer: deck?.timer,
+        timer: min_timer,
       });
     }
   }, [deck]);

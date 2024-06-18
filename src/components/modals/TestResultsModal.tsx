@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "./index";
+import {
+  ArrowPathIcon,
+  ClipboardDocumentListIcon,
+} from "@heroicons/react/24/solid";
 import Button from "components/button/buttons";
 import Logo from "../../assets/icons/logo-black.png";
 import { LikeDeck } from "utils/LikeDeck";
@@ -30,7 +34,10 @@ export const TestResultsModal = ({
   scorePercentage,
 }: Props) => {
   const navigate = useNavigate();
-  console.log("answers", answers);
+
+  const refreshPage = () => {
+    navigate(0);
+  };
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -129,21 +136,48 @@ export const TestResultsModal = ({
                   </p>
                 </div>
               </div>
-              <div className="shadow-lg px-3 py-4">
-                <p className="text-primary font-semibold mb-1">
-                  Retake this quiz
-                </p>
-                <p className="text-xs">
-                  Solidify your knowledge by retaking this quiz
-                </p>
+              <div className="shadow-lg px-3 py-4 flex gap-3 items-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClose();
+                    refreshPage();
+                  }}
+                >
+                  <ArrowPathIcon className="h-4 w-4" aria-hidden="true" />
+                </button>
+
+                <div>
+                  <p className="text-primary font-semibold mb-1">
+                    Retake this quiz
+                  </p>
+                  <p className="text-xs">
+                    Solidify your knowledge by retaking this quiz
+                  </p>
+                </div>
               </div>
-              <div className="shadow-lg px-3 py-4">
-                <p className="text-primary font-semibold mb-1">
-                  Take a new quiz
-                </p>
-                <p className="text-xs">
-                  Take another quiz to boost your confidence!
-                </p>
+              <div className="shadow-lg px-3 py-4 flex gap-3 items-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClose();
+                    navigate("/dashboard/my-library");
+                  }}
+                >
+                  <ClipboardDocumentListIcon
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  />
+                </button>
+
+                <div>
+                  <p className="text-primary font-semibold mb-1">
+                    Take a new quiz
+                  </p>
+                  <p className="text-xs">
+                    Take another quiz to boost your confidence!
+                  </p>
+                </div>
               </div>
             </div>
 
