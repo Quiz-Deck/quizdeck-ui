@@ -32,9 +32,9 @@ const deckApi = apiSlice.injectEndpoints({
     }),
 
     //Get a user's deck
-    getUserDeck: build.query<DeckListResponse, void>({
-      query: () => ({
-        url: "/deck/user",
+    getUserDeck: build.query<DeckListResponse, string>({
+      query: (page) => ({
+        url: `/deck/user?page=${page}`,
         method: "GET",
       }),
     }),

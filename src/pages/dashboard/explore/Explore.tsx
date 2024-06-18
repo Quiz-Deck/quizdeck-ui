@@ -9,7 +9,7 @@ import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
 export default function Explore() {
   const navigate = useNavigate();
   const { data, isLoading } = useGetPublicDecksQuery();
-  const { data: userDecks } = useGetUserDeckQuery();
+  const { data: userDecks } = useGetUserDeckQuery("1");
 
   const [page, setPage] = useState(1);
 
@@ -107,11 +107,7 @@ export default function Explore() {
                   </div>
                 ))}
             </div>
-            <PaginationNoRoute
-              data={data}
-              page={page}
-              setPage={setPage}
-            />
+            <PaginationNoRoute data={data} page={page} setPage={setPage} />
           </div>
         )}
       </div>

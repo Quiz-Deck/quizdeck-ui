@@ -16,24 +16,29 @@ const Pagination = ({ data, route }: Props) => {
     }
   }, [params.page]);
 
-  let last_page = data && data.last_page;
+  let last_page = data && data.totalPages;
   let first_page = 1;
-  let current_page = data && data.current_page;
+  let current_page = data && data.currPage;
+
+  console.log("data", data);
+  console.log("current_page", current_page);
+  console.log("last_page", last_page);
+  
   return (
-    <div className=" flex justify-between items-center pt-6 px-3 sm:px-14 text-gray-500 sm:text-black text-base font-bold">
+    <div className="flex justify-between items-center py-6 text-gray-500 sm:text-black text-base font-bold">
       {data && (
         <p>
           Page {current_page} of {last_page}
         </p>
       )}
 
-      {data && data.last_page !== 1 && (
+      {data && data.totalPages !== 1 && (
         <div className="flex gap-8 ">
           <button
             className=" bg-gray-500 p-1 rounded-sm sm:p-0 sm:bg-inherit text-white sm:text-black"
             onClick={() =>
               navigate(
-                `/${route}/${page > first_page ? Number(page) - 1 : page}`
+                `${route}?page=${page > first_page ? Number(page) - 1 : page}`
               )
             }
           >
@@ -43,7 +48,7 @@ const Pagination = ({ data, route }: Props) => {
             className=" bg-gray-500 rounded-sm p-1 sm:p-0 sm:bg-inherit text-white sm:text-black"
             onClick={() =>
               navigate(
-                `/${route}/${page < last_page ? Number(page) + 1 : page}`
+                `${route}?page=${page < last_page ? Number(page) + 1 : page}`
               )
             }
           >
