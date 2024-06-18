@@ -8,7 +8,7 @@ type Props = {
   answers: any;
   setAnswers: any;
   activeQuestion: number;
-  handleSubmit: () => void;
+  handleSubmit: (e:any) => void;
   setActiveQuestion: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -64,7 +64,7 @@ const QNA: React.FC<Props> = ({
             title={"Submit"}
             className="px-8 mt-4"
             onClick={() => {
-              handleSubmit();
+              handleSubmit(answers);
             }}
           />
         ) : (

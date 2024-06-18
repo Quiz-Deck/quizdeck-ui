@@ -5,7 +5,7 @@ type Props = {
   data: any;
   answers: any;
   setActiveQuestion: React.Dispatch<React.SetStateAction<number>>;
-  handleSubmit: () => void;
+  handleSubmit: (e:any) => void;
   timer: number;
   setTimer: React.Dispatch<React.SetStateAction<number>>;
   handleStartTimer: () => void;
@@ -88,7 +88,7 @@ const QuestionsSideNav: React.FC<Props> = ({
         <div className="flex justify-center mt-24">
           <Button.Primary
             onClick={() => {
-              handleSubmit();
+              handleSubmit(answers);
               handleStartTimer();
             }}
             title={"Submit"}

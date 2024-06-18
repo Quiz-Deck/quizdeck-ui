@@ -58,8 +58,9 @@ const QuizTaker: React.FC = () => {
           if (countdown) {
             if (prevTimer <= 1) {
               clearInterval(interval!);
+
               setIsActive(false);
-              handleSubmit(); // Open the modal when the timer reaches zero
+              handleSubmit(answers); // Open the modal when the timer reaches zero
               return 0;
             } else {
               return prevTimer - 1;
@@ -77,7 +78,7 @@ const QuizTaker: React.FC = () => {
       if (interval) clearInterval(interval);
     };
     // eslint-disable-next-line
-  }, [isActive, countdown]);
+  }, [isActive, countdown, answers]);
 
   useEffect(() => {
     if (initialTimerValue > 0) {
@@ -118,13 +119,12 @@ const QuizTaker: React.FC = () => {
     setOpenWarning(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (answers: any) => {
     let correctCount = 0;
     let questionsCount = data?.data?.questions.length || 0;
+
     data?.data?.questions.forEach((question, index) => {
       if (question.answer === answers[index]) {
-        console.log("true");
-
         correctCount++;
       }
     });
@@ -132,9 +132,8 @@ const QuizTaker: React.FC = () => {
     setScore(correctCount);
     let percentage = Math.round((correctCount / questionsCount) * 100);
     setScorePercentage(percentage);
-
-    openResultsModal();
     handleStartTimer();
+    openResultsModal();
   };
 
   return (
