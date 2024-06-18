@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "./index";
+import {
+  ArrowPathIcon,
+  ClipboardDocumentListIcon,
+} from "@heroicons/react/24/solid";
 import Button from "components/button/buttons";
+import Logo from "../../assets/icons/logo-black.png";
+import { LikeDeck } from "utils/LikeDeck";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 
 interface AnswerFormat {
@@ -29,6 +35,10 @@ export const TestResultsModal = ({
 }: Props) => {
   const navigate = useNavigate();
 
+  const refreshPage = () => {
+    navigate(0);
+  };
+
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
@@ -44,7 +54,7 @@ export const TestResultsModal = ({
   const showGrade = () => {
     if (scorePercentage === 0) {
       return <div className="text-2xl">Hmmm, what happened?</div>;
-    } else if (scorePercentage && scorePercentage < 30) {
+    } else if (scorePercentage && scorePercentage <= 30) {
       return <div className="text-2xl">You can do better!</div>;
     } else if (
       scorePercentage &&
@@ -78,8 +88,27 @@ export const TestResultsModal = ({
           style={{
             boxShadow: "0px 2px 3px 0px #D6E4FD",
           }}
-          className=" h-full overflow-y-scroll bg-white border border-[#D6E4FD] px-[2.5rem] py-[3.125rem]"
+          className=" h-full overflow-y-scroll bg-white border border-[#D6E4FD] px-[2.5rem] pb-[3.125rem]"
         >
+          {/* Logo: */}
+          <div className="mb-10 mx-auto px-2 sm:px-4 lg:px-8 flex items-center justify-between w-full shadow-sm">
+            <div className="flex max-w-[300px] w-full px-2 lg:px-0 h-14">
+              <div className="flex-shrink-0 flex w-full items-center py-3">
+                <div className="w-auto text-primary text-3xl font-bold">
+                  <img src={Logo} alt="Logo" className="max-w-[130px]" />
+                </div>
+              </div>
+            </div>
+
+            <Button.Secondary
+              title={"Close"}
+              onClick={() => {
+                setClose();
+                navigate(-1);
+              }}
+            />
+          </div>
+
           <div className="max-w-[700px] mx-auto">
             {/* Summary Layout: */}
             <h3 className="text-xl font-bold">{showGrade()}</h3>
@@ -96,7 +125,8 @@ export const TestResultsModal = ({
             {/* Next Steps: */}
             <h3 className="text-lg font-bold mb-2">Next steps:</h3>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10">
-              <div className="shadow-lg px-3 py-4">
+              <div className="shadow-lg px-3 py-4 flex gap-3 items-center">
+                <LikeDeck id={data?.data?._id} data={data?.data} />
                 <div>
                   <p className="text-primary font-semibold mb-1">
                     Like this quiz
@@ -106,21 +136,48 @@ export const TestResultsModal = ({
                   </p>
                 </div>
               </div>
-              <div className="shadow-lg px-3 py-4">
-                <p className="text-primary font-semibold mb-1">
-                  Retake this quiz
-                </p>
-                <p className="text-xs">
-                  Solidify your knowledge by retaking this quiz
-                </p>
+              <div className="shadow-lg px-3 py-4 flex gap-3 items-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClose();
+                    refreshPage();
+                  }}
+                >
+                  <ArrowPathIcon className="h-4 w-4" aria-hidden="true" />
+                </button>
+
+                <div>
+                  <p className="text-primary font-semibold mb-1">
+                    Retake this quiz
+                  </p>
+                  <p className="text-xs">
+                    Solidify your knowledge by retaking this quiz
+                  </p>
+                </div>
               </div>
-              <div className="shadow-lg px-3 py-4">
-                <p className="text-primary font-semibold mb-1">
-                  Take a new quiz
-                </p>
-                <p className="text-xs">
-                  Take another quiz to boost your confidence!
-                </p>
+              <div className="shadow-lg px-3 py-4 flex gap-3 items-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClose();
+                    navigate("/dashboard/my-library");
+                  }}
+                >
+                  <ClipboardDocumentListIcon
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  />
+                </button>
+
+                <div>
+                  <p className="text-primary font-semibold mb-1">
+                    Take a new quiz
+                  </p>
+                  <p className="text-xs">
+                    Take another quiz to boost your confidence!
+                  </p>
+                </div>
               </div>
             </div>
 

@@ -5,6 +5,7 @@ import { Modal } from "./index";
 import OpenAI from "openai";
 import Input from "components/input/Input";
 import Button from "components/button/buttons";
+import errorHandler from "handlers/errorHandler";
 import { deckActions } from "features/store/deckSlice";
 import { useAddQuestionMutation } from "features/api/question/questionApi";
 
@@ -98,6 +99,7 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
       transformedQuiz && createAIGeneratedQuestions(transformedQuiz);
     } catch (error) {
       console.error("Error generating quiz:", error);
+      errorHandler({ message: "Error generating AI quiz" }, true);
       setIsLoading(false);
     }
   }
@@ -127,8 +129,12 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
     //     correctAnswer,
     //   };
     // });
+
     // const contentData = eval(questionsString);
-    const contentData = JSON.parse(questionsString);
+
+    // eslint-disable-next-line
+    const contentData = new Function(`return ${questionsString}`)();
+
     const result = contentData.map((item: any) => ({
       questionContent: item.question,
       options: item.options,

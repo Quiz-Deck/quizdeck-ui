@@ -7,7 +7,7 @@ type Props = {
   answers: any;
   setAnswers: any;
   activeQuestion: number;
-  handleSubmit: () => void;
+  handleSubmit: (e:any) => void;
   handleStartTimer: () => void;
   setActiveQuestion: React.Dispatch<React.SetStateAction<number>>;
 };
