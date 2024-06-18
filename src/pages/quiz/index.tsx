@@ -126,6 +126,7 @@ const QuizTaker: React.FC = () => {
         correctCount++;
       }
     });
+
     setScore(correctCount);
     let percentage = Math.round((correctCount / questionsCount) * 100);
     setScorePercentage(percentage);

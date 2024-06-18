@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "./index";
 import Button from "components/button/buttons";
 import Logo from "../../assets/icons/logo-black.png";
+import { LikeDeck } from "utils/LikeDeck";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 
 interface AnswerFormat {
@@ -29,6 +30,7 @@ export const TestResultsModal = ({
   scorePercentage,
 }: Props) => {
   const navigate = useNavigate();
+  console.log("answers", answers);
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -45,7 +47,7 @@ export const TestResultsModal = ({
   const showGrade = () => {
     if (scorePercentage === 0) {
       return <div className="text-2xl">Hmmm, what happened?</div>;
-    } else if (scorePercentage && scorePercentage < 30) {
+    } else if (scorePercentage && scorePercentage <= 30) {
       return <div className="text-2xl">You can do better!</div>;
     } else if (
       scorePercentage &&
@@ -116,7 +118,8 @@ export const TestResultsModal = ({
             {/* Next Steps: */}
             <h3 className="text-lg font-bold mb-2">Next steps:</h3>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10">
-              <div className="shadow-lg px-3 py-4">
+              <div className="shadow-lg px-3 py-4 flex gap-3 items-center">
+                <LikeDeck id={data?.data?._id} data={data?.data} />
                 <div>
                   <p className="text-primary font-semibold mb-1">
                     Like this quiz
