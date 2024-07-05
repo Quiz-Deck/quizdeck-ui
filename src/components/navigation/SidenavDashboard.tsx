@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { logOut } from "features/store/authReducer";
 import Logo from "../../assets/icons/logo-black.png";
 
@@ -44,15 +44,15 @@ export default function SidenavDashboard() {
         <div className="bg-[#126CD6] sm:pl-4 lg:pl-8 h-full rounded-tr-3xl">
           <div className="pt-[20%]">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className={`${
                   item?.current ? "text-secondary bg-white" : "text-white"
                 } font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-[#1977e4] block`}
               >
                 {item.name}
-              </a>
+            </Link>
             ))}
             <button
               type="button"

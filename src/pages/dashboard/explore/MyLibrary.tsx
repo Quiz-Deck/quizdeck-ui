@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
@@ -10,6 +10,8 @@ import Avatar from "../../../assets/images/rectangle.jpg";
 import EmptyState from "../../../assets/images/empty-state.svg";
 import Pagination from "components/pagination";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
+import { SingleDeck } from "features/api/deck/deckSliceTypes";
+import { getDecks } from "storage/indexedDBStorage";
 
 interface TimeAgoProps {
   time: string; // Accepts a string representation of the time
@@ -30,21 +32,33 @@ export default function MyLibrary() {
   const page = query.get("page") || "1"; ;
   const { data, isLoading } = useGetUserDeckQuery(page);
 
+
+  const [allDecks, setAllDecks] = useState<SingleDeck[]>([]);
+
+  // There might be a better way to handle this but giving up for now, if we can get it sent from the API, will be a better outcome 
+  useEffect(() => {
+    const fetchData = async () => {
+      let decks = await getDecks();
+      setAllDecks(decks);
+    };
+    fetchData();
+  }, [data]);
+
   return (
     <div>
       <div className="mt-10 mb-6">
         <h2 className="text-2xl font-semibold">My Library</h2>
       </div>
 
-      {isLoading ? (
+      {isLoading && allDecks.length === 0 ? (
         <div className="h-screen w-full flex items-center justify-center">
           <PageLoader />
         </div>
       ) : (
         <>
-          {data?.data && data?.data?.length > 0 ? (
+          {allDecks && allDecks?.length > 0 ? (
             <div>
-              {data?.data?.map((deck, index) => (
+              {allDecks?.map((deck, index) => (
                 <div
                   key={index}
                   onClick={() => navigate(`/dashboard/question/${deck?._id}`)}

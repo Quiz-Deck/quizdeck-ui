@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/buttons";
 // import SocialLogin from "./SocialLogin";
@@ -35,9 +35,9 @@ const Login: React.FC = () => {
     <div className="max-w-[350px] mx-auto">
       <div className="flex justify-between items-center mb-10">
         <h2 className="font-bold text-2xl">Login</h2>
-        <a href="/auth/register" className="text-primary">
+        <Link to="/auth/register" className="text-primary">
           Sign up
-        </a>
+        </Link>
       </div>
       <form>
         <Input.Label
@@ -64,9 +64,9 @@ const Login: React.FC = () => {
 
         <div className="flex gap-1 mt-6">
           <span>Don't have an account?</span>{" "}
-          <a href="/auth/register" className="text-primary">
+          <Link to="/auth/register" className="text-primary">
             Sign up
-          </a>
+          </Link>
         </div>
       </form>
 

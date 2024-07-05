@@ -69,6 +69,7 @@ export interface CreatedBy {
 }
 
 export interface SingleDeck {
+  _id: string;
   createdBy: CreatedBy;
   createdOn: string;
   deckGuests: DeckGuests[];
@@ -83,7 +84,6 @@ export interface SingleDeck {
   updatedBy: string;
   updatedOn: string;
   userLiked: boolean;
-  _id: string;
 }
 
 export interface SingleDeckResponse {

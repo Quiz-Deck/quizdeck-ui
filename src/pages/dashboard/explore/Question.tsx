@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { _getUser } from "utils/Auth";
@@ -20,6 +20,8 @@ import {
   useGetSingleDeckQuery,
   useLikeSingleDeckMutation,
 } from "../../../features/api/deck/deckApi";
+import { SingleDeck } from "features/api/deck/deckSliceTypes";
+import { loadDeckFromLocalForage } from "storage/indexedDBStorage";
 
 interface TimeAgoProps {
   time?: string; // Accepts a string representation of the time
@@ -68,9 +70,21 @@ export default function Question() {
       });
   };
 
+  const [oneDeck, setDeck] = useState<SingleDeck>();
+
+  // There might be a better way to handle this but giving up for now, if we can get it sent from the API, will be a better outcome 
+  useEffect(() => {
+    const fetchData = async () => {
+      let deck = await loadDeckFromLocalForage(id as string) as SingleDeck;
+      setDeck(deck);
+    };
+    fetchData();
+  }, [data]);
+  
+
   return (
     <div>
-      {isLoading ? (
+      {isLoading && !oneDeck ? (
         <div className="h-screen w-full flex items-center justify-center">
           <PageLoader />
         </div>
@@ -86,18 +100,18 @@ export default function Question() {
               <div className="px-2 flex flex-col justify-between h-full">
                 <div>
                   <h3 className="text-2xl font-semibold mb-2">
-                    {data?.data?.title}
+                    {oneDeck?.title}
                   </h3>
                   <div className="flex justify-between pb-2">
                     <p className="text-sm font-semibold">
-                      {data?.data?.questions?.length} Questions
+                      {oneDeck?.questions?.length} Questions
                     </p>
 
                     <div className="flex items-center gap-1">
                       <ClockIcon className="h-4 w-4" aria-hidden="true" />
                       <p className="text-sm font-semibold">
-                        {data?.data?.timer && data?.data?.timer > 0
-                          ? Math.floor(Number(data?.data?.timer) / 60) + " mins"
+                        {oneDeck?.timer && oneDeck?.timer > 0
+                          ? Math.floor(Number(oneDeck?.timer) / 60) + " mins"
                           : "No timer"}
                       </p>
                     </div>
@@ -105,7 +119,7 @@ export default function Question() {
 
                   <div className="flex items-center gap-1">
                     <PlayIcon className="h-4 w-4" aria-hidden="true" />
-                    <p className="text-xs">{data?.data?.playCount} Plays</p>
+                    <p className="text-xs">{oneDeck?.playCount} Plays</p>
                   </div>
 
                   <div className="flex items-center gap-1">
@@ -117,7 +131,7 @@ export default function Question() {
                         handleLike(id || "");
                       }}
                     >
-                      {data?.data?.userLiked ? (
+                      {oneDeck?.userLiked ? (
                         <SolidHeart className="h-4 w-4" aria-hidden="true" />
                       ) : (
                         <HeartIcon className="h-4 w-4" aria-hidden="true" />
@@ -125,8 +139,8 @@ export default function Question() {
                     </button>
 
                     <p className="text-xs">
-                      {data?.data?.likeCount}{" "}
-                      {data && data?.data?.likeCount > 1 ? "Likes" : "Like"}
+                      {oneDeck?.likeCount}{" "}
+                      {(oneDeck?.likeCount as number) > 1 ? "Likes" : "Like"}
                     </p>
                   </div>
                 </div>
@@ -137,15 +151,15 @@ export default function Question() {
                     alt="Avatar"
                     className="h-[36px] w-[36px] object-cover rounded-full"
                   />
-                  <p className="text-sm">{data?.data?.createdBy?.userName}</p>
+                  <p className="text-sm">{oneDeck?.createdBy?.userName}</p>
                   <div className="bg-[#126CD6] w-[8px] h-[8px] rounded-full" />
                   <p className="text-sm">
-                    {<TimeAgo time={data?.data?.createdOn} />}
+                    {<TimeAgo time={oneDeck?.createdOn} />}
                   </p>
                 </div>
               </div>
             </div>
-            {user?.data?._id === data?.data?.createdBy?._id && (
+            {user?.data?._id === oneDeck?.createdBy?._id && (
               <div className="px-2 flex flex-col justify-between items-end">
                 <div className="flex justify-between pb-2 gap-2">
                   <Button.Secondary
@@ -173,13 +187,13 @@ export default function Question() {
 
           <div className="my-10 md:max-w-[80%]">
             <h3 className="font-semibold text-lg mb-3">Description:</h3>
-            <p>{data?.data?.description}</p>
+            <p>{oneDeck?.description}</p>
           </div>
 
-          {data?.data && data?.data?.questions?.length > 0 && (
+          {oneDeck && oneDeck?.questions?.length > 0 && (
             <button
               type="button"
-              onClick={() => navigate(`/deck/practise/${data?.data?._id}`)}
+              onClick={() => navigate(`/deck/practise/${oneDeck?._id}`)}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary focus:outline-none"
             >
               Take Quiz
@@ -195,7 +209,7 @@ export default function Question() {
       <InviteDeckUserModal
         open={openShareModal}
         setClose={closeShareModal}
-        data={data?.data}
+        data={oneDeck}
       />
     </div>
   );

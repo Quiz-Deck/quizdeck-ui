@@ -7,6 +7,7 @@ import {
   DeckListResponse,
   InviteUserRequest,
 } from "./deckSliceTypes";
+import {saveDeckInLocalForage} from "../../../storage/indexedDBStorage"
 
 const deckApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -33,29 +34,47 @@ const deckApi = apiSlice.injectEndpoints({
 
     //Get a user's deck
     getUserDeck: build.query<DeckListResponse, string>({
-      query: (page) => ({
-        url: `/deck/user?page=${page}`,
-        method: "GET",
-      }),
+      query: (page) => `/deck/user?page=${page}`,
+      transformResponse: async (response: DeckListResponse) => {
+        try {
+            const saveDeckPromises = response?.data?.map(deck => saveDeckInLocalForage(deck));
+            await Promise.all(saveDeckPromises);
+            return response;
+        } catch (error) {
+            console.error('Error in transformResponse:', error);
+            throw error;  // Re-throw the error to propagate it
+        }
+      },
     }),
 
     //Get a single deck
-    getSingleDeck: build.query<
-      SingleDeckResponse,
-      { id: string; userId: string }
-    >({
-      query: ({ id, userId }) => ({
-        url: `/deck/${id}?userId=${userId}`,
-        method: "GET",
-      }),
+    getSingleDeck: build.query<SingleDeckResponse, { id: string; userId: string }>({
+      query: ({ id, userId }) => `/deck/${id}?userId=${userId}`,
+      transformResponse: async (response: SingleDeckResponse) => {
+        try {  
+            await  saveDeckInLocalForage(response.data);
+            return response;
+        } catch (error) {
+            console.error('Error in transformResponse:', error);
+            throw error;  // Re-throw the error to propagate it
+        }
+      },
     }),
 
-    //Get a single deck
-    getPublicDecks: build.query<DeckListResponse, string>({
-      query: (page) => ({
-        url: `/deck/public?page=${page}`,
-        method: "GET",
-      }),
+
+    // Get all public decks 
+    getPublicDecks: build.query({
+      query: (page) => `/deck/public?page=${page}`,
+      transformResponse: async (response: DeckListResponse) => {
+          try {
+              const saveDeckPromises = response?.data?.map(deck => saveDeckInLocalForage(deck));
+              await Promise.all(saveDeckPromises);
+              return response;
+          } catch (error) {
+              console.error('Error in transformResponse:', error);
+              throw error;
+          }
+      }
     }),
 
     //Delete a single deck

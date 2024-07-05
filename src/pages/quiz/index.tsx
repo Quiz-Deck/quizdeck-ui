@@ -10,6 +10,8 @@ import { StartTestModal } from "components/modals/StartTestModal";
 import { TestResultsModal } from "components/modals/TestResultsModal";
 import { CloseTestModal } from "components/modals/CloseTestModal";
 import { useGetSingleDeckQuery } from "../../features/api/deck/deckApi";
+import { SingleDeck } from "features/api/deck/deckSliceTypes";
+import { loadDeckFromLocalForage } from "storage/indexedDBStorage";
 
 interface AnswerFormat {
   [key: number]: string;
@@ -37,6 +39,19 @@ const QuizTaker: React.FC = () => {
   const initialTimerValue = data?.data?.timer ?? 0; // Default to 0 if undefined
   const [timer, setTimer] = useState<number>(initialTimerValue); // Initialize timer with the value from data
   const [countdown, setCountdown] = useState<boolean>(initialTimerValue > 0); // Determine initial mode
+
+
+  const [oneDeck, setDeck] = useState<SingleDeck>();
+
+  // There might be a better way to handle this but giving up for now, if we can get it sent from the API, will be a better outcome 
+  useEffect(() => {
+    const fetchData = async () => {
+      let deck = await loadDeckFromLocalForage(id as string) as SingleDeck;
+      console.log(deck, "i am deck here")
+      setDeck(deck);
+    };
+    fetchData();
+  }, [data]);
 
   // useEffect(() => {
   //   let interval: NodeJS.Timeout | null = null;

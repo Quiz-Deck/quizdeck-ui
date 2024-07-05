@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/buttons";
 import errorHandler from "handlers/errorHandler";
@@ -33,9 +33,9 @@ const Register = (): JSX.Element => {
     <div className="max-w-[350px] mx-auto">
       <div className="flex justify-between items-center mb-10">
         <h2 className="font-bold text-2xl">Sign up</h2>
-        <a href="/auth/login" className="text-primary">
+        <Link to="/auth/login" className="text-primary">
           Login
-        </a>
+        </Link>
       </div>
       <form>
         <Input.Label
@@ -70,9 +70,9 @@ const Register = (): JSX.Element => {
         />
         <div className="flex gap-1 mt-6">
           <span>Already have an account?</span>{" "}
-          <a href="/auth/login" className="text-primary">
+          <Link to="/auth/login" className="text-primary">
             Sign in
-          </a>
+          </Link>
         </div>
       </form>
 

@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import PageLoader from "utils/PageLoader";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
+import { getDecks } from "storage/indexedDBStorage";
+import { SingleDeck } from "features/api/deck/deckSliceTypes";
 
 export default function Explore() {
   const navigate = useNavigate();
   const { data, isLoading } = useGetPublicDecksQuery("1");
   const { data: userDecks } = useGetUserDeckQuery("1");
+  const [publicDeck, setPublicDeck] = useState<SingleDeck[]>([]);
+  const [privateDeck, setPrivateDeck] = useState<SingleDeck[]>([]);
+
+  // There might be a better way to handle this but giving up for now, if we can get it sent from the API, will be a better outcome 
+  useEffect(() => {
+    const fetchData = async () => {
+      let decks = await getDecks('PUBLIC');
+      setPublicDeck(decks);
+    };
+    fetchData();
+  }, [data]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let decks = await getDecks('PRIVATE');
+      setPrivateDeck(decks);
+    };
+    fetchData();
+  }, [userDecks]);
 
   return (
     <div>
@@ -17,9 +38,9 @@ export default function Explore() {
           <h3 className="text-primary text-2xl font-bold">My Recent Decks</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {userDecks?.data &&
-            userDecks?.data?.length > 0 &&
-            userDecks?.data.slice(0, 2).map((item, index) => (
+          {privateDeck &&
+            privateDeck?.length > 0 &&
+            privateDeck.slice(0, 2).map((item, index) => (
               <div
                 key={index}
                 onClick={() => navigate(`/dashboard/question/${item?._id}`)}
@@ -81,16 +102,16 @@ export default function Explore() {
           </button>
         </div>
 
-        {isLoading ? (
+        {(isLoading && publicDeck.length === 0) ? (
           <div className="h-full w-full flex items-center justify-center">
             <PageLoader />
           </div>
         ) : (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {data?.data &&
-                data?.data?.length > 0 &&
-                data?.data?.slice(0, 8).map((item, index) => (
+              {publicDeck &&
+                publicDeck.length > 0 &&
+                publicDeck?.slice(0, 8).map((item, index) => (
                   <div
                     key={index}
                     onClick={() => navigate(`/dashboard/question/${item?._id}`)}
