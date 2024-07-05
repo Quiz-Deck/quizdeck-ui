@@ -26,7 +26,7 @@ const QuizTaker: React.FC = () => {
   const [openResults, setOpenResults] = useState(false);
   const [openWarning, setOpenWarning] = useState(true);
   // const [timer, setTimer] = useState<number>(0);
-
+  const [oneDeck, setDeck] = useState<SingleDeck>();
   const { id } = useParams();
   const user = _getUser();
   const { data, isLoading } = useGetSingleDeckQuery({
@@ -36,18 +36,17 @@ const QuizTaker: React.FC = () => {
 
   // const countdown = false;
   const [isActive, setIsActive] = useState(false);
-  const initialTimerValue = data?.data?.timer ?? 0; // Default to 0 if undefined
+  const initialTimerValue = oneDeck?.timer ?? 0; // Default to 0 if undefined
   const [timer, setTimer] = useState<number>(initialTimerValue); // Initialize timer with the value from data
   const [countdown, setCountdown] = useState<boolean>(initialTimerValue > 0); // Determine initial mode
 
 
-  const [oneDeck, setDeck] = useState<SingleDeck>();
+
 
   // There might be a better way to handle this but giving up for now, if we can get it sent from the API, will be a better outcome 
   useEffect(() => {
     const fetchData = async () => {
       let deck = await loadDeckFromLocalForage(id as string) as SingleDeck;
-      console.log(deck, "i am deck here")
       setDeck(deck);
     };
     fetchData();
@@ -106,7 +105,7 @@ const QuizTaker: React.FC = () => {
       setCountdown(true);
     }
     // eslint-disable-next-line
-  }, [data?.data?.timer]);
+  }, [oneDeck?.timer]);
 
   useEffect(() => {
     if (!openWarning) {
@@ -141,9 +140,9 @@ const QuizTaker: React.FC = () => {
 
   const handleSubmit = (answers: any) => {
     let correctCount = 0;
-    let questionsCount = data?.data?.questions.length || 0;
+    let questionsCount = oneDeck?.questions.length || 0;
 
-    data?.data?.questions.forEach((question, index) => {
+    oneDeck?.questions.forEach((question, index) => {
       if (question.answer === answers[index]) {
         correctCount++;
       }
@@ -168,9 +167,9 @@ const QuizTaker: React.FC = () => {
         </div>
         <div className="text-center">
           <p className="text-sm font-bold">
-            {activeQuestion + 1} / {data?.data?.questions?.length}
+            {activeQuestion + 1} / {oneDeck?.questions?.length}
           </p>
-          <p className="text-sm">{data?.data?.title}</p>
+          <p className="text-sm">{oneDeck?.title}</p>
         </div>
         <Button.Secondary title={"Close"} onClick={() => openModal()} />
       </div>
@@ -183,9 +182,9 @@ const QuizTaker: React.FC = () => {
         ) : (
           <div className="flex gap-8">
             <div className="max-w-[350px] w-full">
-              {data?.data?.questions && (
+              {oneDeck?.questions && (
                 <QuestionsSideNav
-                  data={data?.data?.questions}
+                  data={oneDeck?.questions}
                   answers={answers}
                   setActiveQuestion={setActiveQuestion}
                   handleSubmit={handleSubmit}
@@ -197,7 +196,7 @@ const QuizTaker: React.FC = () => {
             </div>
             <div className="w-full">
               <QuizQuestionType
-                data={data?.data ? data?.data?.questions : []}
+                data={oneDeck ? oneDeck?.questions : []}
                 activeQuestion={activeQuestion}
                 setActiveQuestion={setActiveQuestion}
                 answers={answers}
