@@ -35,6 +35,9 @@ export const TestResultsModal = ({
 }: Props) => {
   const navigate = useNavigate();
 
+  console.log("answers", answers);
+  console.log("data", data);
+  
   const refreshPage = () => {
     navigate(0);
   };
