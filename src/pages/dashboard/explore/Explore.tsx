@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import PageLoader from "utils/PageLoader";
+import { _getUser } from "utils/Auth";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
 import { getDecks } from "storage/indexedDBStorage";
 import { SingleDeck } from "features/api/deck/deckSliceTypes";
 
 export default function Explore() {
+  const user = _getUser();
   const navigate = useNavigate();
   const { data, isLoading } = useGetPublicDecksQuery("1");
   const { data: userDecks } = useGetUserDeckQuery("1");
@@ -34,6 +36,7 @@ export default function Explore() {
   return (
     <div>
       <div className="mb-12">
+        <h1 className='mb-12 text-3xl font-bold'>Hello {user?.data?.userName},</h1>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-primary text-2xl font-bold">My Recent Decks</h3>
         </div>
