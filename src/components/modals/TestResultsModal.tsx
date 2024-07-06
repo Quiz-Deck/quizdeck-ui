@@ -116,7 +116,7 @@ export const TestResultsModal = ({
               <div className="text-4xl font-bold">{scorePercentage}%</div>
               <div>
                 <p>
-                  You scored {score} out of {data?.data?.questions?.length}.
+                  You scored {score} out of {data?.questions?.length}.
                 </p>
                 <p>Your time: {formatTime(timer)}</p>
               </div>
@@ -126,7 +126,7 @@ export const TestResultsModal = ({
             <h3 className="text-lg font-bold mb-2">Next steps:</h3>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10">
               <div className="shadow-lg px-3 py-4 flex gap-3 items-center">
-                <LikeDeck id={data?.data?._id} data={data?.data} />
+                <LikeDeck id={data?._id} data={data} />
                 <div>
                   <p className="text-primary font-semibold mb-1">
                     Like this quiz
@@ -183,9 +183,9 @@ export const TestResultsModal = ({
 
             {/* Your answers */}
             <h3 className="text-lg font-bold mb-2">Your answers:</h3>
-            {data?.data &&
-              data?.data?.questions?.length > 0 &&
-              data?.data?.questions.map(
+            {data &&
+              data?.questions?.length > 0 &&
+              data?.questions.map(
                 (question: DeckQuestion, index: number) => (
                   <div key={question?._id} className="w-full mb-6">
                     <div className="flex gap-3 items-center mb-1">

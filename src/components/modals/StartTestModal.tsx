@@ -27,17 +27,17 @@ export const StartTestModal = ({ open, setClose, data }: Props) => {
           </div>
 
           <p className="font-semibold text-left text-lg mb-4">
-            Title: {data?.data?.title}
+            Title: {data?.title}
           </p>
 
           <p className="text-left mb-2">
             You are about to start this quiz, It contains{" "}
-            <b>{data?.data?.questions?.length}</b> questions.
+            <b>{data?.questions?.length}</b> questions.
           </p>
           <p className="text-left mb-3">
-            {data?.data?.timer > 0
+            {data?.timer > 0
               ? `The time allocated for this quiz is ${Math.floor(
-                  Number(data?.data?.timer) / 60
+                  Number(data?.timer) / 60
                 )} minutes, so use your time wisely. Try to attempt all questions within the time!`
               : "There is no timer for this quiz, so take your time to answer these questions."}
           </p>

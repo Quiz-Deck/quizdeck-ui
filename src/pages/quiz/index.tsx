@@ -213,13 +213,13 @@ const QuizTaker: React.FC = () => {
       <StartTestModal
         open={openWarning}
         setClose={closeWarningModal}
-        data={data}
+        data={oneDeck}
       />
       <TestResultsModal
         open={openResults}
         setClose={closeResultsModal}
         score={score}
-        data={data}
+        data={oneDeck}
         timer={timer}
         answers={answers}
         scorePercentage={scorePercentage}
