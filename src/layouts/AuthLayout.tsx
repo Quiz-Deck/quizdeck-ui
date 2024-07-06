@@ -21,7 +21,7 @@ export default function AuthLayout() {
         >
           <div className="max-w-[600px] mx-auto glass px-8 pt-10 flex flex-col justify-between items-end flex-wrap">
             <h3 className="text-white text-[45px] font-medium">
-              Start your journey by one click, explore beautiful world!
+              Begin your learning adventure, explore limitless knowledge!
             </h3>
             <img src={Girl} alt="girl" />
           </div>
