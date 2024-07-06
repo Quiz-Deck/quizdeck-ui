@@ -139,6 +139,8 @@ const QuizTaker: React.FC = () => {
   };
 
   const handleSubmit = (answers: any) => {
+    console.log("answers", answers);
+
     let correctCount = 0;
     let questionsCount = oneDeck?.questions.length || 0;
 
