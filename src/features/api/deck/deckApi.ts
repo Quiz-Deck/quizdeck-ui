@@ -6,13 +6,14 @@ import {
   CreateDeckResponse,
   DeckListResponse,
   InviteUserRequest,
+  SingleDeck,
 } from "./deckSliceTypes";
 import {saveDeckInLocalForage} from "../../../storage/indexedDBStorage"
 
 const deckApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     //Create a deck
-    createDeck: build.mutation<CreateDeckResponse, Partial<CreateDeckRequest>>({
+    createDeck: build.mutation<CreateDeckResponse, Partial<SingleDeck>>({
       query: (payload) => ({
         url: "/deck/create",
         method: "POST",

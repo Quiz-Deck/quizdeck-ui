@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../../components/input/Input";
 import { SelectInput } from "components/input/select";
@@ -6,12 +6,17 @@ import Button from "../../../components/button/buttons";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
 import { useCreateDeckMutation } from "../../../features/api/deck/deckApi";
+import { _getUser } from "utils/Auth";
+import mongoose from "mongoose";
+import { createDeckOffline, deleteSyncedData, getOfflineDecks} from "storage/indexedDBStorage";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {};
 
 const DeckDetails: React.FC<CreateQuizProps> = () => {
+  
   const navigate = useNavigate();
+  const user = _getUser();
 
   const [data, setData] = useState({
     title: "",
@@ -29,21 +34,65 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
     setData({ ...data, [name]: value });
   };
 
+  //Funtion to handle creating a deck 
   const handleSubmit = () => {
     const timer_to_seconds = Number(data.timer * 60);
-    const new_data = { ...data, timer: timer_to_seconds };
-
-    createDeck(new_data)
-      .unwrap()
-      .then((res: any) => {
-        successHandler(res, true);
-        navigate(`/deck/create/${res?.data?._id}`);
-      })
-      .catch((err) => {
-        errorHandler(err?.data, true);
-      });
+    const deckId = new mongoose.Types.ObjectId().toString() as string;
+      const new_data = { 
+        ...data, 
+        _id: deckId,
+        timer: timer_to_seconds, 
+        createdBy: user.data,
+        updatedBy: user.data,
+        questions: [],
+        userLiked: false,
+        createdOn: new Date().toDateString(),
+        updatedOn: new Date().toDateString(),
+        likeCount: 0,
+        playCount: 0
+      };
+      if (navigator.onLine) {
+        createDeck(new_data)
+        .unwrap()
+        .then((res: any) => {
+          successHandler(res, true);
+          navigate(`/deck/create/${res?.data?._id}`);
+        })
+        .catch((err) => {
+          errorHandler(err?.data, true);
+        });
+      }else{
+        createDeckOffline(new_data)
+        navigate(`/deck/create/${deckId}`);
+      }
+    
   };
 
+  const syncOfflineData = async () =>{
+    console.log("here or")
+    let decks = await getOfflineDecks();
+    if(!decks) return;
+    decks.map((deck)=>{
+      createDeck(deck)
+        .unwrap()
+        .then((res: any) => {
+          deleteSyncedData(deck._id)
+        })
+        .catch((err) => {
+          errorHandler(err?.data, true);
+        });
+    })
+
+  }
+
+  useEffect(()=>{
+    if(navigator.onLine){
+      syncOfflineData()
+    }
+  }, [navigator])
+
+  
+   
   return (
     <div>
       <Input.Label

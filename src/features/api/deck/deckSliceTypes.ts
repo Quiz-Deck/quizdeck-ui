@@ -72,11 +72,11 @@ export interface SingleDeck {
   _id: string;
   createdBy: CreatedBy;
   createdOn: string;
-  deckGuests: DeckGuests[];
+  deckGuests?: DeckGuests[];
   description: string;
   likeCount: number;
   playCount: number;
-  questions: DeckQuestion[];
+  questions?: DeckQuestion[];
   status: string;
   timer: number;
   title: string;

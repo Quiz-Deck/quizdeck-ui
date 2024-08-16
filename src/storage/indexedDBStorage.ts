@@ -1,3 +1,4 @@
+import { useCreateDeckMutation } from 'features/api/deck/deckApi';
 import { SingleDeck } from 'features/api/deck/deckSliceTypes';
 import localForage from 'localforage';
 // /**
@@ -18,6 +19,11 @@ localForage.config({
 export const deckStore = localForage.createInstance({
 	name: 'Quiryfy',
 	storeName: 'Decks'
+});
+
+export const offlinedeckStore = localForage.createInstance({
+	name: 'Quiryfy',
+	storeName: 'Offline Decks'
 });
 
 
@@ -41,6 +47,30 @@ export const userStore = localForage.createInstance({
 ) => {
 	if (deck && deck._id) {
 		await deckStore.setItem(deck._id as string, deck)
+		.catch(function(err) {
+			if (err.name === 'QuotaExceededError') {
+				console.log('Storage limit exceeded. Please clear some space.');
+			} else {
+				console.error(err);
+			}
+		});
+		return true;
+	}
+	return false;
+};
+
+/**
+ * Function to create a deck when the user is offline 
+ * @param deck Deck to Save to IndexedDB
+ */
+export const createDeckOffline = async (
+	deck: SingleDeck,
+) => {
+	if (deck && deck._id) {
+		// Save in the decks list
+		await deckStore.setItem(deck._id as string, deck)
+		// Save deck to the offline list
+		await offlinedeckStore.setItem(deck._id, deck)
 		.catch(function(err) {
 			if (err.name === 'QuotaExceededError') {
 				console.log('Storage limit exceeded. Please clear some space.');
@@ -88,4 +118,24 @@ export const userStore = localForage.createInstance({
 		}
 	});
 	return decks;
+};
+
+// Get offline decks 
+export const getOfflineDecks = async () => {
+	const decks: SingleDeck[] = [];
+	await offlinedeckStore.iterate((value, key) => {
+		const deck = value as SingleDeck;
+		decks.push(deck)
+	});
+	return decks;
+};
+
+// Function to delete synced data after user is online 
+export const deleteSyncedData = async (id: string) => {
+    try {
+        await offlinedeckStore.removeItem(id);
+        console.log(`Data with ID ${id} has been deleted from the offline store.`);
+    } catch (error) {
+        console.error(`Failed to delete data with ID ${id}:`, error);
+    }
 };

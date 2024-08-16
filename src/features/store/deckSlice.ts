@@ -82,8 +82,9 @@ export const deckSlice = createSlice({
         },
       };
     },
+
     addADeckQuestion: (state, action: PayloadAction<DeckQuestion[]>) => {
-      const oldQuestions = state.singleDeck.data.questions;
+      const oldQuestions = state.singleDeck.data.questions!;
       const updatedQuestions = [...oldQuestions, ...action.payload];
       const newData = { ...state.singleDeck.data, questions: updatedQuestions };
 
@@ -95,9 +96,10 @@ export const deckSlice = createSlice({
         },
       };
     },
+
     editADeckQuestion: (state, action: PayloadAction<SingleDeck>) => {
       const oldQuestions = state.singleDeck.data.questions;
-      const updatedQuestions = oldQuestions.map((question: DeckQuestion) => {
+      const updatedQuestions = oldQuestions?.map((question: DeckQuestion) => {
         // Assuming there's a question ID to compare
         if (question?._id === action.payload?._id) {
           // Replace the question with the updated one from action.payload
@@ -112,11 +114,12 @@ export const deckSlice = createSlice({
         data: newData,
       };
     },
+
     deleteADeckQuestion: (state, action: PayloadAction<string>) => {
       const oldQuestions = state.singleDeck.data.questions;
 
       // Filter out the question with the ID matching action.payload
-      const updatedQuestions = oldQuestions.filter(
+      const updatedQuestions = oldQuestions?.filter(
         (question: DeckQuestion) => question?._id !== action.payload
       );
 
@@ -132,6 +135,7 @@ export const deckSlice = createSlice({
       };
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchSingleDeck.pending, (state) => {
