@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "components/button/buttons";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import PageLoader from "utils/PageLoader";
 import { _getUser } from "utils/Auth";
@@ -15,7 +16,27 @@ export default function Explore() {
   return (
     <div>
       <div className="mb-12">
-        <h1 className='mb-12 text-3xl font-bold'>Hello {user?.data?.userName},</h1>
+        <div className="flex items-end justify-between gap-4 bg-primary py-8 px-5 mb-8">
+          <div className="pb-4 text-white">
+            <h2 className="text-[2rem]">This would be a headline here</h2>
+            <p className="text-lg">
+              Lorem ipsum dolor sit amet consectetur. Sed libero tellus ornare
+              est nLorem ipsum dolor sit amet consectetu
+            </p>
+          </div>
+          <Button.Secondary
+            title={"Create first quiz"}
+            className="rounded-[50px] px-4 ml-auto"
+            // disabled={false}
+            // loading={isLoading}
+            // onClick={handleSubmit}
+          />
+        </div>
+
+        <h1 className="mb-12 text-3xl font-bold">
+          Hello {user?.data?.userName},
+        </h1>
+
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-primary text-2xl font-bold">My Recent Decks</h3>
         </div>
