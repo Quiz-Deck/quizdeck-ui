@@ -123,3 +123,7 @@ body {
   -o-animation: ring-border-width 0.35s 1, ring-size 0.35s 1; /* Opera 12+ */
   animation: ring-border-width 0.35s 1, ring-size 0.35s 1; /* IE 10+, Fx 29+ */
 }
+
+.purple-gradient {
+  background: linear-gradient(93.04deg, #350b95 49.02%, #885af2 102.52%);
+}

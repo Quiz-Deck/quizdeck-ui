@@ -16,7 +16,7 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
   const [data, setData] = useState({
     title: "",
     description: "",
-    type: "",
+    type: "PRIVATE",
     status: "",
     timer: 0, //Optional
     deckGuests: [], //Optional
@@ -64,16 +64,14 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
         onChange={(e: any) => handleChange(e)}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
-        <SelectInput
-          label={"Quiz Type"}
-          name={"type"}
+        <Input.Number
+          title={"Total Time Duration (optional)"}
+          name="timer"
+          placeholder={"How many minutes should this test last for?"}
+          className="rounded-md bg-[#FAFAFF] mt-1"
+          autoComplete="off"
           onChange={(e: any) => handleChange(e)}
-          className="rounded-md bg-[#FAFAFF]"
-        >
-          <option>Select Quiz Type</option>
-          <option value={"PRIVATE"}>PRIVATE</option>
-          <option value={"PUBLIC"}>PUBLIC</option>
-        </SelectInput>
+        />
 
         <SelectInput
           label={"Quiz Status"}
@@ -87,21 +85,16 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
         </SelectInput>
       </div>
 
-      <Input.Number
-        title={"Timer (optional)"}
-        name="timer"
-        placeholder={"How many minutes should this test last for?"}
-        className="rounded-md mb-5 bg-[#FAFAFF]"
-        autoComplete="off"
-        onChange={(e: any) => handleChange(e)}
-      />
-      <Button.Primary
-        title={"Create Deck"}
-        className="mt-4"
-        disabled={isLoading}
-        loading={isLoading}
-        onClick={handleSubmit}
-      />
+      <div className="mt-4 flex justify-center">
+        <Button.Primary
+          title={"Create Deck"}
+          className="px-5"
+          style={{ borderRadius: "30px" }}
+          disabled={isLoading}
+          loading={isLoading}
+          onClick={handleSubmit}
+        />
+      </div>
     </div>
   );
 };
