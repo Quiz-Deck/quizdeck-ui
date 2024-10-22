@@ -95,7 +95,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
   };
 
   return (
-    <div className="mt-5 p-5 border border-t-4 border-t-primary w-full">
+    <div className="mt-5 p-5 bg-primary rounded-[20px] w-full">
       <Input.Textarea
         title={""}
         name="question"

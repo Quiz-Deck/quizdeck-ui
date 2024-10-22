@@ -82,43 +82,35 @@ const AddDeckQuestions: React.FC = () => {
         {"Back"}
       </button>
 
-      <div className="mb-12 border border-[#D6E4FD] rounded-md px-4 py-4">
+      <div className="mb-12 bg-[#F3EFFC] border border-[#FFFFFF33] rounded-[10px] px-4 py-4">
         <div className="mb-6 flex justify-between items-center">
           <h2 className="text-2xl font-bold">{singleDeck?.data?.title}</h2>
-          <Button.Primary
+          {/* <Button.Primary
             title={"Edit Deck"}
             className="px-8 mt-4"
             onClick={() => openModal()}
-          />
+          /> */}
         </div>
 
         <div className="mb-8">
-          <label className="text-sm text-[#444444]">Deck description:</label>
           <h2>{singleDeck?.data?.description}</h2>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
-          <div>
-            <label className="text-sm text-[#444444]">Deck type:</label>
-            <h2>{singleDeck?.data?.type}</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-[#E0D4FC] rounded-[15px] w-fit ">
+            <h2 className="text-primary">{singleDeck?.data?.type}</h2>
           </div>
-          <div>
-            <label className="text-sm text-[#444444]">Deck status:</label>
-            <h2>{singleDeck?.data?.status}</h2>
-          </div>
-          <div>
-            <label className="text-sm text-[#444444]">Deck timer:</label>
-            <h2>{Math.floor(Number(singleDeck?.data?.timer) / 60)} minutes</h2>
+          <div className="bg-[#E0D4FC] rounded-[15px] w-fit ">
+            <h2 className="text-primary">
+              {Math.floor(Number(singleDeck?.data?.timer) / 60)} minutes
+            </h2>
           </div>
         </div>
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-2xl font-bold">Deck Questions</h2>
-      </div>
-
       <>
-        {singleDeck?.data && singleDeck?.data?.questions?.length > 0 ? (
+        {singleDeck?.data &&
+          singleDeck?.data?.questions?.length > 0 &&
           singleDeck?.data?.questions.map(
             (question: DeckQuestion, index: number) => (
               <div key={question?._id} className="border w-full mb-8">
@@ -167,12 +159,7 @@ const AddDeckQuestions: React.FC = () => {
                 )}
               </div>
             )
-          )
-        ) : (
-          <div>
-            <p>You have not added any questions to your deck yet</p>
-          </div>
-        )}
+          )}
 
         {view?.status && view?.type === "multiple-choice" ? (
           <MultipleChoice

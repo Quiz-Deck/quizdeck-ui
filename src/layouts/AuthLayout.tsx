@@ -2,30 +2,34 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import Rings from "../assets/decorations/auth-rings.svg";
-import Girl from "../assets/images/auth/girl.png";
+// import Rings from "../assets/decorations/auth-rings.svg";
+import Curve from "assets/decorations/curve.svg";
+import { ReactComponent as Spirals } from "assets/decorations/spirals.svg";
+import Question from "assets/decorations/question-mark.png";
 
 export default function AuthLayout() {
   return (
-    <div className="p-5 flex items-center w-full h-screen">
-      <div className="grid grid-cols-2 items-center w-full">
+    <div className="relative p-5 flex items-center w-full h-screen bg-primary">
+      <div className="w-full max-w-[920px] mx-auto">
         <div>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>
         </div>
-        <div
-          className="bg-primary rounded-2xl px-5 py-10 bg-no-repeat bg-left-bottom max-w-[720px]"
-          style={{ backgroundImage: `url(${Rings}) ` }}
-        >
-          <div className="max-w-[600px] mx-auto glass px-8 pt-10 flex flex-col justify-between items-end flex-wrap">
-            <h3 className="text-white text-[45px] font-medium">
-              Begin your learning adventure, explore limitless knowledge!
-            </h3>
-            <img src={Girl} alt="girl" />
-          </div>
-        </div>
+        <img
+          src={Curve}
+          alt="design"
+          className="absolute left-0 bottom-[40%]"
+        />
+
+        <img
+          src={Question}
+          alt="design"
+          className="h-130px] w-[130px] absolute right-[8%] top-[10%]"
+        />
+
+        <Spirals className="absolute right-[4%] bottom-[20%] w-[92px] h-[92px]" />
       </div>
     </div>
   );

@@ -35,21 +35,14 @@ export default function NavbarDashboard() {
 
               <div className="hidden lg:ml-4 lg:flex lg:items-center">
                 <div className="hidden md:block md:ml-10  md:space-x-8">
-                  {/* {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="font-medium text-gray-500 hover:text-gray-900"
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                  <a
-                    href="/auth/login"
-                    className="font-medium text-primary hover:text-indigo-500"
+                  <button
+                    type="button"
+                    onClick={() => navigate("/deck/create")}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary focus:outline-none"
                   >
-                    Log in
-                  </a> */}
+                    Save as draft
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => navigate("/deck/create")}

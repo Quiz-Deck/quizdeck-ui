@@ -17,7 +17,7 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
     title: "",
     description: "",
     type: "PRIVATE",
-    status: "",
+    status: "DRAFT",
     timer: 0, //Optional
     deckGuests: [], //Optional
   });
@@ -47,20 +47,20 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
   return (
     <div>
       <Input.Label
-        title={"Quiz Name"}
+        title={"Title of Quiz"}
         name="title"
-        placeholder={"Quiz Name"}
-        className="rounded-md mb-5 bg-[#FAFAFF]"
+        placeholder={"Enter title of quiz"}
+        className="mb-5 bg-[#FAFAFF]"
         autoComplete="off"
         onChange={(e: any) => handleChange(e)}
       />
       <Input.Textarea
-        title={"Quiz Description"}
+        title={"Description"}
         name="description"
-        placeholder={"Add a description..."}
-        className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+        placeholder={"Describe your quiz"}
+        className="mb-5 min-h-[60px] bg-[#FAFAFF]"
         autoComplete="off"
-        minLength={12}
+        minLength={5}
         onChange={(e: any) => handleChange(e)}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-4">
@@ -68,20 +68,20 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
           title={"Total Time Duration (optional)"}
           name="timer"
           placeholder={"How many minutes should this test last for?"}
-          className="rounded-md bg-[#FAFAFF] mt-1"
+          className="bg-[#FAFAFF] mt-1"
           autoComplete="off"
           onChange={(e: any) => handleChange(e)}
         />
 
         <SelectInput
-          label={"Quiz Status"}
-          name={"status"}
+          label={"Type"}
+          name={"type"}
           onChange={(e: any) => handleChange(e)}
-          className="rounded-md bg-[#FAFAFF]"
+          className="bg-[#FAFAFF]"
         >
-          <option>Select Quiz Status</option>
-          <option value={"DRAFT"}>DRAFT</option>
-          <option value={"PUBLISHED"}>PUBLISHED</option>
+          <option>Select Quiz Type</option>
+          <option value={"PRIVATE"}>PRIVATE</option>
+          <option value={"PUBLIC"}>PUBLIC</option>
         </SelectInput>
       </div>
 

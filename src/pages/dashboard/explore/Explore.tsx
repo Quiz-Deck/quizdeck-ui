@@ -1,53 +1,65 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "components/button/buttons";
 import PageLoader from "utils/PageLoader";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
+import Spirals from "../../../assets/decorations/spirals.svg";
+import Question from "../../../assets/decorations/question-mark.png";
 import createQuiz from "../../../assets/icons/create-quiz.svg";
 import generateDocument from "../../../assets/icons/generate-document.svg";
 import { ReactComponent as StarOutline } from "../../../assets/icons/star-outline.svg";
 import { CreateDeckModal } from "components/modals/CreateDeckModal";
+import { CreateDeckTypesModal } from "components/modals/CreateDeckTypesModal";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
 
 export default function Explore() {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
 
   const { data, isLoading } = useGetPublicDecksQuery("1");
   const { data: userDecks } = useGetUserDeckQuery("1");
 
-  const openModal = () => {
-    setOpen(true);
-  };
-
-  const closeModal = () => {
-    setOpen(false);
-  };
+  const [modal, setModal] = useState({ isOpen: false, type: "", modalObj: {} });
+  const modalOpen = (type: string, modalObj?: any) =>
+    setModal({ isOpen: true, type: type, modalObj });
+  const modalClose = (e?: boolean) =>
+    setModal({ isOpen: e || false, type: "", modalObj: {} });
 
   return (
     <div>
       <div className="mb-12">
-        <div className="flex items-end justify-between gap-4 purple-gradient py-10 px-8 rounded-[30px]">
-          <div className="pb-4 text-white lg:w-[60%]">
+        <div className="relative flex items-end justify-between gap-4 purple-gradient py-10 px-8 rounded-[30px]">
+          <div className="pb-4 ml-2 text-white lg:w-[70%]">
             <h2 className="text-[2rem] mb-3">This would be a headline here</h2>
             <p className="text-lg">
               Lorem ipsum dolor sit amet consectetur. Sed libero tellus ornare
               est nLorem ipsum dolor sit amet consectetu sit amet consectetu.
             </p>
+            <img
+              src={Spirals}
+              alt="design"
+              className="absolute left-4 bottom-4"
+            />
           </div>
-          <Button.Secondary
-            title={"Create first quiz"}
-            className="rounded-[50px] px-4 ml-auto"
-            onClick={() => navigate(`/deck/create`)}
-            // disabled={false}
-            // loading={isLoading}
-          />
+          <div>
+            <img
+              src={Question}
+              alt="design"
+              className="h-130px] w-[130px] absolute top-3 right-2"
+            />
+            <button
+              type="button"
+              // onClick={() => navigate(`/deck/create`)}
+              onClick={() => modalOpen("quiz-types")}
+              className="h-[55px] min-w-[160px] rounded-[50px] border border-white outline-none px-5 text-white text-lg "
+            >
+              Create Quiz
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-3 gap-5 mt-6">
           <div
-            onClick={() => openModal()}
+            onClick={() => modalOpen("create-standard")}
             className="flex items-center gap-3 border border-[#C6C6CB] rounded-lg py-3 px-3"
           >
             <img
@@ -199,7 +211,12 @@ export default function Explore() {
         )}
       </div>
 
-      <CreateDeckModal open={open} setClose={closeModal} />
+      {modal && modal?.type === "create-standard" && (
+        <CreateDeckModal open={modal?.isOpen} setClose={modalClose} />
+      )}
+      {modal && modal?.type === "quiz-types" && (
+        <CreateDeckTypesModal open={modal?.isOpen} setOpen={modalOpen} setClose={modalClose} />
+      )}
     </div>
   );
 }
