@@ -32,7 +32,7 @@ export default function PublicDecks() {
 
   return (
     <div>
-      <div className="mt-10 mb-6">
+      <div className="pt-10 mb-6">
         <h2 className="text-2xl font-semibold">All Public Decks</h2>
       </div>
 

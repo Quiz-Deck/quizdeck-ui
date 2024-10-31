@@ -16,7 +16,7 @@ type CreateQuizProps = {
 const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
   const dispatch = useDispatch();
   const [editQuestion, { isLoading }] = useEditQuestionMutation();
-  const [showDetails, setShowDetails] = useState(false);
+  // const [showDetails, setShowDetails] = useState(false);
 
   const [data, setData] = useState({
     question: "",
@@ -97,73 +97,68 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
   };
 
   return (
-    <div
-      className="p-5 w-full hover:shadow-lg cursor-pointer"
-      onClick={() => setShowDetails(true)}
-    >
+    <div className="p-5 w-full hover:shadow-lg cursor-pointer">
       <Input.Textarea
         title={""}
         name="question"
         value={data?.question}
-        placeholder="Type your question here..."
-        className="rounded-md mb-5 min-h-[60px] bg-[#FAFAFF]"
+        placeholder="Enter your question here"
+        className="mb-5 min-h-[30px] bg-transparent border-none text-white"
         autoComplete="off"
         minLength={12}
         rows={4}
         onChange={(e: any) => handleChange(e)}
       />
 
-      {showDetails && (
-        <div>
-          {answerFields.map((inputField, index) => (
-            <Fragment key={index}>
-              <div className="flex gap-4 w-full items-center">
-                <input
-                  type="radio"
-                  name={question?._id}
-                  defaultChecked={question?.answer === inputField}
-                  onChange={() => handleSelectAnswer(inputField)}
+      <div>
+        {answerFields.map((inputField, index) => (
+          <Fragment key={index}>
+            <div className="flex gap-4 w-full items-center">
+              <input
+                type="radio"
+                name={question?._id}
+                defaultChecked={question?.answer === inputField}
+                onChange={() => handleSelectAnswer(inputField)}
+              />
+              <div className="w-full">
+                <Input.Label
+                  title={""}
+                  name="answer"
+                  placeholder={"Type answer or option"}
+                  className=" mb-4 w-full bg-[#D9D9D91A] rounded-[20px] border-[#FFFFFF4D] text-white"
+                  autoComplete="off"
+                  defaultValue={inputField}
+                  onChange={(event: any) => handleInputChange(index, event)}
                 />
-                <div className="w-full">
-                  <Input.Label
-                    title={""}
-                    name="answer"
-                    placeholder={"Type answer or option"}
-                    className="rounded-md mb-4 w-full bg-[#FAFAFF]"
-                    autoComplete="off"
-                    defaultValue={inputField}
-                    onChange={(event: any) => handleInputChange(index, event)}
-                  />
-                </div>
-
-                <button
-                  className="btn btn-link"
-                  type="button"
-                  onClick={() => handleRemoveFields(index)}
-                >
-                  -
-                </button>
               </div>
-            </Fragment>
-          ))}
 
-          <div className="flex items-center justify-between">
-            <button
-              className="text-primary mt-4"
-              type="button"
-              onClick={() => handleAddFields()}
-            >
-              + Add Answer or Option
-            </button>
-            <Button.Primary
-              title={"Edit Question"}
-              className="mt-4"
-              loading={isLoading}
-              onClick={handleSubmit}
-            />
-          </div>
+              <button
+                className="btn btn-link"
+                type="button"
+                onClick={() => handleRemoveFields(index)}
+              >
+                -
+              </button>
+            </div>
+          </Fragment>
+        ))}
+
+        <div className="flex items-center justify-between">
+          <button
+            className="text-primary mt-4"
+            type="button"
+            onClick={() => handleAddFields()}
+          >
+            + Add Answer or Option
+          </button>
+          <Button.Primary
+            title={"Edit Question"}
+            className="mt-4"
+            loading={isLoading}
+            onClick={handleSubmit}
+          />
         </div>
-      )}
+      </div>
     </div>
   );
 };

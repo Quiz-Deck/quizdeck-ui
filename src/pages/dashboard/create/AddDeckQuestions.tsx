@@ -10,8 +10,12 @@ import QuestionsMenu from "./QuestionsMenu";
 import EditMultipleChoice from "../editQuestionTypes/EditMultipleChoice";
 import EditQNA from "../editQuestionTypes/EditQNA";
 import Button from "../../../components/button/buttons";
+import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import { EditDeckModal } from "components/modals/EditDeckModal";
 import { GenerateDeckModal } from "components/modals/GenerateDeckModal";
+import { AddImageModal } from "components/modals/AddImageModal";
+import { AddAudioModal } from "components/modals/AddAudioModal";
+import { AddVideoModal } from 'components/modals/AddVideoModal';
 import errorHandler from "handlers/errorHandler";
 import successHandler from "handlers/successHandler";
 import { fetchSingleDeck } from "features/store/deckSlice";
@@ -82,28 +86,33 @@ const AddDeckQuestions: React.FC = () => {
         {"Back"}
       </button>
 
-      <div className="mb-12 bg-[#F3EFFC] border border-[#FFFFFF33] rounded-[10px] px-4 py-4">
-        <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold">{singleDeck?.data?.title}</h2>
-          {/* <Button.Primary
-            title={"Edit Deck"}
-            className="px-8 mt-4"
-            onClick={() => openModal()}
-          /> */}
-        </div>
-
-        <div className="mb-8">
-          <h2>{singleDeck?.data?.description}</h2>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-[#E0D4FC] rounded-[15px] w-fit ">
-            <h2 className="text-primary">{singleDeck?.data?.type}</h2>
+      <div className="mb-12 bg-[#F3EFFC] border border-[#FFFFFF33] rounded-[10px] px-5 py-5">
+        <div className="flex justify-between items-end gap-8">
+          <div className="flex items-start gap-4">
+            <figure>
+              <img
+                src={Dummy}
+                alt="cover"
+                className="w-[164px] h-[133px] rounded-[5px] border border-white object-cover"
+              />
+            </figure>
+            <div>
+              <h2 className="text-2xl font-bold my-2">
+                {singleDeck?.data?.title}
+              </h2>
+              <h2>{singleDeck?.data?.description}</h2>
+            </div>
           </div>
-          <div className="bg-[#E0D4FC] rounded-[15px] w-fit ">
-            <h2 className="text-primary">
-              {Math.floor(Number(singleDeck?.data?.timer) / 60)} minutes
-            </h2>
+
+          <div className="ml-auto flex items-center gap-2">
+            <div className="bg-[#E0D4FC] rounded-[15px] w-[108px] py-1 text-center capitalize ">
+              <span className="text-primary">
+                {Math.floor(Number(singleDeck?.data?.timer) / 60)} min
+              </span>
+            </div>
+            <div className="bg-[#E0D4FC] rounded-[15px] w-[104px] py-1 text-center capitalize ">
+              <span className="text-primary">{singleDeck?.data?.type}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -113,9 +122,12 @@ const AddDeckQuestions: React.FC = () => {
           singleDeck?.data?.questions?.length > 0 &&
           singleDeck?.data?.questions.map(
             (question: DeckQuestion, index: number) => (
-              <div key={question?._id} className="border w-full mb-8">
+              <div
+                key={question?._id}
+                className="bg-primary rounded-[20px] w-full mb-8"
+              >
                 <div className="p-5 flex items-center justify-between border-b py-2">
-                  <p>{index + 1}.</p>
+                  <p className="text-white font-bold">Question {index + 1}.</p>
                   <button
                     className={`${isLoading ? "animate-spin" : ""}`}
                     onClick={() => handleDelete(question?._id)}
@@ -175,12 +187,19 @@ const AddDeckQuestions: React.FC = () => {
           ""
         )}
 
-        <div className="flex gap-4 items-center mt-6">
+        <div
+          className={`flex gap-4 items-center ${
+            singleDeck?.data && singleDeck?.data?.questions?.length > 0
+              ? "justify-center"
+              : "justify-start"
+          } mt-6 w-full`}
+        >
           <QuestionsMenu setView={setViewType} />
           <p>Or</p>
           <Button.Primary
             title={"Generate questions with AI"}
-            className="px-8"
+            className="px-8 outline-none"
+            style={{ borderRadius: "50px" }}
             onClick={() => setOpenPrompt(true)}
           />
         </div>
@@ -191,11 +210,14 @@ const AddDeckQuestions: React.FC = () => {
         setClose={closeModal}
         deck={singleDeck?.data && singleDeck?.data}
       />
-      <GenerateDeckModal
+      {/* <GenerateDeckModal
         open={openPrompt}
         setClose={closePromptModal}
         questions={singleDeck?.data?.questions}
-      />
+      /> */}
+      {/* <AddImageModal open={openPrompt} setClose={closePromptModal} /> */}
+      {/* <AddAudioModal open={openPrompt} setClose={closePromptModal} /> */}
+      <AddVideoModal open={openPrompt} setClose={closePromptModal} />
     </div>
   );
 };

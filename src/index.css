@@ -1,9 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Outfit", sans-serif;
+}
+
+.outfit-uniquifier {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
 }
 
 .glass {
@@ -126,4 +134,16 @@ body {
 
 .purple-gradient {
   background: linear-gradient(93.04deg, #350b95 49.02%, #885af2 102.52%);
+}
+
+.icon-active path {
+  fill: #350b95;
+}
+
+.icon-default path, .icon-default circle {
+  stroke: #6F6F79;
+}
+
+.icon-default path:hover {
+  stroke: #350b95;
 }

@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import CreateQuiz from "../pages/dashboard/create";
 import Logo from "../assets/icons/logo-black.png";
 import CreateDeckQuestions from "pages/dashboard/create/AddDeckQuestions";
-import NavbarDashboard from "../components/navigation/NavbarDashboard";
+// import NavbarDashboard from "../components/navigation/NavbarDashboard";
 
 export default function CreateQuizLayout() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function CreateQuizLayout() {
               </div>
             </div>
           </div>
-          <NavbarDashboard />
+          {/* <NavbarDashboard /> */}
         </div>
       </div>
 

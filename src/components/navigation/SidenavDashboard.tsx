@@ -2,7 +2,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Button from "components/button/buttons";
-import Logo from "../../assets/icons/logo-black.png";
+import Logo from "../../assets/icons/logo.png";
+import Badge from "../../assets/icons/badge.png";
 import { ReactComponent as LibraryOutline } from "../../assets/icons/document.svg";
 import { ReactComponent as LibrarySolid } from "../../assets/icons/document-solid.svg";
 import { ReactComponent as DiscoveryOutline } from "../../assets/icons/discovery.svg";
@@ -48,12 +49,12 @@ export default function SidenavDashboard() {
       <div className="h-full">
         <div className="relative bg-[#F8F9FF] h-full">
           <div className="h-14 sm:pl-4 lg:pl-8">
-            <div className="py-3 px-5">
+            <div className="py-3">
               <div className="block lg:hidden w-auto text-primary text-3xl font-bold">
-                <img src={Logo} alt="Logo" className="max-w-[145px]" />
+                <img src={Logo} alt="Logo" className="max-w-[120px]" />
               </div>
               <div className="hidden lg:block w-auto text-primary text-3xl font-bold">
-                <img src={Logo} alt="Logo" className="max-w-[145px]" />
+                <img src={Logo} alt="Logo" className="max-w-[120px]" />
               </div>
             </div>
           </div>
@@ -64,15 +65,13 @@ export default function SidenavDashboard() {
                 key={item.name}
                 href={item.href}
                 className={`${
-                  item?.current
-                    ? "text-primary border-l-4 border-primary"
-                    : "text-text-neutral"
-                } font-medium py-0 px-5 mb-10 hover:text-primary flex items-center gap-2`}
+                  item?.current ? "text-primary " : "text-text-neutral"
+                } font-medium py-0 mb-10 hover:text-primary flex items-center gap-2`}
               >
                 {item?.current ? (
-                  <item.iconActive className="w-[1.4rem] h-[1.4rem]" />
+                  <item.iconActive className="w-[1.4rem] h-[1.4rem] icon-active" />
                 ) : (
-                  <item.icon className="w-[1.5rem] h-[1.5rem]" />
+                  <item.icon className="w-[1.5rem] h-[1.5rem] icon-default" />
                 )}
                 <span className="text-[1rem]">{item.name}</span>
               </a>
@@ -83,15 +82,19 @@ export default function SidenavDashboard() {
               onClick={() => {
                 handleLogout();
               }}
-              className={`text-text-neutral hover:text-primary text-left font-medium py-3 px-5 mb-3 mt-24 flex items-center gap-2`}
+              className={`text-text-neutral hover:text-primary text-left font-medium py-3 mb-3 mt-24 flex items-center gap-2`}
             >
-              <LoginOutline className="w-[1.5rem] h-[1.5rem]" />
+              <LoginOutline className="w-[1.5rem] h-[1.5rem] icon-default" />
               <span className="">Log Out</span>
             </button>
           </div>
 
-          <div className="mt-24 absolute bottom-8 sm:pl-4 lg:pl-8 pr-4 w-full">
-            <div className="bg-[#EADFFE] w-full py-5 rounded-[20px] ">
+          <div className="mt-24 absolute bottom-8 sm:pl-4 lg:pl-4 pr-4 w-full">
+            <div className="bg-[#EADFFE] w-full py-5 rounded-[20px] relative">
+              <div className="absolute -top-[50px] left-0 right-0 mx-auto bg-[#EADFFE] w-fit px-1 py-2 rounded-xl ">
+                <img className="h-[60px]" src={Badge} alt="Badge" />
+              </div>
+
               <div className="mb-5 text-center">
                 <p className="text-black text-[1rem] font-bold mb-1">
                   Win a badge

@@ -7,6 +7,7 @@ import Question from "../../../assets/decorations/question-mark.png";
 import createQuiz from "../../../assets/icons/create-quiz.svg";
 import generateDocument from "../../../assets/icons/generate-document.svg";
 import { ReactComponent as StarOutline } from "../../../assets/icons/star-outline.svg";
+import NavbarDashboard from "components/navigation/NavbarDashboard";
 import { CreateDeckModal } from "components/modals/CreateDeckModal";
 import { CreateDeckTypesModal } from "components/modals/CreateDeckTypesModal";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
@@ -26,6 +27,7 @@ export default function Explore() {
 
   return (
     <div>
+      <NavbarDashboard />
       <div className="mb-12">
         <div className="relative flex items-end justify-between gap-4 purple-gradient py-10 px-8 rounded-[30px]">
           <div className="pb-4 ml-2 text-white lg:w-[70%]">
@@ -215,7 +217,11 @@ export default function Explore() {
         <CreateDeckModal open={modal?.isOpen} setClose={modalClose} />
       )}
       {modal && modal?.type === "quiz-types" && (
-        <CreateDeckTypesModal open={modal?.isOpen} setOpen={modalOpen} setClose={modalClose} />
+        <CreateDeckTypesModal
+          open={modal?.isOpen}
+          setOpen={modalOpen}
+          setClose={modalClose}
+        />
       )}
     </div>
   );
