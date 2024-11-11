@@ -43,7 +43,7 @@ export const userStore = localForage.createInstance({
  * @param deck Deck to Save to IndexedDB
  */
  export const saveDeckInLocalForage = async (
-	deck: SingleDeck,
+	deck: SingleDeck
 ) => {
 	if (deck && deck._id) {
 		await deckStore.setItem(deck._id as string, deck)
@@ -138,4 +138,23 @@ export const deleteSyncedData = async (id: string) => {
     } catch (error) {
         console.error(`Failed to delete data with ID ${id}:`, error);
     }
+};
+
+/**
+ * Function to remove decks from the index db
+ * @param type this can either be "PUBLIC" or "PRIVATE"
+ */
+export const removeDecks = async (
+	type?: 'PUBLIC' | 'PRIVATE'
+) => {
+	const decks: SingleDeck[] = [];
+	await deckStore.iterate((value, key) => {
+		const deck = value as SingleDeck;
+		if (type) {
+			if (deck.type === type) {
+				deckStore.removeItem(deck._id);
+			}
+		}
+	});
+	return decks;
 };

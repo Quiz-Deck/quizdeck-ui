@@ -67,31 +67,6 @@ const DeckDetails: React.FC<CreateQuizProps> = () => {
       }
     
   };
-
-  const syncOfflineData = async () =>{
-    console.log("here or")
-    let decks = await getOfflineDecks();
-    if(!decks) return;
-    decks.map((deck)=>{
-      createDeck(deck)
-        .unwrap()
-        .then((res: any) => {
-          deleteSyncedData(deck._id)
-        })
-        .catch((err) => {
-          errorHandler(err?.data, true);
-        });
-    })
-
-  }
-
-  useEffect(()=>{
-    if(navigator.onLine){
-      syncOfflineData()
-    }
-  }, [navigator])
-
-  
    
   return (
     <div>
