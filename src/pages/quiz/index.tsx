@@ -142,9 +142,9 @@ const QuizTaker: React.FC = () => {
     console.log("answers", answers);
 
     let correctCount = 0;
-    let questionsCount = oneDeck?.questions.length || 0;
+    let questionsCount = (oneDeck?.questions || []).length || 0;
 
-    oneDeck?.questions.forEach((question, index) => {
+    (oneDeck?.questions || []).forEach((question, index) => {
       if (question.answer === answers[index]) {
         correctCount++;
       }

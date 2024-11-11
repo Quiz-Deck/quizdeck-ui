@@ -6,13 +6,14 @@ import {
   CreateDeckResponse,
   DeckListResponse,
   InviteUserRequest,
+  SingleDeck,
 } from "./deckSliceTypes";
-import {saveDeckInLocalForage} from "../../../storage/indexedDBStorage"
+import {removeDecks, saveDeckInLocalForage} from "../../../storage/indexedDBStorage"
 
 const deckApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     //Create a deck
-    createDeck: build.mutation<CreateDeckResponse, Partial<CreateDeckRequest>>({
+    createDeck: build.mutation<CreateDeckResponse, Partial<SingleDeck>>({
       query: (payload) => ({
         url: "/deck/create",
         method: "POST",
@@ -37,6 +38,7 @@ const deckApi = apiSlice.injectEndpoints({
       query: (page) => `/deck/user?page=${page}`,
       transformResponse: async (response: DeckListResponse) => {
         try {
+          // if(response) removeDecks('PRIVATE')
             const saveDeckPromises = response?.data?.map(deck => saveDeckInLocalForage(deck));
             await Promise.all(saveDeckPromises);
             return response;
@@ -67,6 +69,7 @@ const deckApi = apiSlice.injectEndpoints({
       query: (page) => `/deck/public?page=${page}`,
       transformResponse: async (response: DeckListResponse) => {
           try {
+              // if(response) removeDecks('PUBLIC')
               const saveDeckPromises = response?.data?.map(deck => saveDeckInLocalForage(deck));
               await Promise.all(saveDeckPromises);
               return response;

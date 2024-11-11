@@ -190,7 +190,7 @@ export default function Question() {
             <p>{oneDeck?.description}</p>
           </div>
 
-          {oneDeck && oneDeck?.questions?.length > 0 && (
+          {oneDeck && (oneDeck?.questions?.length || 0) > 0 && (
             <button
               type="button"
               onClick={() => navigate(`/deck/practise/${oneDeck?._id}`)}
