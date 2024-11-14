@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Modal } from "./index";
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import createQuiz from "../../assets/icons/create-quiz1.svg";
@@ -7,11 +7,14 @@ import Button from "components/button/buttons";
 interface Props {
   open: boolean;
   setClose: () => void;
+  data: any;
+  setData: (e: any) => void;
 }
 
-export const AddImageModal = ({ open, setClose }: Props) => {
+export const AddImageModal = ({ open, setClose, setData, data }: Props) => {
   const [image, setImage] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: any) => {
     const file = e.target.files[0];
@@ -39,6 +42,16 @@ export const AddImageModal = ({ open, setClose }: Props) => {
     if (file) {
       setImage(URL.createObjectURL(file));
     }
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleSubmit = () => {
+    const new_data = { ...data, image: image };
+    setData(new_data);
+    setClose();
   };
 
   return (
@@ -107,27 +120,17 @@ export const AddImageModal = ({ open, setClose }: Props) => {
                       className="rounded-full px-5"
                       style={{ borderRadius: "50px" }}
                       onClick={() => {
-                        // handleDelete(deck_id);
+                        handleButtonClick();
                       }}
                     />
-                    <label
-                      style={{
-                        display: "inline-block",
-                        padding: "10px 20px",
-                        backgroundColor: "#007bff",
-                        color: "#fff",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Browse
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        onChange={handleImageChange}
-                      />
-                    </label>
+
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                      ref={fileInputRef}
+                    />
                   </>
                 )}
               </div>
@@ -139,7 +142,7 @@ export const AddImageModal = ({ open, setClose }: Props) => {
                   title={"Save"}
                   className="rounded-full px-5"
                   style={{ borderRadius: "50px" }}
-                  onClick={() => {}}
+                  onClick={() => handleSubmit()}
                 />
               </div>
             )}

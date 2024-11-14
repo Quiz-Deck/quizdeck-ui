@@ -15,7 +15,7 @@ import { EditDeckModal } from "components/modals/EditDeckModal";
 import { GenerateDeckModal } from "components/modals/GenerateDeckModal";
 import { AddImageModal } from "components/modals/AddImageModal";
 import { AddAudioModal } from "components/modals/AddAudioModal";
-import { AddVideoModal } from 'components/modals/AddVideoModal';
+import { AddVideoModal } from "components/modals/AddVideoModal";
 import errorHandler from "handlers/errorHandler";
 import successHandler from "handlers/successHandler";
 import { fetchSingleDeck } from "features/store/deckSlice";
@@ -25,6 +25,7 @@ import {
   SingleDeckResponse,
   DeckQuestion,
 } from "features/api/deck/deckSliceTypes";
+import SingleDeckQuestion from "./questionTypes";
 
 const AddDeckQuestions: React.FC = () => {
   const { id } = useParams();
@@ -117,8 +118,15 @@ const AddDeckQuestions: React.FC = () => {
         </div>
       </div>
 
+      <Button.Primary
+        title={"Open Edit"}
+        className="px-8 mb-4 outline-none"
+        style={{ borderRadius: "50px" }}
+        onClick={() => openModal()}
+      />
+
       <>
-        {singleDeck?.data &&
+        {/* {singleDeck?.data &&
           singleDeck?.data?.questions?.length > 0 &&
           singleDeck?.data?.questions.map(
             (question: DeckQuestion, index: number) => (
@@ -127,7 +135,16 @@ const AddDeckQuestions: React.FC = () => {
                 className="bg-primary rounded-[20px] w-full mb-8"
               >
                 <div className="p-5 flex items-center justify-between border-b py-2">
-                  <p className="text-white font-bold">Question {index + 1}.</p>
+                  <div className="flex items-center gap-3">
+                    <p className="text-white font-bold">
+                      Question {index + 1}.
+                    </p>
+                    <select>
+                      <option>Multiple Question</option>
+                      <option>Open Ended</option>
+                    </select>
+                  </div>
+
                   <button
                     className={`${isLoading ? "animate-spin" : ""}`}
                     onClick={() => handleDelete(question?._id)}
@@ -170,6 +187,18 @@ const AddDeckQuestions: React.FC = () => {
                   ""
                 )}
               </div>
+            )
+          )} */}
+
+        {singleDeck?.data &&
+          singleDeck?.data?.questions?.length > 0 &&
+          singleDeck?.data?.questions.map(
+            (question: DeckQuestion, index: number) => (
+              <SingleDeckQuestion
+                key={question?._id}
+                question={question}
+                index={index}
+              />
             )
           )}
 

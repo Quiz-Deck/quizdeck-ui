@@ -11,46 +11,38 @@ import { useEditQuestionMutation } from "../../../features/api/question/question
 // Explicitly import the types for JSX
 type CreateQuizProps = {
   question: DeckQuestion;
-  data: any;
-  setData: (e: any) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
-const EditMultipleChoice: React.FC<CreateQuizProps> = ({
-  question,
-  data,
-  setData,
-  handleSubmit,
-}) => {
+const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
   const dispatch = useDispatch();
   const [editQuestion, { isLoading }] = useEditQuestionMutation();
   // const [showDetails, setShowDetails] = useState(false);
 
-  // const [data, setData] = useState({
-  //   question: "",
-  //   type: "MULTI_CHOICE",
-  //   multichoiceOptions: [],
-  //   answer: "",
-  // });
+  const [data, setData] = useState({
+    question: "",
+    type: "MULTI_CHOICE",
+    multichoiceOptions: [],
+    answer: "",
+  });
 
   const [answerFields, setAnswerFields] = useState(
     question?.multichoiceOptions
   );
 
-  // useEffect(() => {
-  //   setData((data) => ({
-  //     ...data,
-  //     question: question?.question,
-  //     type: question?.type,
-  //     answer: question?.answer,
-  //   }));
-  //   setAnswerFields(question?.multichoiceOptions);
-  // }, [question]);
+  useEffect(() => {
+    setData((data) => ({
+      ...data,
+      question: question?.question,
+      type: question?.type,
+      answer: question?.answer,
+    }));
+    setAnswerFields(question?.multichoiceOptions);
+  }, [question]);
 
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
   const handleInputChange = (
     index: number,
@@ -80,32 +72,44 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({
     setData({ ...data, answer: answer });
   };
 
-  // const handleSubmit = (e: any) => {
-  //   if (answerFields?.length < 2) {
-  //     errorHandler(
-  //       {
-  //         message: "Multichoice questions should have a minimum of 2 options",
-  //       },
-  //       true
-  //     );
-  //   } else {
-  //     editQuestion({
-  //       deckId: question?._id,
-  //       payload: { ...data, multichoiceOptions: answerFields },
-  //     })
-  //       .unwrap()
-  //       .then((res: any) => {
-  //         successHandler(res, true);
-  //         dispatch(deckActions.editADeckQuestion(res?.data));
-  //       })
-  //       .catch((err) => {
-  //         errorHandler(err?.data || "Something went wrong", true);
-  //       });
-  //   }
-  // };
+  const handleSubmit = (e: any) => {
+    if (answerFields?.length < 2) {
+      errorHandler(
+        {
+          message: "Multichoice questions should have a minimum of 2 options",
+        },
+        true
+      );
+    } else {
+      editQuestion({
+        deckId: question?._id,
+        payload: { ...data, multichoiceOptions: answerFields },
+      })
+        .unwrap()
+        .then((res: any) => {
+          successHandler(res, true);
+          dispatch(deckActions.editADeckQuestion(res?.data));
+        })
+        .catch((err) => {
+          errorHandler(err?.data || "Something went wrong", true);
+        });
+    }
+  };
 
   return (
     <div className="p-5 w-full hover:shadow-lg cursor-pointer">
+      <Input.Textarea
+        title={""}
+        name="question"
+        value={data?.question}
+        placeholder="Enter your question here"
+        className="mb-5 min-h-[30px] bg-transparent border-none text-white"
+        autoComplete="off"
+        minLength={12}
+        rows={4}
+        onChange={(e: any) => handleChange(e)}
+      />
+
       <div>
         {answerFields.map((inputField, index) => (
           <Fragment key={index}>
