@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Girl from "../../../assets/images/landing/girl.png";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
 // import { ReactComponent as Wavy } from "../../../assets/decorations/wavy-lines.svg";
 import { useGetPublicDecksQuery } from "features/api/deck/deckApi";
@@ -12,7 +11,7 @@ export default function Quizes() {
   return (
     <div className="py-12 bg-white relative mb-8">
       {/* <Wavy className="absolute" /> */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mt-10">
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10 items-center">
             <div>
@@ -39,12 +38,12 @@ export default function Quizes() {
             </div>
           </dl>
         </div>
-      </div>
+      </div> */}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="flex justify-between items-center">
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Most popular quizzes
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="flex justify-center items-center text-center w-full">
+          <p className="mt-2 text-3xl leading-8 font-semibold text-[#0A0A0B] sm:text-[48px]">
+            Start quiz from our range of templates
           </p>
         </div>
 
@@ -84,6 +83,10 @@ export default function Quizes() {
               </div>
             )}
           </dl>
+
+          <div className="text-center mt-5">
+            <a className="text-primary underline">Explore other quizzes</a>
+          </div>
         </div>
       </div>
     </div>
