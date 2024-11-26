@@ -1,12 +1,12 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Input from "../../../components/input/Input";
-import Button from "../../../components/button/buttons";
+import Input from "./components/input/Input";
+import Button from "./components/button/buttons";
 import errorHandler from "handlers/errorHandler";
 import successHandler from "handlers/successHandler";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 import { deckActions } from "features/store/deckSlice";
-import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
+import { useEditQuestionMutation } from "./features/api/question/questionApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {

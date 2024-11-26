@@ -4,6 +4,8 @@ import { ReactComponent as Plus } from "assets/icons/plus.svg";
 // Explicitly import the types for JSX
 type CreateQuizProps = {
   setView: (e: string) => void;
+  deckQuestions: any;
+  setDeckQuestions: (e: any) => void;
 };
 
 // const menuItems = [
@@ -21,7 +23,24 @@ type CreateQuizProps = {
 //   },
 // ];
 
-const QuestionsMenu: React.FC<CreateQuizProps> = ({ setView }) => {
+const QuestionsMenu: React.FC<CreateQuizProps> = ({
+  setView,
+  deckQuestions,
+  setDeckQuestions,
+}) => {
+  const handleClick = () => {
+    const oldQuestion = [...deckQuestions];
+    const newQuestion = {
+      question: "",
+      type: "MULTI_CHOICE",
+      multichoiceOptions: ["option 1", "option 2"],
+      answer: "",
+      image: "",
+      video: "",
+      audio: "",
+    };
+    setDeckQuestions([...oldQuestion, newQuestion]);
+  };
   return (
     <div className="bg-primary p-2 my-4 w-fit rounded-[50px]">
       {/* <ul className="flex gap-4 items-center">
@@ -44,7 +63,7 @@ const QuestionsMenu: React.FC<CreateQuizProps> = ({ setView }) => {
         </ul> */}
 
       <button
-        onClick={() => setView("multiple-choice")}
+        onClick={() => handleClick()}
         className="text-white flex gap-3 items-center px-2 outline-none rounded-[50px]"
       >
         <Plus className="w-[16px] h-[16px] fill-[#ffffff]" /> Add New Question

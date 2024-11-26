@@ -7,6 +7,7 @@ import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
 import ErrorValidation from "pages/common/ErrorValidation";
 import { deckActions } from "features/store/deckSlice";
+import { ReactComponent as Plus } from "assets/icons/plus.svg";
 import { useAddQuestionMutation } from "../../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
@@ -148,11 +149,14 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
 
       <div className="flex items-center justify-between">
         <button
-          className="text-primary mt-4"
+          className="text-primary200 mt-4"
           type="button"
           onClick={() => handleAddFields()}
         >
-          + Add Answer or Option
+          <span className="w-[2rem] h-[2rem] bg-primary800 rounded-full flex items-center justify-center">
+            <Plus className="w-[24px] h-[24px] fill-[#ffffff]" />
+          </span>
+          Add Answer or Option
         </button>
         <div className="flex gap-5">
           <Button.Secondary

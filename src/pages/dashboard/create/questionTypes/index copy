@@ -24,8 +24,6 @@ import { useEditQuestionMutation } from "features/api/question/questionApi";
 type CreateQuizProps = {
   question: any;
   index: number;
-  deckQuestions: any;
-  setDeckQuestions: (e: any) => void;
 };
 
 // QDeck{
@@ -45,12 +43,7 @@ type CreateQuizProps = {
 // 	answer: string [] //This is an array to accomodate for questions with more than one answer
 // }
 
-const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
-  question,
-  index,
-  deckQuestions,
-  setDeckQuestions,
-}) => {
+const SingleDeckQuestion: React.FC<CreateQuizProps> = ({ question, index }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [submitted, setSubmitted] = useState(false);
@@ -81,11 +74,6 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-    setDeckQuestions((prevQuizzes: any) =>
-      prevQuizzes.map((quiz: any, i: number) =>
-        i === index ? { ...quiz, [name]: value } : quiz
-      )
-    );
   };
 
   const [answerFields, setAnswerFields] = useState(
@@ -235,7 +223,7 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
               name="question"
               value={data?.question}
               placeholder="Type your question here..."
-              className="mb-0 min-h-[80px] w-full text-[#DCDCDF] bg-[#350B95CC] border-none"
+              className="mb-5 min-h-[80px] w-full text-[#DCDCDF] bg-[#350B95CC] border-none"
               autoComplete="off"
               minLength={12}
               rows={2}
@@ -276,10 +264,7 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
             question={question}
             data={data}
             setData={setData}
-            quiz_index={index}
             handleSubmit={handleSubmit}
-            deckQuestions={deckQuestions}
-            setDeckQuestions={setDeckQuestions}
           />
         ) : question?.type === "QNA" ? (
           <EditQNA question={question} />

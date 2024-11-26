@@ -13,16 +13,24 @@ import {
 } from "features/api/deck/deckSliceTypes";
 import { useEditDeckMutation } from "features/api/deck/deckApi";
 import { deckActions } from "features/store/deckSlice";
+import { useAddQuestionMutation } from "features/api/question/questionApi";
 
 interface Props {
   open: boolean;
   setClose: () => void;
   deck?: SingleDeck;
+  deckQuestions: any;
 }
 
-export const EditDeckModal = ({ open, setClose, deck }: Props) => {
+export const EditDeckModal = ({
+  open,
+  setClose,
+  deck,
+  deckQuestions,
+}: Props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [addQuestion] = useAddQuestionMutation();
 
   const [editDeck, { isLoading }] = useEditDeckMutation();
   const [data, setData] = useState<CreateDeckRequest>({
@@ -67,11 +75,26 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
       .unwrap()
       .then((res: any) => {
         dispatch(deckActions.editADeck(res?.data));
+        addQuizQuestions(deckQuestions);
+      })
+      .catch((err) => {
+        errorHandler(err?.data || "Something went wrong", true);
+      });
+  };
+
+  const addQuizQuestions = (questionSetsArray: any[]) => {
+    addQuestion({
+      deckId: id,
+      payload: [...questionSetsArray],
+    })
+      .unwrap()
+      .then((res: any) => {
+        dispatch(deckActions.addADeckQuestion(res?.data));
         successHandler(res, true);
         setClose();
       })
       .catch((err) => {
-        errorHandler(err?.data || "Something went wrong", true);
+        console.log(err);
       });
   };
 

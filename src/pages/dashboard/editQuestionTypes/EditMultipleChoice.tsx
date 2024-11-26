@@ -6,6 +6,7 @@ import errorHandler from "handlers/errorHandler";
 import successHandler from "handlers/successHandler";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
 import { deckActions } from "features/store/deckSlice";
+import { ReactComponent as Plus } from "assets/icons/plus.svg";
 import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
@@ -14,6 +15,9 @@ type CreateQuizProps = {
   data: any;
   setData: (e: any) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  deckQuestions: any;
+  setDeckQuestions: (e: any) => void;
+  quiz_index: number;
 };
 
 const EditMultipleChoice: React.FC<CreateQuizProps> = ({
@@ -21,36 +25,16 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({
   data,
   setData,
   handleSubmit,
+  deckQuestions,
+  setDeckQuestions,
+  quiz_index,
 }) => {
   const dispatch = useDispatch();
   const [editQuestion, { isLoading }] = useEditQuestionMutation();
-  // const [showDetails, setShowDetails] = useState(false);
-
-  // const [data, setData] = useState({
-  //   question: "",
-  //   type: "MULTI_CHOICE",
-  //   multichoiceOptions: [],
-  //   answer: "",
-  // });
 
   const [answerFields, setAnswerFields] = useState(
     question?.multichoiceOptions
   );
-
-  // useEffect(() => {
-  //   setData((data) => ({
-  //     ...data,
-  //     question: question?.question,
-  //     type: question?.type,
-  //     answer: question?.answer,
-  //   }));
-  //   setAnswerFields(question?.multichoiceOptions);
-  // }, [question]);
-
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setData({ ...data, [name]: value });
-  // };
 
   const handleInputChange = (
     index: number,
@@ -62,22 +46,62 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({
       updatedFields[index] = value;
       return updatedFields;
     });
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index
+          ? {
+              ...quiz,
+              multichoiceOptions: quiz.multichoiceOptions.map(
+                (option: any, j: number) => (j === index ? value : option)
+              ),
+            }
+          : quiz
+      )
+    );
   };
 
   const handleAddFields = () => {
     const values = [...answerFields];
     values.push(`option ${values?.length + 1}`);
     setAnswerFields(values);
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index
+          ? {
+              ...quiz,
+              multichoiceOptions: [
+                ...quiz.multichoiceOptions,
+                `option ${values?.length}`,
+              ],
+            }
+          : quiz
+      )
+    );
   };
 
   const handleRemoveFields = (index: number) => {
     const values = [...answerFields];
     values.splice(index, 1);
     setAnswerFields(values);
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index
+          ? {
+              ...quiz,
+              multichoiceOptions: values,
+            }
+          : quiz
+      )
+    );
   };
 
   const handleSelectAnswer = (answer: string) => {
     setData({ ...data, answer: answer });
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index ? { ...quiz, ["answer"]: answer } : quiz
+      )
+    );
   };
 
   // const handleSubmit = (e: any) => {
@@ -141,18 +165,15 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({
 
         <div className="flex items-center justify-between">
           <button
-            className="text-primary mt-4"
+            className="text-white mt-4 flex gap-2 items-center"
             type="button"
             onClick={() => handleAddFields()}
           >
-            + Add Answer or Option
+            <span className="w-[2rem] h-[2rem] bg-primary800 rounded-full flex items-center justify-center">
+              <Plus className="w-[24px] h-[24px] fill-[#ffffff]" />
+            </span>
+            Add Answer or Option
           </button>
-          <Button.Primary
-            title={"Edit Question"}
-            className="mt-4"
-            loading={isLoading}
-            onClick={handleSubmit}
-          />
         </div>
       </div>
     </div>
