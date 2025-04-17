@@ -10,16 +10,21 @@ import { ReactComponent as StarOutline } from "../../../assets/icons/star-outlin
 import NavbarDashboard from "components/navigation/NavbarDashboard";
 import { CreateDeckModal } from "components/modals/CreateDeckModal";
 import { CreateDeckTypesModal } from "components/modals/CreateDeckTypesModal";
+import { GenerateDocumentDeckModal } from "components/modals/GenerateDocumentDeckModal";
 import { useGetUserDeckQuery } from "../../../features/api/deck/deckApi";
 import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
+import {  useGetCategoriesQuery } from "../../../features/api/category/categoryApi";
 
-export default function Explore() {
+export default function Dashboard() {
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetPublicDecksQuery("1");
   const { data: userDecks } = useGetUserDeckQuery("1");
+  const { data: categoryData } = useGetCategoriesQuery("1");
 
+  const [active_tab, setActiveTab] = useState("all");
   const [modal, setModal] = useState({ isOpen: false, type: "", modalObj: {} });
+
   const modalOpen = (type: string, modalObj?: any) =>
     setModal({ isOpen: true, type: type, modalObj });
   const modalClose = (e?: boolean) =>
@@ -74,7 +79,10 @@ export default function Explore() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 border border-[#C6C6CB] rounded-lg py-3 px-3">
+          <div
+            onClick={() => modalOpen("create-document")}
+            className="flex items-center gap-3 border border-[#C6C6CB] rounded-lg py-3 px-3"
+          >
             <img
               src={generateDocument}
               alt="generateDocument"
@@ -107,7 +115,6 @@ export default function Explore() {
           </div>
         </div>
       </div>
-
       <div className="mt-10">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-black text-2xl font-bold">Created by me</h3>
@@ -146,32 +153,32 @@ export default function Explore() {
         <div className="mb-8">
           <h3 className="text-black text-2xl font-bold mb-3">Explore Quiz</h3>
 
-          <div className="flex flex-wrap gap-4">
-            <button
-              type="button"
-              onClick={() => navigate("/dashboard/public-decks")}
-              className="px-4 py-1 border border-[#ACACAC] bg-primary rounded-lg text-[1rem] text-white"
+          <div className="flex flex-wrap items-center gap-4">
+            <div
+              className={`${
+                active_tab === "all"
+                  ? "text-white bg-primary btn-shadow"
+                  : "text-[#ACACAC] border border-[#ACACAC]"
+              } px-4 py-1 rounded-lg text-[1rem] flex items-center justify-center gap-1 cursor-pointer`}
+              onClick={() => setActiveTab("all")}
             >
-              All
-            </button>
-            <button
-              type="button"
-              className="px-4 py-1 border border-[#ACACAC] rounded-lg text-[1rem] text-[#ACACAC]"
-            >
-              Game quiz
-            </button>
-            <button
-              type="button"
-              className="px-4 py-1 border border-[#ACACAC] rounded-lg text-[1rem] text-[#ACACAC]"
-            >
-              Academic quiz
-            </button>
-            <button
-              type="button"
-              className="px-4 py-1 border border-[#ACACAC] rounded-lg text-[1rem] text-[#ACACAC]"
-            >
-              Jamb questions
-            </button>
+              <p className="capitalize">{"all"}</p>
+            </div>
+            {categoryData &&
+              categoryData?.data?.length > 0 &&
+              categoryData?.data?.map((tab, index) => (
+                <div
+                  key={index}
+                  className={`${
+                    active_tab === tab
+                      ? "text-white bg-primary btn-shadow"
+                      : "text-[#ACACAC] border border-[#ACACAC]"
+                  } px-4 py-1 rounded-lg text-[1rem] flex items-center justify-center gap-1 cursor-pointer`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  <p className="capitalize">{tab}</p>
+                </div>
+              ))}
           </div>
         </div>
 
@@ -212,7 +219,6 @@ export default function Explore() {
           </div>
         )}
       </div>
-
       {modal && modal?.type === "create-standard" && (
         <CreateDeckModal open={modal?.isOpen} setClose={modalClose} />
       )}
@@ -222,6 +228,9 @@ export default function Explore() {
           setOpen={modalOpen}
           setClose={modalClose}
         />
+      )}
+      {modal && modal?.type === "create-document" && (
+        <GenerateDocumentDeckModal open={modal?.isOpen} setClose={modalClose} />
       )}
     </div>
   );

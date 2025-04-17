@@ -12,23 +12,28 @@ import { useEditQuestionMutation } from "../../../features/api/question/question
 // Explicitly import the types for JSX
 type CreateQuizProps = {
   question: DeckQuestion;
+  data: any;
+  setData: (e: any) => void;
+  deckQuestions: any;
+  setDeckQuestions: (e: any) => void;
+  quiz_index: number;
 };
 
-const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
+const EditQNA: React.FC<CreateQuizProps> = ({
+  question,
+  data,
+  setData,
+  deckQuestions,
+  setDeckQuestions,
+  quiz_index,
+}) => {
   const dispatch = useDispatch();
   const [editQuestion, { isLoading }] = useEditQuestionMutation();
-  const [showDetails, setShowDetails] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  const [data, setData] = useState({
-    question: question?.question,
-    type: "QNA",
-    answer: question?.answer,
-  });
 
   useEffect(() => {
     if (question) {
-      setData((data) => ({
+      setData((data: any) => ({
         ...data,
         question: question?.question,
         type: question?.type,
@@ -40,73 +45,38 @@ const EditQNA: React.FC<CreateQuizProps> = ({ question }) => {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-  };
-
-  const handleSubmit = (e: any) => {
-    if (data?.question === "" || data?.answer === "") {
-      setSubmitted(true);
-    } else {
-      setSubmitted(false);
-      editQuestion({
-        deckId: question?._id,
-        payload: { ...data },
-      })
-        .unwrap()
-        .then((res: any) => {
-          successHandler(res, true);
-          dispatch(deckActions.editADeckQuestion(res?.data));
-        })
-        .catch((err) => {
-          errorHandler(err?.data || "Something went wrong", true);
-        });
-    }
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index ? { ...quiz, ["answer"]: value } : quiz
+      )
+    );
   };
 
   return (
-    <div
-      className="p-5 w-full hover:shadow-lg cursor-pointer"
-      onClick={() => setShowDetails(true)}
-    >
-      <Input.Textarea
-        title={""}
-        name="question"
-        defaultValue={data?.question}
-        placeholder="Type your question here..."
-        className="rounded-md mb-5 min-h-[60px] bg-[#FAFAFF]"
-        autoComplete="off"
-        minLength={12}
-        rows={2}
-        onChange={(e: any) => handleChange(e)}
-      />
-      {submitted && data?.question === "" && (
-        <ErrorValidation message="Question is required" />
-      )}
+    <div className="py-5 w-full hover:shadow-lg cursor-pointer">
+      <div>
+        <Input.Label
+          title={""}
+          name="answer"
+          placeholder={"Enter the answer"}
+          defaultValue={data?.answer}
+          className=" mb-4 w-full bg-[#D9D9D91A] rounded-[20px] border-[#FFFFFF4D] text-white"
+          autoComplete="off"
+          onChange={(e: any) => handleChange(e)}
+        />
+        {submitted && data?.answer === "" && (
+          <ErrorValidation message="Enter an answer for this question" />
+        )}
 
-      {showDetails && (
-        <div>
-          <Input.Label
-            title={"Answer"}
-            name="answer"
-            placeholder={"Enter the answer"}
-            defaultValue={data?.answer}
-            className="rounded-md mb-5 bg-[#FAFAFF]"
-            autoComplete="off"
-            onChange={(e: any) => handleChange(e)}
+        {/* <div className="flex items-center justify-end">
+          <Button.Primary
+            title={"Edit Question"}
+            className="mt-4"
+            loading={isLoading}
+            onClick={handleSubmit}
           />
-          {submitted && data?.answer === "" && (
-            <ErrorValidation message="Enter an answer for this question" />
-          )}
-
-          <div className="flex items-center justify-end">
-            <Button.Primary
-              title={"Edit Question"}
-              className="mt-4"
-              loading={isLoading}
-              onClick={handleSubmit}
-            />
-          </div>
-        </div>
-      )}
+        </div> */}
+      </div>
     </div>
   );
 };

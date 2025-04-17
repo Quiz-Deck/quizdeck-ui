@@ -1,21 +1,16 @@
 import React, { useState } from "react";
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import moment from "moment";
-// import { ClockIcon } from "@heroicons/react/24/outline";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
-import Dummy from "../../../assets/images/quiz-default1.jpeg";
-// import Avatar from "../../../assets/images/rectangle.jpg";
-import EmptyState from "../../../assets/images/empty-state.svg";
 import Pagination from "components/pagination";
-import NavbarDashboard from "components/navigation/NavbarDashboard";
+import Dummy from "assets/images/quiz-default1.jpeg";
+import EmptyState from "assets/images/empty-state.svg";
 import { ReactComponent as LikeOutline } from "assets/icons/like-outline.svg";
 import { ReactComponent as StarOutline } from "assets/icons/star-outline.svg";
 import { ReactComponent as PlayOutline } from "assets/icons/play-outline.svg";
-
-import { useGetPublicDecksQuery } from "../../../features/api/deck/deckApi";
-import { useGetCategoriesQuery } from "../../../features/api/category/categoryApi";
+import { useGetUserDeckQuery } from "features/api/deck/deckApi";
 
 interface TimeAgoProps {
   time: string; // Accepts a string representation of the time
@@ -30,78 +25,15 @@ const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-export default function PublicDecks() {
+export default function PublishedQuiz() {
   const navigate = useNavigate();
   const query = useQuery();
   const page = query.get("page") || "1";
-  const [active_tab, setActiveTab] = useState("all");
-  const { data, isLoading } = useGetPublicDecksQuery(page);
-  const { data: categoryData, isLoading: loading } = useGetCategoriesQuery(page);
 
-  console.log("categoryData", categoryData);
-  console.log("loading", loading);
+  const { data, isLoading } = useGetUserDeckQuery(page);
 
   return (
     <div>
-      <NavbarDashboard />
-      <div className="pt-10 mb-6 max-w-[480px] mx-auto sm:mb-20">
-        <h2 className="text-2xl font-semibold text-center mb-6">
-          Explore Other Exciting Quizes made by Others
-        </h2>
-
-        <div className="flex px-2 lg:px-0 max-w-2xl w-full bg-[#F6F6F5] h-[40px] rounded-[50px]">
-          <input
-            placeholder="Search"
-            type="search"
-            className="bg-[#F6F6F5] rounded-[50px] h-[40px] w-full px-4"
-          />
-          <Button.Primary
-            title={"Search"}
-            className="px-5"
-            style={{ borderRadius: "30px" }}
-            // disabled={isLoading}
-            // loading={isLoading}
-            // onClick={handleSubmit}
-          />
-        </div>
-      </div>
-
-      <nav className="flex items-center gap-8 rounded-[2rem] py-4 h-[60px] mb-8">
-        <select className="rounded-[10px] px-4 h-[32px] text-[14px] text-[#ACACAC] border border-[#ACACAC]">
-          <option>Popular</option>
-          <option>Popular</option>
-          <option>Popular</option>
-          <option>Popular</option>
-        </select>
-        <div className="flex items-center gap-4">
-          <div
-            className={`${
-              active_tab === "all"
-                ? "text-primary bg-[#E0D4FC] btn-shadow"
-                : "text-[#84848E] bg-[#F3F3F6]"
-            } rounded-[10px] px-6 h-[32px] text-[14px] flex items-center justify-center gap-1 cursor-pointer`}
-            onClick={() => setActiveTab("all")}
-          >
-            <p className="capitalize">{"all"}</p>
-          </div>
-          {categoryData &&
-            categoryData?.data?.length > 0 &&
-            categoryData?.data?.map((tab, index) => (
-              <div
-                key={index}
-                className={`${
-                  active_tab === tab
-                    ? "text-primary bg-[#E0D4FC] btn-shadow"
-                    : "text-[#84848E] bg-[#F3F3F6]"
-                } rounded-[10px] px-6 h-[32px] text-[14px] flex items-center justify-center gap-1 cursor-pointer`}
-                onClick={() => setActiveTab(tab)}
-              >
-                <p className="capitalize">{tab}</p>
-              </div>
-            ))}
-        </div>
-      </nav>
-
       {isLoading ? (
         <div className="h-screen w-full flex items-center justify-center">
           <PageLoader />
@@ -110,7 +42,7 @@ export default function PublicDecks() {
         <>
           {data?.data && data?.data?.length > 0 ? (
             <div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {data?.data?.map((deck, index) => (
                   <div
                     key={index}
@@ -123,6 +55,15 @@ export default function PublicDecks() {
                         alt="Dummy"
                         className="h-[190px] w-full object-cover rounded-t-lg"
                       />
+                      <div className="mb-2 w-fit absolute top-3 left-3">
+                        <div
+                          className={`flex justify-between px-3 py-0.5 rounded-full bg-[#FFFFFFa3]`}
+                        >
+                          <span className={`text-xs text-primary capitalize`}>
+                            {deck?.type}
+                          </span>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="px-3 py-4">
@@ -177,7 +118,7 @@ export default function PublicDecks() {
                   </div>
                 ))}
               </div>
-              <Pagination data={data} route={"/dashboard/explore"} />
+              <Pagination data={data} route={"/dashboard/my-library"} />
             </div>
           ) : (
             <div className="text-center h-full">

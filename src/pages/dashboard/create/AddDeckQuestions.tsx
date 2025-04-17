@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,7 +12,9 @@ import QuestionsMenu from "./QuestionsMenu";
 import Button from "../../../components/button/buttons";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
 import { EditDeckModal } from "components/modals/EditDeckModal";
-import { AddVideoModal } from "components/modals/AddVideoModal";
+import { SaveDraftModal } from "components/modals/SaveDraftModal";
+import { PublishDeckModal } from "components/modals/PublishDeckModal";
+import { GenerateDeckModal } from "components/modals/GenerateDeckModal";
 import { fetchSingleDeck } from "features/store/deckSlice";
 import { deckActions } from "features/store/deckSlice";
 import { useEditDeckMutation } from "features/api/deck/deckApi";
@@ -37,10 +39,17 @@ const AddDeckQuestions: React.FC = () => {
   const [editDeck, { isLoading }] = useEditDeckMutation();
   const [addQuestion, { isLoading: loading }] = useAddQuestionMutation();
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [openPrompt, setOpenPrompt] = useState(false);
   const [view, setView] = useState({ status: false, type: "" });
   const [deckQuestions, setDeckQuestions] = useState<any>([]);
+
+  const [modal, setModal] = useState({ isOpen: false, type: "", modalObj: {} });
+  const modalOpen = (type: string, modalObj?: any) =>
+    setModal({ isOpen: true, type: type, modalObj });
+  const modalClose = (e?: boolean) =>
+    // setModal({ isOpen: e || false, type: "", modalObj: {} });
+    setModal({ isOpen: false, type: "", modalObj: {} });
 
   const [data, setData] = useState<CreateDeckRequest>({
     title: "",
@@ -86,23 +95,21 @@ const AddDeckQuestions: React.FC = () => {
     setView({ status: false, type: "" });
   };
 
-  const openModal = () => {
-    setOpen(true);
-  };
+  // const openModal = () => {
+  //   setOpen(true);
+  // };
 
-  const closeModal = () => {
-    setOpen(false);
-  };
+  // const closeModal = () => {
+  //   setOpen(false);
+  // };
 
   const closePromptModal = () => {
     setOpenPrompt(false);
   };
 
-  console.log("deckQuestions", deckQuestions);
-
   const handleSubmitDraft = () => {
     const timer_to_seconds = data.timer && Number(data.timer * 60);
-    const new_data = { ...data, timer: timer_to_seconds };
+    const new_data = { ...data, status: "DRAFT", timer: timer_to_seconds };
     editDeck({
       deckId: id,
       payload: new_data,
@@ -111,6 +118,7 @@ const AddDeckQuestions: React.FC = () => {
       .then((res: any) => {
         dispatch(deckActions.editADeck(res?.data));
         addQuizQuestions(deckQuestions);
+        modalOpen("save-draft");
       })
       .catch((err) => {
         errorHandler(err?.data || "Something went wrong", true);
@@ -118,8 +126,6 @@ const AddDeckQuestions: React.FC = () => {
   };
 
   const addQuizQuestions = (questionSetsArray: any[]) => {
-    console.log("ddddd");
-
     addQuestion({
       deckId: id,
       payload: [...questionSetsArray],
@@ -140,7 +146,7 @@ const AddDeckQuestions: React.FC = () => {
         className="border-b border-[#FFFFFF1A] py-4"
         style={{ boxShadow: "0px 4px 4px 0px #00000080" }}
       >
-        <div className="flex justify-between w-full max-w-7xl mx-auto">
+        <div className="flex justify-between w-full max-w-7xl mx-auto px-4">
           <div className="cursor-pointer">
             <div
               onClick={() => navigate("/dashboard/explore")}
@@ -156,21 +162,23 @@ const AddDeckQuestions: React.FC = () => {
           </div>
           <div>
             <QuizActions
-              openModal={openModal}
+              // openModal={openModal}
               handleSubmitDraft={handleSubmitDraft}
               isLoading={isLoading}
               loading={loading}
+              modalOpen={modalOpen}
+              singleDeck={singleDeck}
             />
           </div>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 py-8">
         <button
-          onClick={() => navigate(`/dashboard/question/${id}`)}
+          onClick={() => navigate(-1)}
           className="text-primary font-medium mb-5 flex items-center gap-2"
         >
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-          {"Back"}
+          Back
         </button>
 
         <div className="mb-12 bg-[#F3EFFC] border border-[#FFFFFF33] rounded-[10px] px-5 py-5">
@@ -210,8 +218,8 @@ const AddDeckQuestions: React.FC = () => {
             deckQuestions.map((question: DeckQuestion, index: number) => (
               <SingleDeckQuestion
                 key={index}
-                question={question}
                 index={index}
+                question={question}
                 deckQuestions={deckQuestions}
                 setDeckQuestions={setDeckQuestions}
               />
@@ -247,20 +255,25 @@ const AddDeckQuestions: React.FC = () => {
           </div>
         </>
 
-        <EditDeckModal
-          open={open}
-          setClose={closeModal}
-          deck={singleDeck?.data && singleDeck?.data}
-          deckQuestions={deckQuestions}
+        {modal.isOpen && modal.type === "edit" && (
+          <EditDeckModal
+            open={modal.isOpen}
+            setClose={modalClose}
+            deck={singleDeck?.data && singleDeck?.data}
+            deckQuestions={deckQuestions}
+          />
+        )}
+        {modal.isOpen && modal.type === "save-draft" && (
+          <SaveDraftModal open={modal.isOpen} setClose={modalClose} />
+        )}
+        {modal.isOpen && modal.type === "publish" && (
+          <PublishDeckModal open={modal.isOpen} setClose={modalClose} />
+        )}
+        <GenerateDeckModal
+          open={openPrompt}
+          setClose={closePromptModal}
+          questions={singleDeck?.data?.questions}
         />
-        {/* <GenerateDeckModal
-        open={openPrompt}
-        setClose={closePromptModal}
-        questions={singleDeck?.data?.questions}
-      /> */}
-        {/* <AddImageModal open={openPrompt} setClose={closePromptModal} /> */}
-        {/* <AddAudioModal open={openPrompt} setClose={closePromptModal} /> */}
-        <AddVideoModal open={openPrompt} setClose={closePromptModal} />
       </div>
     </div>
   );
@@ -269,25 +282,42 @@ const AddDeckQuestions: React.FC = () => {
 export default AddDeckQuestions;
 
 const QuizActions = ({
-  openModal,
+  // openModal,
   handleSubmitDraft,
   isLoading,
   loading,
+  modalOpen,
+  singleDeck,
 }: any) => {
   return (
     <div className="flex gap-4">
-      <Button.Secondary
-        title={"Save as draft"}
-        className="px-8 outline-none"
-        loading={isLoading || loading}
-        style={{ borderRadius: "50px" }}
-        onClick={() => handleSubmitDraft()}
-      />
+      {singleDeck &&
+        singleDeck?.data &&
+        singleDeck?.data?.status?.toLowerCase() === "published" && (
+          <Button.Secondary
+            title={"Unpublish"}
+            className="px-8 outline-none"
+            loading={isLoading || loading}
+            style={{ borderRadius: "50px" }}
+            onClick={() => handleSubmitDraft()}
+          />
+        )}{" "}
+      {singleDeck &&
+        singleDeck?.data &&
+        singleDeck?.data?.status?.toLowerCase() === "draft" && (
+          <Button.Secondary
+            title={"Save as draft"}
+            className="px-8 outline-none"
+            loading={isLoading || loading}
+            style={{ borderRadius: "50px" }}
+            onClick={() => handleSubmitDraft()}
+          />
+        )}
       <Button.Primary
         title={"Publish"}
         className="px-8 outline-none"
         style={{ borderRadius: "50px" }}
-        onClick={() => openModal()}
+        onClick={() => modalOpen("edit")}
       />
     </div>
   );

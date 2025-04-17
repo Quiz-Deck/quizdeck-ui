@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "./index";
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
-import Spirals from "../../assets/decorations/spirals.svg";
+// import Spirals from "../../assets/decorations/spirals.svg";
 import Question from "../../assets/decorations/question-mark.png";
 import createQuiz from "../../assets/icons/create-quiz1.svg";
 import generatePrompt from "../../assets/icons/generate-prompt1.svg";

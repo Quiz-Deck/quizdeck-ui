@@ -1,20 +1,20 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, Fragment } from "react";
+// import { useDispatch } from "react-redux";
 import Input from "../../../components/input/Input";
-import Button from "../../../components/button/buttons";
-import errorHandler from "handlers/errorHandler";
-import successHandler from "handlers/successHandler";
+// import Button from "../../../components/button/buttons";
+// import errorHandler from "handlers/errorHandler";
+// import successHandler from "handlers/successHandler";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
-import { deckActions } from "features/store/deckSlice";
+// import { deckActions } from "features/store/deckSlice";
 import { ReactComponent as Plus } from "assets/icons/plus.svg";
-import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
+// import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {
   question: DeckQuestion;
   data: any;
   setData: (e: any) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   deckQuestions: any;
   setDeckQuestions: (e: any) => void;
   quiz_index: number;
@@ -24,13 +24,12 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({
   question,
   data,
   setData,
-  handleSubmit,
   deckQuestions,
   setDeckQuestions,
   quiz_index,
 }) => {
-  const dispatch = useDispatch();
-  const [editQuestion, { isLoading }] = useEditQuestionMutation();
+  // const dispatch = useDispatch();
+  // const [editQuestion, { isLoading }] = useEditQuestionMutation();
 
   const [answerFields, setAnswerFields] = useState(
     question?.multichoiceOptions
@@ -99,7 +98,7 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({
     setData({ ...data, answer: answer });
     setDeckQuestions((prevQuizzes: any) =>
       prevQuizzes.map((quiz: any, i: number) =>
-        i === quiz_index ? { ...quiz, ["answer"]: answer } : quiz
+        i === quiz_index ? { ...quiz, answer: answer } : quiz
       )
     );
   };
@@ -129,52 +128,51 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({
   // };
 
   return (
-    <div className="p-5 w-full hover:shadow-lg cursor-pointer">
-      <div>
-        {answerFields.map((inputField, index) => (
-          <Fragment key={index}>
-            <div className="flex gap-4 w-full items-center">
+    <div className="py-5 w-full hover:shadow-lg cursor-pointer">
+      {answerFields.map((inputField, index) => (
+        <Fragment key={index}>
+          <div className="flex gap-4 w-full items-center">
+            <div className="w-full relative">
+              <Input.Label
+                title={""}
+                name="answer"
+                placeholder={"Type answer or option"}
+                className=" mb-4 w-full bg-[#D9D9D91A] rounded-[20px] border-[#FFFFFF4D] text-white"
+                autoComplete="off"
+                defaultValue={inputField}
+                onChange={(event: any) => handleInputChange(index, event)}
+              />
               <input
                 type="radio"
                 name={question?._id}
+                className="absolute z-1 top-6 right-4 h-[22px] w-[22px]"
                 defaultChecked={question?.answer === inputField}
                 onChange={() => handleSelectAnswer(inputField)}
               />
-              <div className="w-full">
-                <Input.Label
-                  title={""}
-                  name="answer"
-                  placeholder={"Type answer or option"}
-                  className=" mb-4 w-full bg-[#D9D9D91A] rounded-[20px] border-[#FFFFFF4D] text-white"
-                  autoComplete="off"
-                  defaultValue={inputField}
-                  onChange={(event: any) => handleInputChange(index, event)}
-                />
-              </div>
-
-              <button
-                className="btn btn-link"
-                type="button"
-                onClick={() => handleRemoveFields(index)}
-              >
-                -
-              </button>
             </div>
-          </Fragment>
-        ))}
 
-        <div className="flex items-center justify-between">
-          <button
-            className="text-white mt-4 flex gap-2 items-center"
-            type="button"
-            onClick={() => handleAddFields()}
-          >
-            <span className="w-[2rem] h-[2rem] bg-primary800 rounded-full flex items-center justify-center">
-              <Plus className="w-[24px] h-[24px] fill-[#ffffff]" />
-            </span>
-            Add Answer or Option
-          </button>
-        </div>
+            <button
+              className="btn btn-link"
+              type="button"
+              onClick={() => handleRemoveFields(index)}
+            >
+              <TrashIcon className="h-4 w-4 stroke-white" aria-hidden="true" />
+            </button>
+          </div>
+        </Fragment>
+      ))}
+
+      <div className="flex items-center justify-between">
+        <button
+          className="text-white mt-4 flex gap-2 items-center"
+          type="button"
+          onClick={() => handleAddFields()}
+        >
+          <span className="w-[2rem] h-[2rem] bg-primary800 rounded-full flex items-center justify-center">
+            <Plus className="w-[24px] h-[24px] fill-[#ffffff]" />
+          </span>
+          Add Answer or Option
+        </button>
       </div>
     </div>
   );

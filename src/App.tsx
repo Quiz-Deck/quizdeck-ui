@@ -18,6 +18,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import CommonLayout from "./layouts/CommonLayout";
 import CreateQuizLayout from "./layouts/CreateQuizLayout";
 import QuizTaker from "./pages/quiz/index";
+import Question from "./pages/dashboard/explore/Question";
 import PrivateRoute from "utils/privateRoute";
 
 function App() {
@@ -45,6 +46,14 @@ function App() {
               }
             />
             <Route
+              path="/dashboard/question/:id"
+              element={
+                <PrivateRoute>
+                  <Question />
+                </PrivateRoute>
+              }
+            />
+            <Route
               path="/deck/create/*"
               element={
                 <PrivateRoute>
@@ -58,7 +67,7 @@ function App() {
                 isAuth ? <Navigate to="/dashboard/explore" /> : <CommonLayout />
               }
             />
-           
+
             <Route path="/deck/practise/:id" element={<QuizTaker />} />
           </Routes>
         </BrowserRouter>

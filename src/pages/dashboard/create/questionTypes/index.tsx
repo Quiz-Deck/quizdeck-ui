@@ -1,8 +1,8 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import Input from "components/input/Input";
-import Button from "components/button/buttons";
+// import Button from "components/button/buttons";
 import Audio from "assets/icons/add-audio.svg";
 import Photo from "assets/icons/add-photo.svg";
 import Video from "assets/icons/add-video.svg";
@@ -11,14 +11,14 @@ import EditMultipleChoice from "pages/dashboard/editQuestionTypes/EditMultipleCh
 import { TrashIcon } from "@heroicons/react/24/outline";
 import successHandler from "handlers/successHandler";
 import errorHandler from "handlers/errorHandler";
-import ErrorValidation from "pages/common/ErrorValidation";
+// import ErrorValidation from "pages/common/ErrorValidation";
 import { deckActions } from "features/store/deckSlice";
 import { AddImageModal } from "components/modals/AddImageModal";
 import { AddAudioModal } from "components/modals/AddAudioModal";
 import { AddVideoModal } from "components/modals/AddVideoModal";
 import { useDeleteQuestionMutation } from "features/api/question/questionApi";
-import { useAddQuestionMutation } from "features/api/question/questionApi";
-import { useEditQuestionMutation } from "features/api/question/questionApi";
+// import { useAddQuestionMutation } from "features/api/question/questionApi";
+// import { useEditQuestionMutation } from "features/api/question/questionApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {
@@ -51,12 +51,11 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
   deckQuestions,
   setDeckQuestions,
 }) => {
-  const { id } = useParams();
+  // const { id } = useParams();
   const dispatch = useDispatch();
-  const [submitted, setSubmitted] = useState(false);
-  const [editQuestion, { isLoading }] = useEditQuestionMutation();
+  // const [submitted, setSubmitted] = useState(false);
   // const [addQuestion, { isLoading }] = useAddQuestionMutation();
-  const [deleteQuestion, { isLoading: loading }] = useDeleteQuestionMutation();
+  const [deleteQuestion, { isLoading}] = useDeleteQuestionMutation();
 
   const [modal, setModal] = useState({ status: false, type: "" });
   const closeModal = () => {
@@ -77,29 +76,32 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
     audio: "",
   });
 
-  // const [answerFields, setAnswerFields] = useState(["option 1", "option 2"]);
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-    setDeckQuestions((prevQuizzes: any) =>
-      prevQuizzes.map((quiz: any, i: number) =>
+    setDeckQuestions((deckQuestions: any) =>
+      deckQuestions.map((quiz: any, i: number) =>
         i === index ? { ...quiz, [name]: value } : quiz
       )
     );
   };
 
-  const [answerFields, setAnswerFields] = useState(
-    question?.multichoiceOptions
-  );
+  const handleSelectOption = (e: any) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+    setDeckQuestions((deckQuestions: any) =>
+      deckQuestions.map((quiz: any, i: number) =>
+        i === index ? { ...quiz, [name]: value } : quiz
+      )
+    );
+  };
 
   useEffect(() => {
-    setData((data) => ({
+    setData((data: any) => ({
       ...data,
       question: question?.question,
       type: question?.type,
       answer: question?.answer,
     }));
-    setAnswerFields(question?.multichoiceOptions);
   }, [question]);
 
   const handleDelete = (id: string) => {
@@ -114,75 +116,18 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
       });
   };
 
-  // const handleSubmit = () => {
-  //   const newData = { ...data, multichoiceOptions: answerFields };
-
-  //   if (answerFields?.length < 2) {
-  //     errorHandler(
-  //       { message: "Multichoice questions should have a minimum of 2 options" },
-  //       true
-  //     );
-  //   } else if (data?.question === "" || data?.answer === "") {
-  //     setSubmitted(true);
-  //   } else {
-  //     addQuestion({
-  //       deckId: id,
-  //       // payload: { ...data, multichoiceOptions: answerFields },
-  //       payload: [newData],
-  //     })
-  //       .unwrap()
-  //       .then((res: any) => {
-  //         dispatch(deckActions.addADeckQuestion(res?.data));
-  //         setData({
-  //           question: "",
-  //           type: "MULTI_CHOICE",
-  //           multichoiceOptions: [],
-  //           answer: "",
-  //           image: "",
-  //           video: "",
-  //           audio: "",
-  //         });
-  //         setAnswerFields(["option 1", "option 2"]);
-  //         successHandler(res, true);
-  //         // handleClose();
-  //       })
-  //       .catch((err) => {
-  //         errorHandler(err?.data, true);
-  //       });
-  //   }
-  // };
-
-  const handleSubmit = (e: any) => {
-    if (answerFields?.length < 2) {
-      errorHandler(
-        {
-          message: "Multichoice questions should have a minimum of 2 options",
-        },
-        true
-      );
-    } else {
-      editQuestion({
-        deckId: question?._id,
-        payload: { ...data, multichoiceOptions: answerFields },
-      })
-        .unwrap()
-        .then((res: any) => {
-          successHandler(res, true);
-          dispatch(deckActions.editADeckQuestion(res?.data));
-        })
-        .catch((err) => {
-          errorHandler(err?.data || "Something went wrong", true);
-        });
-    }
-  };
   return (
     <div key={question?._id} className="bg-primary rounded-[20px] w-full mb-8">
-      <div className="p-5 flex items-center justify-between border-b py-2">
+      <div className="py-3 px-10 flex items-center justify-between border-b">
         <div className="flex items-center gap-3">
           <p className="text-white font-bold">Question {index + 1}.</p>
-          <select>
-            <option>Multiple Question</option>
-            <option>Open Ended</option>
+          <select
+            name="type"
+            className="bg-[#E0D4FC] rounded-[15px] px-2 py-1 outline-none"
+            onChange={handleSelectOption}
+          >
+            <option value={"MULTI_CHOICE"}>Multiple Question</option>
+            <option value={"QNA"}>Open Ended</option>
           </select>
         </div>
 
@@ -211,14 +156,15 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
               ></circle>
             </svg>
           ) : (
-            <TrashIcon className="h-5 w-5" aria-hidden="true" />
+            <TrashIcon className="h-5 w-5 stroke-white" aria-hidden="true" />
           )}
         </button>
       </div>
-      <div className="mt-5 p-5 bg-primary rounded-[20px] w-full">
-        <div className="flex gap-3 px-4 py-3 relative rounded-[20px] bg-[#350B95CC] border border-[#FFFFFF]">
+
+      <div className="mt-5 py-5 px-10 bg-primary rounded-[20px] w-full">
+        <div className="flex gap-3 px-4 pt-3 relative rounded-[20px] bg-[#350B95CC] border border-[#FFFFFF]">
           {data?.image && (
-            <div className="max-w-[264px] w-full h-[196px]">
+            <div className="max-w-[264px] w-full h-[196px] pb-3">
               {data?.image && (
                 <img
                   src={data?.image}
@@ -249,7 +195,7 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
                 onClick={() => openModal("image")}
                 className="bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex items-center justify-center "
               >
-                <img src={Photo} alt="photo" className="w-[20px] h-[18px]" />
+                <img src={Photo} alt="add_image" className="w-[20px] h-[18px]" />
               </button>
               <button
                 onClick={() => openModal("video")}
@@ -267,9 +213,9 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
           </div>
         </div>
 
-        {submitted && data?.question === "" && (
+        {/* {submitted && data?.question === "" && (
           <ErrorValidation message="Question is required" />
-        )}
+        )} */}
 
         {question?.type === "MULTI_CHOICE" ? (
           <EditMultipleChoice
@@ -277,16 +223,23 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
             data={data}
             setData={setData}
             quiz_index={index}
-            handleSubmit={handleSubmit}
             deckQuestions={deckQuestions}
             setDeckQuestions={setDeckQuestions}
           />
         ) : question?.type === "QNA" ? (
-          <EditQNA question={question} />
+          <EditQNA
+            question={question}
+            data={data}
+            setData={setData}
+            quiz_index={index}
+            deckQuestions={deckQuestions}
+            setDeckQuestions={setDeckQuestions}
+          />
         ) : (
           ""
         )}
       </div>
+
       {modal.status && modal.type === "image" && (
         <AddImageModal
           open={modal.status}

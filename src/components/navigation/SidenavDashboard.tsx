@@ -24,10 +24,10 @@ export default function SidenavDashboard() {
   const navigation = [
     {
       name: "Dashboard",
-      href: "/dashboard/explore",
+      href: "/dashboard",
       icon: DashboardOutline,
       iconActive: DashboardSolid,
-      current: params["*"] && params["*"].includes("explore"),
+      current: params["*"] === "" && !params["*"].includes("explore"),
     },
     {
       name: "My Library",
@@ -38,12 +38,15 @@ export default function SidenavDashboard() {
     },
     {
       name: "Explore",
-      href: "/dashboard/public-decks",
+      href: "/dashboard/explore",
       icon: DiscoveryOutline,
       iconActive: DiscoverySolid,
-      current: params["*"] && params["*"].includes("explorer"),
+      current: params["*"] && params["*"].includes("explore"),
     },
   ];
+
+  console.log('params["*"]', params);
+
   return (
     <div className="max-w-[300px] w-full h-screen hidden sm:block sm:fixed">
       <div className="h-full">

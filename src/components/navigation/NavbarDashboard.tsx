@@ -1,25 +1,25 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
 import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 // const navigation = [{ name: "Home", href: "#" }];
 
 export default function NavbarDashboard() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <Disclosure as="nav" className="bg-white w-full">
       {({ open }) => (
         <>
           <div className="max-w-8xl">
-            <div className="flex justify-between py-3 mb-4 h-14">
-              <div className="flex px-2 lg:px-0 max-w-2xl w-full">
+            <div className="flex justify-end py-3 mb-4 h-14">
+              {/* <div className="flex px-2 lg:px-0 max-w-2xl w-full">
                 <input
                   placeholder="Search"
                   type={"search"}
                   className="bg-[#F6F6F5] w-full px-4"
                 />
-              </div>
+              </div> */}
 
               <div className="flex items-center gap-8 px-4">
                 <button

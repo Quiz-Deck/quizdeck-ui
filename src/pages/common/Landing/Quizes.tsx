@@ -122,7 +122,7 @@ export default function Quizes() {
           </dl>
 
           <div className="text-center mt-12">
-            <a className="text-primary underline text-[2rem]">
+            <a className="text-primary underline text-[2rem]" href="/">
               Explore other quizzes
             </a>
           </div>
