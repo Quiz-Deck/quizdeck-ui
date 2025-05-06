@@ -8,16 +8,32 @@ import createQuiz from "../../assets/icons/create-quiz1.svg";
 interface Props {
   open: boolean;
   setClose: () => void;
+  data: any;
+  setData: (e: any) => void;
+  quiz_index: number;
+  setDeckQuestions: (e: any) => void;
 }
 
-export const AddVideoModal = ({ open, setClose }: Props) => {
+export const AddVideoModal = ({
+  open,
+  setClose,
+  data,
+  setData,
+  quiz_index,
+  setDeckQuestions,
+}: Props) => {
   const [youtubeLink, setYoutubeLink] = useState<string | null>(null);
   const [uploadedVideo, setUploadedVideo] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Build quiz data excluding the raw FormData
+  const quizData = {
+    ...data,
+  };
+
   const handleYoutubeLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value;
-    const youtubeRegex = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
+    const youtubeRegex = /^(https?\:\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
     if (youtubeRegex.test(link)) {
       setYoutubeLink(link);
       setUploadedVideo(null); // Clear the uploaded video if a YouTube link is provided
@@ -42,6 +58,22 @@ export const AddVideoModal = ({ open, setClose }: Props) => {
     const videoId = link.split("v=")[1] || link.split("/").pop();
     return `https://www.youtube.com/embed/${videoId}`;
   };
+
+  const handleSubmit = () => {
+    if (!youtubeLink) return;
+
+    const new_question = { ...quizData, video: youtubeLink };
+    setData(new_question);
+
+    setDeckQuestions((deckQuestions: any) =>
+      deckQuestions.map((quiz: any, i: number) =>
+        i === quiz_index ? new_question : quiz
+      )
+    );
+
+    setClose();
+  };
+
   return (
     <Modal open={open} width={"652px"}>
       <div className="max-w-[864px] mx-auto px-4 mt-12">
@@ -114,7 +146,7 @@ export const AddVideoModal = ({ open, setClose }: Props) => {
                         title={"Save"}
                         className="rounded-full px-8"
                         style={{ borderRadius: "50px" }}
-                        onClick={() => {}}
+                        onClick={() => handleSubmit()}
                       />
                     </div>
                   </div>

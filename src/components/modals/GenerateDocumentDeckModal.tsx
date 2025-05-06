@@ -40,7 +40,6 @@ export const GenerateDocumentDeckModal = ({ open, setClose }: Props) => {
     setDragActive(false);
     const file = e.dataTransfer.files[0];
     if (file && file.type === "application/pdf") {
-      // setPdfFile(URL.createObjectURL(file));
       setPdfFile(file);
       setFileName(file?.name);
     }
@@ -53,7 +52,6 @@ export const GenerateDocumentDeckModal = ({ open, setClose }: Props) => {
   const handleImageChange = (e: any) => {
     const file = e.target.files[0];
     if (file && file.type === "application/pdf") {
-      // setPdfFile(URL.createObjectURL(file));
       setPdfFile(file);
       setFileName(file?.name);
     }

@@ -66,7 +66,7 @@ export default function PublicDecks() {
         </div>
       </div>
 
-      <nav className="flex items-center gap-8 rounded-[2rem] py-4 h-[60px] mb-8">
+      <nav className="flex items-center gap-8 rounded-[2rem] py-4 h-[60px] mb-8 overflow-x-scroll overflow-y-hidden sm:overflow-hidden">
         <select className="rounded-[10px] px-4 h-[32px] text-[14px] text-[#ACACAC] border border-[#ACACAC]">
           <option>Popular</option>
           <option>Popular</option>

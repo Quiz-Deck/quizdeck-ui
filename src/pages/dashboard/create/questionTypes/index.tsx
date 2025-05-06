@@ -6,6 +6,8 @@ import Input from "components/input/Input";
 import Audio from "assets/icons/add-audio.svg";
 import Photo from "assets/icons/add-photo.svg";
 import Video from "assets/icons/add-video.svg";
+import QuizDefault from "assets/images/quiz/audio-default.png";
+import { ReactComponent as Cancel } from "assets/icons/close.svg";
 import EditQNA from "pages/dashboard/editQuestionTypes/EditQNA";
 import EditMultipleChoice from "pages/dashboard/editQuestionTypes/EditMultipleChoice";
 import { TrashIcon } from "@heroicons/react/24/outline";
@@ -28,23 +30,6 @@ type CreateQuizProps = {
   setDeckQuestions: (e: any) => void;
 };
 
-// QDeck{
-// 	createdOn: date,
-// 	createdBy: string,
-// 	updatedOn: date,
-// 	updatedBy: string,
-// 	type: "MULTI_CHOICE" || "QNA" || "IMAGE" || "AUDIO" || "VIDEO",
-// 	question: string,
-// 	options: [{key: value}]
-// 	image: file,
-// 	video: file,
-// 	audio: file,
-// 	difficulty: "EASY" || "MEDIUM" || "HARD",
-// 	file: file //users should be able to upload text files or pdf documents and we would generate questions for them from the file
-// 	timer: date //time that user has allocated to be able to answer this question
-// 	answer: string [] //This is an array to accomodate for questions with more than one answer
-// }
-
 const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
   question,
   index,
@@ -55,7 +40,7 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
   const dispatch = useDispatch();
   // const [submitted, setSubmitted] = useState(false);
   // const [addQuestion, { isLoading }] = useAddQuestionMutation();
-  const [deleteQuestion, { isLoading}] = useDeleteQuestionMutation();
+  const [deleteQuestion, { isLoading }] = useDeleteQuestionMutation();
 
   const [modal, setModal] = useState({ status: false, type: "" });
   const closeModal = () => {
@@ -95,12 +80,15 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
     );
   };
 
+  // console.log("question", question);
+
   useEffect(() => {
     setData((data: any) => ({
       ...data,
       question: question?.question,
       type: question?.type,
       answer: question?.answer,
+      multichoiceOptions: question?.multichoiceOptions,
     }));
   }, [question]);
 
@@ -116,9 +104,12 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
       });
   };
 
+  const hasMedia =
+    data?.image !== "" || data?.audio !== "" || data?.video !== "";
+
   return (
     <div key={question?._id} className="bg-primary rounded-[20px] w-full mb-8">
-      <div className="py-3 px-10 flex items-center justify-between border-b">
+      <div className="py-3 px-4 sm:px-10 flex items-center justify-between border-b">
         <div className="flex items-center gap-3">
           <p className="text-white font-bold">Question {index + 1}.</p>
           <select
@@ -161,19 +152,62 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
         </button>
       </div>
 
-      <div className="mt-5 py-5 px-10 bg-primary rounded-[20px] w-full">
-        <div className="flex gap-3 px-4 pt-3 relative rounded-[20px] bg-[#350B95CC] border border-[#FFFFFF]">
-          {data?.image && (
-            <div className="max-w-[264px] w-full h-[196px] pb-3">
-              {data?.image && (
-                <img
-                  src={data?.image}
-                  alt="Uploaded preview"
-                  className="w-full h-full rounded-lg object-cover"
-                />
-              )}
-            </div>
-          )}
+      <div className="sm:mt-5 pt-3 sm:py-5 px-4 sm:px-10 bg-primary rounded-[20px] w-full">
+        <div className="flex gap-3 px-4 pt-3 pb-2 relative rounded-[20px] bg-[#350B95CC] border border-[#FFFFFF]">
+          <div className={`${hasMedia ? "border-r pr-2" : ""} relative`}>
+            {hasMedia && (
+              <button
+                type="button"
+                onClick={() => {
+                  setData((data) => ({
+                    ...data,
+                    image: "",
+                    video: "",
+                    audio: "",
+                  }));
+                }}
+                className="bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex justify-center items-center outline-none mb-2"
+              >
+                <Cancel className="h-[1.1rem] w-[1.1rem] stroke-[#FFFFFFB2]" />
+              </button>
+            )}
+
+            {data?.image && (
+              <div className="max-w-[264px] w-full h-[196px] pb-3">
+                {data?.image && (
+                  <img
+                    src={data?.image}
+                    alt="Uploaded preview"
+                    className="w-full h-full rounded-lg object-cover"
+                  />
+                )}
+              </div>
+            )}
+
+            {data?.audio && (
+              <div className="max-w-[264px] w-full h-fit max-h-[196px] pb-3">
+                {data?.audio && (
+                  <img
+                    src={QuizDefault}
+                    alt="Uploaded preview"
+                    className="w-full h-full rounded-lg object-contain"
+                  />
+                )}
+              </div>
+            )}
+
+            {data?.video && (
+              <div className="max-w-[264px] w-full h-[196px] pb-3">
+                {data?.video && (
+                  <img
+                    src={QuizDefault}
+                    alt="Uploaded preview"
+                    className="w-full h-full rounded-lg object-contain"
+                  />
+                )}
+              </div>
+            )}
+          </div>
 
           <div className="w-full">
             <Input.Textarea
@@ -181,7 +215,7 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
               name="question"
               value={data?.question}
               placeholder="Type your question here..."
-              className="mb-0 min-h-[80px] w-full text-[#DCDCDF] bg-[#350B95CC] border-none"
+              className="mb-0 mt-4 min-h-[80px] w-full text-[#DCDCDF] bg-[#350B95CC] border-none"
               autoComplete="off"
               minLength={12}
               rows={2}
@@ -193,29 +227,38 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
             <div className="flex items-center gap-4">
               <button
                 onClick={() => openModal("image")}
-                className="bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex items-center justify-center "
+                disabled={hasMedia}
+                className={`${
+                  hasMedia ? "opacity-50" : "opacity-100"
+                } bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex items-center justify-center `}
               >
-                <img src={Photo} alt="add_image" className="w-[20px] h-[18px]" />
+                <img
+                  src={Photo}
+                  alt="add_image"
+                  className="w-[20px] h-[18px]"
+                />
               </button>
               <button
                 onClick={() => openModal("video")}
-                className="bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex items-center justify-center "
+                disabled={hasMedia}
+                className={`${
+                  hasMedia ? "opacity-50" : "opacity-100"
+                } bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex items-center justify-center `}
               >
                 <img src={Video} alt="video" className="w-[20px] h-[18px]" />
               </button>
               <button
                 onClick={() => openModal("audio")}
-                className="bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex items-center justify-center "
+                disabled={hasMedia}
+                className={`${
+                  hasMedia ? "opacity-50" : "opacity-100"
+                } bg-[#46209C] w-[26px] h-[23px] rounded-[5px] flex items-center justify-center `}
               >
                 <img src={Audio} alt="audio" className="w-[20px] h-[18px]" />
               </button>
             </div>
           </div>
         </div>
-
-        {/* {submitted && data?.question === "" && (
-          <ErrorValidation message="Question is required" />
-        )} */}
 
         {question?.type === "MULTI_CHOICE" ? (
           <EditMultipleChoice
@@ -246,13 +289,29 @@ const SingleDeckQuestion: React.FC<CreateQuizProps> = ({
           setClose={closeModal}
           data={data}
           setData={setData}
+          quiz_index={index}
+          setDeckQuestions={setDeckQuestions}
         />
       )}
       {modal.status && modal.type === "audio" && (
-        <AddAudioModal open={modal.status} setClose={closeModal} />
+        <AddAudioModal
+          open={modal.status}
+          setClose={closeModal}
+          data={data}
+          setData={setData}
+          quiz_index={index}
+          setDeckQuestions={setDeckQuestions}
+        />
       )}
       {modal.status && modal.type === "video" && (
-        <AddVideoModal open={modal.status} setClose={closeModal} />
+        <AddVideoModal
+          open={modal.status}
+          setClose={closeModal}
+          data={data}
+          setData={setData}
+          quiz_index={index}
+          setDeckQuestions={setDeckQuestions}
+        />
       )}
     </div>
   );

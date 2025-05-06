@@ -107,6 +107,7 @@ const MultipleChoice: React.FC<CreateQuizProps> = ({
         rows={2}
         onChange={(e: any) => handleChange(e)}
       />
+      
       {submitted && data?.question === "" && (
         <ErrorValidation message="Question is required" />
       )}

@@ -5,7 +5,7 @@ import { _getUser } from "utils/Auth";
 import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
 import Placeholder from "../../../assets/images/quiz-default1.jpeg";
-import Avatar from "../../../assets/images/rectangle.jpg";
+// import Avatar from "../../../assets/images/rectangle.jpg";
 import Logo from "../../../assets/icons/logo.png";
 import { HeartIcon as SolidHeart } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
@@ -88,7 +88,7 @@ export default function Question() {
         </div>
       </div>
 
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto px-3">
         <button
           onClick={() => navigate(-1)}
           className="text-primary font-medium mb-5 flex items-center gap-2"
@@ -123,14 +123,14 @@ export default function Question() {
             </div> */}
 
             {/* new */}
-            <div className="mb-12 bg-[#F3EFFC] border border-[#FFFFFF33] rounded-[10px] px-5 py-5">
-              <div className="flex justify-between items-end gap-8">
+            <div className="mb-12 bg-[#F3EFFC] border border-[#FFFFFF33] rounded-[10px] px-3 py-4 sm:px-5 sm:py-5">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-8">
                 <div className="flex items-start gap-4">
                   <figure>
                     <img
                       src={Placeholder}
                       alt="Placeholder"
-                      className="w-[164px] h-[133px] rounded-[5px] border border-white object-cover"
+                      className="w-[100px] h-[95px] sm:w-[164px] sm:h-[133px] rounded-[5px] border border-white object-cover"
                     />
                   </figure>
 

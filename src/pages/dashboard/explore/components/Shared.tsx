@@ -6,7 +6,7 @@ import PageLoader from "utils/PageLoader";
 import Button from "components/button/buttons";
 import Pagination from "components/pagination";
 import Dummy from "assets/images/quiz-default1.jpeg";
-import Avatar from "../../../assets/images/rectangle.jpg";
+// import Avatar from "../../../assets/images/rectangle.jpg";
 import EmptyState from "assets/images/empty-state.svg";
 import { ReactComponent as LikeOutline } from "assets/icons/like-outline.svg";
 import { ReactComponent as StarOutline } from "assets/icons/star-outline.svg";

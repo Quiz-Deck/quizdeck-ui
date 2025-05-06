@@ -9,17 +9,33 @@ interface Props {
   setClose: () => void;
   data: any;
   setData: (e: any) => void;
+  quiz_index: number;
+  setDeckQuestions: (e: any) => void;
 }
 
-export const AddImageModal = ({ open, setClose, setData, data }: Props) => {
+export const AddImageModal = ({
+  open,
+  setClose,
+  setData,
+  data,
+  quiz_index,
+  setDeckQuestions,
+}: Props) => {
   const [image, setImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Build quiz data
+  const quizData = {
+    ...data,
+  };
 
   const handleImageChange = (e: any) => {
     const file = e.target.files[0];
     if (file) {
       setImage(URL.createObjectURL(file));
+      setImageFile(file);
     }
   };
   const handleDragOver = (e: any) => {
@@ -50,6 +66,15 @@ export const AddImageModal = ({ open, setClose, setData, data }: Props) => {
 
   const handleSubmit = () => {
     const new_data = { ...data, image: image };
+    console.log("new_data", new_data);
+
+    const new_question = { ...quizData, image: imageFile };
+    setDeckQuestions((deckQuestions: any) =>
+      deckQuestions.map((quiz: any, i: number) =>
+        i === quiz_index ? new_question : quiz
+      )
+    );
+
     setData(new_data);
     setClose();
   };

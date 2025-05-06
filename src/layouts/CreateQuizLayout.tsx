@@ -11,7 +11,7 @@ export default function CreateQuizLayout() {
   // const navigate = useNavigate();
   return (
     <div className="relative w-full">
-      <div className="mt-6">
+      <div className="sm:mt-6">
         <Routes>
           <Route path="*" element={<CreateQuiz />} />
           <Route path="/:id" element={<CreateDeckQuestions />} />

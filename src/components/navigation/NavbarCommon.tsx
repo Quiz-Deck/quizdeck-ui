@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
-import Logo from "../../assets/icons/logo-black.png";
+// import Logo from "../../assets/icons/logo-black.png";
+import Logo from "../../assets/icons/logo.png";
 import { BellIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function NavbarCommon() {

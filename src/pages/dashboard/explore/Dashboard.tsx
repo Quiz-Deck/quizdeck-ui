@@ -34,10 +34,12 @@ export default function Dashboard() {
     <div>
       <NavbarDashboard />
       <div className="mb-12">
-        <div className="relative flex items-end justify-between gap-4 purple-gradient py-10 px-8 rounded-[30px]">
+        <div className="relative flex flex-col sm:flex-row items-end justify-between gap-2 sm:gap-4 purple-gradient py-10 px-4 sm:px-8 rounded-[30px]">
           <div className="pb-4 ml-2 text-white lg:w-[70%]">
-            <h2 className="text-[2rem] mb-3">This would be a headline here</h2>
-            <p className="text-lg">
+            <h2 className="text-[1.6rem] sm:text-[2rem] mb-3">
+              This would be a headline here
+            </h2>
+            <p className="text-md sm:text-lg">
               Lorem ipsum dolor sit amet consectetur. Sed libero tellus ornare
               est nLorem ipsum dolor sit amet consectetu sit amet consectetu.
             </p>
@@ -51,7 +53,7 @@ export default function Dashboard() {
             <img
               src={Question}
               alt="design"
-              className="h-130px] w-[130px] absolute top-3 right-2"
+              className="h-[60px] w-[60px] sm:h-[130px] sm:w-[130px] absolute top-1 sm:top-3 right-2"
             />
             <button
               type="button"
@@ -64,7 +66,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-5 mt-6">
+        <div className="grid sm:grid-cols-3 gap-3 sm:gap-5 mt-6">
           <div
             onClick={() => modalOpen("create-standard")}
             className="flex items-center gap-3 border border-[#C6C6CB] rounded-lg py-3 px-3"

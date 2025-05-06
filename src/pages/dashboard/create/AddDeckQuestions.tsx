@@ -3,11 +3,12 @@ import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import { _getUser } from "utils/Auth";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Logo from "assets/icons/logo.png";
-import QNA from "./questionTypes/QNA";
-import MultipleChoice from "./questionTypes/MultipleChoice";
+// import QNA from "./questionTypes/QNA";
+// import MultipleChoice from "./questionTypes/MultipleChoice";
 import QuestionsMenu from "./QuestionsMenu";
 import Button from "../../../components/button/buttons";
 import Dummy from "../../../assets/images/quiz-default1.jpeg";
@@ -27,7 +28,7 @@ import {
 } from "features/api/deck/deckSliceTypes";
 import SingleDeckQuestion from "./questionTypes";
 import errorHandler from "handlers/errorHandler";
-import successHandler from "handlers/successHandler";
+// import successHandler from "handlers/successHandler";
 
 const AddDeckQuestions: React.FC = () => {
   const user = _getUser();
@@ -41,8 +42,10 @@ const AddDeckQuestions: React.FC = () => {
 
   // const [open, setOpen] = useState(false);
   const [openPrompt, setOpenPrompt] = useState(false);
-  const [view, setView] = useState({ status: false, type: "" });
+  // const [view, setView] = useState({ status: false, type: "" });
   const [deckQuestions, setDeckQuestions] = useState<any>([]);
+
+  console.log("deckQuestions", deckQuestions);
 
   const [modal, setModal] = useState({ isOpen: false, type: "", modalObj: {} });
   const modalOpen = (type: string, modalObj?: any) =>
@@ -87,13 +90,13 @@ const AddDeckQuestions: React.FC = () => {
     dispatch(fetchSingleDeck(id || "")); // Dispatch the result of fetchSingleDeck
   }, [dispatch, id]);
 
-  const setViewType = (type: string) => {
-    setView({ status: true, type: type });
-  };
+  // const setViewType = (type: string) => {
+  //   setView({ status: true, type: type });
+  // };
 
-  const closeQuestionView = () => {
-    setView({ status: false, type: "" });
-  };
+  // const closeQuestionView = () => {
+  //   setView({ status: false, type: "" });
+  // };
 
   // const openModal = () => {
   //   setOpen(true);
@@ -107,9 +110,10 @@ const AddDeckQuestions: React.FC = () => {
     setOpenPrompt(false);
   };
 
-  const handleSubmitDraft = () => {
+  const handleSubmitDraft = async () => {
     const timer_to_seconds = data.timer && Number(data.timer * 60);
     const new_data = { ...data, status: "DRAFT", timer: timer_to_seconds };
+
     editDeck({
       deckId: id,
       payload: new_data,
@@ -121,23 +125,81 @@ const AddDeckQuestions: React.FC = () => {
         modalOpen("save-draft");
       })
       .catch((err) => {
+        console.log("err", err);
+
         errorHandler(err?.data || "Something went wrong", true);
       });
   };
 
-  const addQuizQuestions = (questionSetsArray: any[]) => {
-    addQuestion({
-      deckId: id,
-      payload: [...questionSetsArray],
-    })
-      .unwrap()
-      .then((res: any) => {
-        dispatch(deckActions.addADeckQuestion(res?.data));
-        successHandler(res, true);
-      })
-      .catch((err: any) => {
-        console.log(err);
+  const addQuizQuestions = async (questionSetsArray: any[]) => {
+    // addQuestion({
+    //   deckId: id,
+    //   payload: [...questionSetsArray],
+    // })
+    //   .unwrap()
+    //   .then((res: any) => {
+    //     dispatch(deckActions.addADeckQuestion(res?.data));
+    //     successHandler(res, true);
+    //   })
+    //   .catch((err: any) => {
+    //     console.log(err);
+    //   });
+
+    console.log("questionSetsArray", questionSetsArray);
+
+    const formDataPayload = new FormData();
+    questionSetsArray.forEach((quiz: any, i: number) => {
+      // if (quiz instanceof FormData) {
+      if (quiz.audio) {
+        console.log("true");
+
+        // Special handling for the audio form
+        formDataPayload.append("media", quiz.audio); // 👈 name must match multer's .array('audio')
+        // formDataPayload.append(`audio_${id}`, quiz.get("audio") as Blob);
+        // const questionData = JSON.parse(quiz.get("questionData") as string);
+        formDataPayload.append(
+          `questionData_${i}`,
+          JSON.stringify({
+            question: quiz.question,
+            type: quiz.type,
+            multichoiceOptions: quiz.multichoiceOptions,
+            answer: quiz.answer,
+          })
+        );
+      } else if (quiz.image) {
+        console.log("true");
+
+        // Special handling for the image form
+        formDataPayload.append("media", quiz.image, `image_${i}.jpg`);
+        formDataPayload.append(
+          `questionData_${i}`,
+          JSON.stringify({
+            question: quiz.question,
+            type: quiz.type,
+            multichoiceOptions: quiz.multichoiceOptions,
+            answer: quiz.answer,
+            video: quiz.video,
+          })
+        );
+      } else {
+        // For non-audio quizzes
+        formDataPayload.append(`questionData_${i}`, JSON.stringify(quiz));
+      }
+    });
+
+    try {
+      const apiUrl = `http://localhost:3000/question/create/${id}`;
+      const res = await axios.post(apiUrl, formDataPayload, {
+        headers: {
+          Authorization: `Bearer ${user.token}`, // replace with actual token
+          // Do NOT manually set Content-Type
+        },
       });
+      console.log("res", res);
+      return res;
+    } catch (err) {
+      console.error("Upload failed:", err);
+    }
   };
 
   return (
@@ -162,7 +224,6 @@ const AddDeckQuestions: React.FC = () => {
           </div>
           <div>
             <QuizActions
-              // openModal={openModal}
               handleSubmitDraft={handleSubmitDraft}
               isLoading={isLoading}
               loading={loading}
@@ -182,13 +243,13 @@ const AddDeckQuestions: React.FC = () => {
         </button>
 
         <div className="mb-12 bg-[#F3EFFC] border border-[#FFFFFF33] rounded-[10px] px-5 py-5">
-          <div className="flex justify-between items-end gap-8">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-8">
             <div className="flex items-start gap-4">
               <figure>
                 <img
                   src={Dummy}
                   alt="cover"
-                  className="w-[164px] h-[133px] rounded-[5px] border border-white object-cover"
+                  className="w-[100px] h-[95px] sm:w-[164px] sm:h-[133px] rounded-[5px] border border-white object-cover"
                 />
               </figure>
               <div>
@@ -225,7 +286,7 @@ const AddDeckQuestions: React.FC = () => {
               />
             ))}
 
-          {view?.status && view?.type === "multiple-choice" ? (
+          {/* {view?.status && view?.type === "multiple-choice" ? (
             <MultipleChoice
               handleClose={closeQuestionView}
               questions={singleDeck?.data?.questions}
@@ -237,11 +298,12 @@ const AddDeckQuestions: React.FC = () => {
             />
           ) : (
             ""
-          )}
+          )} */}
 
-          <div className={`flex gap-4 items-center justify-center mt-6 w-full`}>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 sm:gap-4 items-center justify-center mt-6 w-full`}
+          >
             <QuestionsMenu
-              setView={setViewType}
               deckQuestions={deckQuestions}
               setDeckQuestions={setDeckQuestions}
             />

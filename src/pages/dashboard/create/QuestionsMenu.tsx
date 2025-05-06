@@ -3,28 +3,11 @@ import { ReactComponent as Plus } from "assets/icons/plus.svg";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {
-  setView: (e: string) => void;
   deckQuestions: any;
   setDeckQuestions: (e: any) => void;
 };
 
-// const menuItems = [
-//   {
-//     name: "Multiple Choice",
-//     icon: "",
-//     href: "multiple-choice",
-//     type: "MULTI_CHOICE",
-//   },
-//   {
-//     name: "QNA",
-//     icon: "",
-//     href: "qna",
-//     type: "QNA",
-//   },
-// ];
-
 const QuestionsMenu: React.FC<CreateQuizProps> = ({
-  setView,
   deckQuestions,
   setDeckQuestions,
 }) => {
@@ -42,26 +25,7 @@ const QuestionsMenu: React.FC<CreateQuizProps> = ({
     setDeckQuestions([...oldQuestion, newQuestion]);
   };
   return (
-    <div className="bg-primary p-2 my-4 w-fit rounded-[50px]">
-      {/* <ul className="flex gap-4 items-center">
-          <button onClick={() => setShowMenu(false)} className="text-white">
-            <Plus className="w-[20px] h-[20px] fill-[#ffffff]" />
-          </button>
-          {menuItems?.length > 0 &&
-            menuItems?.map((menu, index) => (
-              <li
-                key={index + menu?.name}
-                className="px-3 py-2 bg-white hover:bg-[#fafaff] hover:shadow-md rounded-md cursor-pointer"
-                onClick={() => {
-                  setView(menu?.href);
-                  setShowMenu(false);
-                }}
-              >
-                {menu?.name}
-              </li>
-            ))}
-        </ul> */}
-
+    <div className="bg-primary p-2 w-fit rounded-[50px]">
       <button
         onClick={() => handleClick()}
         className="text-white flex gap-3 items-center px-2 outline-none rounded-[50px]"

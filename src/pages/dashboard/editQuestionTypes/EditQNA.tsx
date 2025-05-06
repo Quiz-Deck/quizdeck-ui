@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+// import { useDispatch } from "react-redux";
 import Input from "../../../components/input/Input";
-import Button from "../../../components/button/buttons";
-import errorHandler from "handlers/errorHandler";
-import successHandler from "handlers/successHandler";
+// import Button from "../../../components/button/buttons";
+// import errorHandler from "handlers/errorHandler";
+// import successHandler from "handlers/successHandler";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
-import { deckActions } from "features/store/deckSlice";
-import ErrorValidation from "pages/common/ErrorValidation";
-import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
+// import { deckActions } from "features/store/deckSlice";
+// import ErrorValidation from "pages/common/ErrorValidation";
+// import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {
@@ -23,13 +23,13 @@ const EditQNA: React.FC<CreateQuizProps> = ({
   question,
   data,
   setData,
-  deckQuestions,
+  // deckQuestions,
   setDeckQuestions,
   quiz_index,
 }) => {
-  const dispatch = useDispatch();
-  const [editQuestion, { isLoading }] = useEditQuestionMutation();
-  const [submitted, setSubmitted] = useState(false);
+  // const dispatch = useDispatch();
+  // const [editQuestion, { isLoading }] = useEditQuestionMutation();
+  // const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (question) {
@@ -64,9 +64,9 @@ const EditQNA: React.FC<CreateQuizProps> = ({
           autoComplete="off"
           onChange={(e: any) => handleChange(e)}
         />
-        {submitted && data?.answer === "" && (
+        {/* {submitted && data?.answer === "" && (
           <ErrorValidation message="Enter an answer for this question" />
-        )}
+        )} */}
 
         {/* <div className="flex items-center justify-end">
           <Button.Primary

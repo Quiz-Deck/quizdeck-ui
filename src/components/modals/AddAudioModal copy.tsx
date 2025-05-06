@@ -5,6 +5,8 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import createQuiz from "../../assets/icons/create-quiz1.svg";
 import audio from "../../assets/icons/audio.png";
 import Button from "components/button/buttons";
+import axios from "axios";
+import { _getUser } from "../../utils/Auth";
 
 interface Props {
   open: boolean;
@@ -12,6 +14,7 @@ interface Props {
   data: any;
   setData: (e: any) => void;
   quiz_index: number;
+  deckQuestions: any;
   setDeckQuestions: (e: any) => void;
 }
 
@@ -21,40 +24,24 @@ export const AddAudioModal = ({
   setData,
   data,
   quiz_index,
+  deckQuestions,
   setDeckQuestions,
 }: Props) => {
   // console.log("data", data);
+  const user = _getUser();
   const { id } = useParams();
   const [audioFile, setAudioFile] = useState<string | null>(null);
   const [audioData, setAudioData] = useState<any>(null);
-  const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
   const [isRecording, setIsRecording] = useState(false);
+  const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Build quiz data
-  const quizData = {
-    ...data,
-  };
 
   const handleAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setAudioFile(URL.createObjectURL(file));
-      setAudioData(file);
-
-      // Prepare form data
-      // const formData = new FormData();
-      // formData.append("audio", audioData.get("audio") as File);
-      // formData.append("questionData", JSON.stringify(quizData));
-      const new_question = { ...quizData, audio: file };
-      setDeckQuestions((deckQuestions: any) =>
-        deckQuestions.map((quiz: any, i: number) =>
-          i === quiz_index ? new_question : quiz
-        )
-      );
-      setIsRecording(true);
     }
   };
 
@@ -76,20 +63,10 @@ export const AddAudioModal = ({
 
       // Prepare form data
       const formData = new FormData();
-      formData.append("audio", audioBlob, `audio_${id}.mp3`);
+      formData.append("audio", audioBlob, "recording.mp3"); // 👈 name must match multer's .array('audio')
       setAudioData(formData);
       setAudioFile(URL.createObjectURL(audioBlob));
       setAudioStream(null);
-      // Update question in deckQuestions
-      const audioFile = new File([audioBlob], `audio_${id}.mp3`, {
-        type: "audio/mp3",
-      });
-      const new_question = { ...quizData, audio: audioFile };
-      setDeckQuestions((deckQuestions: any) =>
-        deckQuestions.map((quiz: any, i: number) =>
-          i === quiz_index ? new_question : quiz
-        )
-      );
     };
 
     mediaRecorder.start();
@@ -106,13 +83,87 @@ export const AddAudioModal = ({
     fileInputRef.current?.click();
   };
 
-  const handleSubmit = () => {
+  console.log("audioData", audioData);
+
+  // const handleSubmit = () => {
+  //   const new_data = { ...data, audio: audioData };
+  //   setData(new_data);
+
+  //   // Build quiz data excluding the raw FormData
+  //   const quizData = {
+  //     ...data,
+  //     // don't include `audio: audioData` here
+  //   };
+
+  //   // Build FormData to send to backend
+  //   const formData = new FormData();
+  //   formData.append("audio", audioData.get("audio") as Blob); // 👈 extract audio blob
+  //   formData.append("questionData", JSON.stringify(quizData));
+
+  //   setDeckQuestions((deckQuestions: any) =>
+  //     deckQuestions.map((quiz: any, i: number) =>
+  //       i === quiz_index ? { ...quiz, audio: formData } : quiz
+  //     )
+  //   );
+
+  //   setClose();
+  // };
+
+  const handleSubmit = async () => {
     if (!audioData) return;
 
     const new_data = { ...data, audio: audioData };
     setData(new_data);
 
-    setClose();
+    // Build quiz data excluding the raw FormData
+    const quizData = {
+      ...data,
+      type: "AUDIO", // optional: depends on your schema
+      // don't include `audio: audioData` here
+    };
+
+    // // Build FormData to send to backend
+    const formData = new FormData();
+    formData.append("audio", audioData.get("audio") as Blob); // 👈 extract audio blob
+    formData.append("questionData", JSON.stringify(quizData));
+
+    // setDeckQuestions((deckQuestions: any) =>
+    //   deckQuestions.map((quiz: any, i: number) =>
+    //     i === quiz_index ? formData : quiz
+    //   )
+    // );
+
+    const formDataPayload = new FormData();
+
+    deckQuestions.forEach((quiz: any, i: number) => {
+      if (quiz instanceof FormData) {
+        // Special handling for the audio form
+        formDataPayload.append(`audio_${i}`, quiz.get("audio") as Blob);
+        const questionData = JSON.parse(quiz.get("questionData") as string);
+        formDataPayload.append(`questionData_${i}`, JSON.stringify(questionData));
+      } else {
+        // For non-audio quizzes
+        formDataPayload.append(`questionData_${i}`, JSON.stringify(quiz));
+      }
+    });
+
+    console.log("deckQuestions", formDataPayload);
+
+    try {
+      const apiUrl = `http://localhost:3000/question/create/${id}`;
+      const res = await axios.post(apiUrl, formDataPayload, {
+        headers: {
+          Authorization: `Bearer ${user.token}`, // replace with actual token
+          // Do NOT manually set Content-Type
+        },
+      });
+
+      console.log("res", res);
+
+      setClose();
+    } catch (err) {
+      console.error("Upload failed:", err);
+    }
   };
 
   return (
