@@ -47,10 +47,10 @@ export const fetchSingleDeck = createAsyncThunk<SingleDeckResponse, string>(
   async (id, thunkAPI) => {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const res = await fetch(`${baseURL}/deck/${id}`, {
+      const res = await fetch(`${baseURL}/deck/${id}?userId=${user?._id}`, {
         headers: {
           // Add your headers here
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
           // Other headers as needed
         },

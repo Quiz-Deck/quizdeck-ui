@@ -23,6 +23,7 @@ const Button: React.FC<ButtonProps> & {
   Secondary: React.FC<SpecificButtonProps>;
   Green: React.FC<SpecificButtonProps>;
   Red: React.FC<SpecificButtonProps>;
+  White: React.FC<SpecificButtonProps>;
 } = ({ children }) => {
   return <>{children}</>;
 };
@@ -141,6 +142,27 @@ Button.Red = ({
       }
     >
       {title ?? "Title"}
+      {/* {loading && <RiLoader5Fill size={24} className="animate-spin ml-4" />} */}
+    </button>
+  );
+};
+
+Button.White = ({ title, style, className, disabled, loading, onClick }) => {
+  return (
+    <button
+      type="button"
+      style={style}
+      onClick={() => (onClick ? onClick() : {})}
+      disabled={disabled || loading}
+      className={
+        "p-2 rounded-md text-center whitespace-nowrap border " +
+        className +
+        (disabled
+          ? " bg-[#eaf0f9] text-gray-500"
+          : " bg-transparent text-white border-white hover:bg-primary")
+      }
+    >
+      {loading ? "Loading..." : title ?? "Title"}
       {/* {loading && <RiLoader5Fill size={24} className="animate-spin ml-4" />} */}
     </button>
   );

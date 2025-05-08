@@ -7,6 +7,7 @@ import FooterCommon from "../components/navigation/FooterCommon";
 import Landing from "../pages/common/Landing";
 // import NotFound from "../pages/common/NotFound";
 import CreateQuiz from "../pages/dashboard/create";
+import Pricing from "pages/common/Pricing";
 
 export default function CommonLayout() {
   return (
@@ -17,6 +18,7 @@ export default function CommonLayout() {
           {/* Body */}
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/admin/create" element={<CreateQuiz />} />
             <Route
               path="/*"

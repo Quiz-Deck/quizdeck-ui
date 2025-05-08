@@ -93,6 +93,16 @@ const deckApi = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
+
+    // getSingleDeck: build.query<
+    //   SingleDeckResponse,
+    //   { id: string; userId: string }
+    // >({
+    //   query: ({ id, userId }) => ({
+    //     url: `/deck/${id}?userId=${userId}`,
+    //     method: "GET",
+    //   }),
+    // }),
   }),
   overrideExisting: true,
 });

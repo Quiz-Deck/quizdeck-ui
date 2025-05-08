@@ -11,8 +11,8 @@ import Cookies from "js-cookie";
 const baseURL = process.env.REACT_APP_API_URL;
 
 const headers = {
-  Accept: "application/json",
-  "Content-Type": "application/json",
+  // Accept: "application/json",
+  // "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
   channel: "web",
 };

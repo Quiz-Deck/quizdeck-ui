@@ -1,8 +1,17 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import Button from "components/button/buttons";
+import Logo from "../../assets/icons/logo.png";
+import Badge from "../../assets/icons/badge.png";
+import { ReactComponent as LibraryOutline } from "../../assets/icons/document.svg";
+import { ReactComponent as LibrarySolid } from "../../assets/icons/document-solid.svg";
+import { ReactComponent as DiscoveryOutline } from "../../assets/icons/discovery.svg";
+import { ReactComponent as DiscoverySolid } from "../../assets/icons/discovery-solid.svg";
+import { ReactComponent as DashboardOutline } from "../../assets/icons/dashboard.svg";
+import { ReactComponent as DashboardSolid } from "../../assets/icons/dashboard-solid.svg";
+import { ReactComponent as LoginOutline } from "../../assets/icons/login.svg";
 import { logOut } from "features/store/authReducer";
-import Logo from "../../assets/icons/logo-black.png";
 
 export default function SidenavDashboard() {
   const params = useParams();
@@ -14,55 +23,98 @@ export default function SidenavDashboard() {
 
   const navigation = [
     {
-      name: "Explore",
-      href: "/dashboard/explore",
-      current: params["*"] && params["*"].includes("explore"),
+      name: "Dashboard",
+      href: "/dashboard",
+      icon: DashboardOutline,
+      iconActive: DashboardSolid,
+      current: params["*"] === "" && !params["*"].includes("explore"),
     },
     {
       name: "My Library",
       href: "/dashboard/my-library",
+      icon: LibraryOutline,
+      iconActive: LibrarySolid,
       current: params["*"] && params["*"].includes("library"),
     },
-    // { name: "Report", href: "#" },
-    // { name: "Profile", href: "#" },
-    // { name: "Notification", href: "#" },
+    {
+      name: "Explore",
+      href: "/dashboard/explore",
+      icon: DiscoveryOutline,
+      iconActive: DiscoverySolid,
+      current: params["*"] && params["*"].includes("explore"),
+    },
   ];
+
+  console.log('params["*"]', params);
+
   return (
     <div className="max-w-[300px] w-full h-screen hidden sm:block sm:fixed">
       <div className="h-full">
-        <div className="flex w-full px-2 lg:px-0 h-14">
-          <div className="flex-shrink-0 flex w-full items-center justify-center py-3">
-            <div className="block lg:hidden w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[145px]" />
-            </div>
-            <div className="hidden lg:block w-auto text-primary text-3xl font-bold">
-              <img src={Logo} alt="Logo" className="max-w-[145px]" />
+        <div className="relative bg-[#F8F9FF] h-full">
+          <div className="h-14 sm:pl-4 lg:pl-8">
+            <div className="py-3">
+              <div className="block lg:hidden w-auto text-primary text-3xl font-bold">
+                <img src={Logo} alt="Logo" className="max-w-[120px]" />
+              </div>
+              <div className="hidden lg:block w-auto text-primary text-3xl font-bold">
+                <img src={Logo} alt="Logo" className="max-w-[120px]" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-[#126CD6] sm:pl-4 lg:pl-8 h-full rounded-tr-3xl">
-          <div className="pt-[20%]">
+          <div className="pt-[20%] sm:pl-4 lg:pl-8 pr-4">
             {navigation.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
                 className={`${
-                  item?.current ? "text-secondary bg-white" : "text-white"
-                } font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-[#1977e4] block`}
+                  item?.current ? "text-primary " : "text-text-neutral"
+                } font-medium py-0 mb-10 hover:text-primary flex items-center gap-2`}
               >
-                {item.name}
+                {item?.current ? (
+                  <item.iconActive className="w-[1.4rem] h-[1.4rem] icon-active" />
+                ) : (
+                  <item.icon className="w-[1.5rem] h-[1.5rem] icon-default" />
+                )}
+                <span className="text-[1rem]">{item.name}</span>
               </a>
             ))}
+
             <button
               type="button"
               onClick={() => {
                 handleLogout();
               }}
-              className={`text-white text-left font-medium py-3 px-5 mb-3 rounded-l-3xl hover:bg-[#1977e4] block w-full`}
+              className={`text-text-neutral hover:text-primary text-left font-medium py-3 mb-3 mt-24 flex items-center gap-2`}
             >
-              Log Out
+              <LoginOutline className="w-[1.5rem] h-[1.5rem] icon-default" />
+              <span className="">Log Out</span>
             </button>
+          </div>
+
+          <div className="mt-24 absolute bottom-8 sm:pl-4 lg:pl-4 pr-4 w-full">
+            <div className="bg-[#EADFFE] w-full py-5 rounded-[20px] relative">
+              <div className="absolute -top-[50px] left-0 right-0 mx-auto bg-[#EADFFE] w-fit px-1 py-2 rounded-xl ">
+                <img className="h-[60px]" src={Badge} alt="Badge" />
+              </div>
+
+              <div className="mb-5 text-center">
+                <p className="text-black text-[1rem] font-bold mb-1">
+                  Win a badge
+                </p>
+                <p className="text-text-neutral text-sm">Lorem ipsum dolor </p>
+              </div>
+              <div className="flex items-center justify-center">
+                <Button.Primary
+                  title={"Create first quiz"}
+                  className="px-5 mx-auto"
+                  style={{ borderRadius: "50px" }}
+                  // disabled={false}
+                  // loading={isLoading}
+                  // onClick={handleSubmit}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

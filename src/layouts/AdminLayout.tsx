@@ -1,25 +1,23 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Explore from "../pages/dashboard/explore/Explore";
-import Question from "../pages/dashboard/explore/Question";
+import Dashboard from "../pages/dashboard/explore/Dashboard";
 import MyLibrary from "../pages/dashboard/explore/MyLibrary";
 import PublicDecks from 'pages/dashboard/explore/PublicDecks';
-import NavbarDashboard from "../components/navigation/NavbarDashboard";
+// import NavbarDashboard from "../components/navigation/NavbarDashboard";
 import SidenavDashboard from "../components/navigation/SidenavDashboard";
 
 export default function AdminLayout() {
   return (
     <div className="relative">
       <SidenavDashboard />
-      <div className="w-full xl:w-[95%] flex-auto sm:pl-[340px]">
-        <NavbarDashboard />
-        <div className="pr-8 mt-6">
+      <div className="w-full lg:w-full xl:w-[95%] flex-auto sm:pl-[340px]">
+        {/* <NavbarDashboard /> */}
+        <div className="lg:pr-8 px-4">
           <Routes>
-            <Route path="*" element={<Explore />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/question/:id" element={<Question />} />
+            <Route path="*" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/my-library" element={<MyLibrary />} />
-            <Route path="/public-decks" element={<PublicDecks />} />
+            <Route path="/explore" element={<PublicDecks />} />
           </Routes>
         </div>
       </div>

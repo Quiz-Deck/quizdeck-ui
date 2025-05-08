@@ -4,7 +4,9 @@ import { useParams } from "react-router-dom";
 import { Modal } from "./index";
 import Input from "components/input/Input";
 import { SelectInput } from "components/input/select";
+import SelectCategory from "components/input/SelectCategory";
 import Button from "components/button/buttons";
+import { ReactComponent as Close } from "assets/icons/close.svg";
 import errorHandler from "handlers/errorHandler";
 import successHandler from "handlers/successHandler";
 import {
@@ -13,16 +15,24 @@ import {
 } from "features/api/deck/deckSliceTypes";
 import { useEditDeckMutation } from "features/api/deck/deckApi";
 import { deckActions } from "features/store/deckSlice";
+import { useAddQuestionMutation } from "features/api/question/questionApi";
 
 interface Props {
   open: boolean;
   setClose: () => void;
   deck?: SingleDeck;
+  deckQuestions: any;
 }
 
-export const EditDeckModal = ({ open, setClose, deck }: Props) => {
+export const EditDeckModal = ({
+  open,
+  setClose,
+  deck,
+  deckQuestions,
+}: Props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [addQuestion] = useAddQuestionMutation();
 
   const [editDeck, { isLoading }] = useEditDeckMutation();
   const [data, setData] = useState<CreateDeckRequest>({
@@ -48,7 +58,6 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-
     if (name === "timer") {
       const timer = parseInt(value, 10);
       setData({ ...data, [name]: timer });
@@ -59,7 +68,7 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
 
   const handleSubmit = () => {
     const timer_to_seconds = data.timer && Number(data.timer * 60);
-    const new_data = { ...data, timer: timer_to_seconds };
+    const new_data = { ...data, status: "PUBLISHED", timer: timer_to_seconds };
     editDeck({
       deckId: id,
       payload: new_data,
@@ -67,11 +76,28 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
       .unwrap()
       .then((res: any) => {
         dispatch(deckActions.editADeck(res?.data));
+        addQuizQuestions(deckQuestions);
+      })
+      .catch((err) => {
+        errorHandler(err?.data || "Something went wrong", true);
+      });
+  };
+
+  const addQuizQuestions = (questionSetsArray: any[]) => {
+    addQuestion({
+      deckId: id,
+      payload: [...questionSetsArray],
+    })
+      .unwrap()
+      .then((res: any) => {
+        console.log("ddsd");
+
+        dispatch(deckActions.addADeckQuestion(res?.data));
         successHandler(res, true);
         setClose();
       })
       .catch((err) => {
-        errorHandler(err?.data || "Something went wrong", true);
+        console.log(err);
       });
   };
 
@@ -84,24 +110,35 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
           }}
           className="bg-white border border-[#D6E4FD] rounded-[1rem] px-[2.5rem] py-[3.125rem]"
         >
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-2xl font-bold">Edit deck</h2>
+          <div className="pb-6 border-b border-primary300 mb-10 relative">
+            <h2 className="text-[2rem] text-primary font-bold">Quiz Preview</h2>
+            <p>Lorem ipsum dolor sit amet consectetur. Sed libero</p>
+
+            <button
+              type="button"
+              onClick={() => setClose()}
+              className="absolute right-3 top-4 outline-none"
+            >
+              <Close className="h-[2rem] w-[2rem] " />
+            </button>
           </div>
+
           <Input.Label
-            title={"Quiz Name"}
+            title={"Title of Quiz"}
             name="title"
             placeholder={"Quiz Name"}
-            defaultValue={data?.title}
-            className="rounded-md mb-5 bg-[#FAFAFF]"
+            // defaultValue={data?.title}
+            value={data?.title}
+            className="rounded-[20px] mb-5 bg-[#FAFAFF]"
             autoComplete="off"
             onChange={(e: any) => handleChange(e)}
           />
           <Input.Textarea
-            title={"Quiz Description"}
+            title={"Description"}
             name="description"
             placeholder={"Add a description..."}
             defaultValue={data?.description}
-            className="rounded-md mb-5 min-h-[100px] bg-[#FAFAFF]"
+            className="rounded-[20px] mb-5 min-h-[100px] bg-[#FAFAFF]"
             autoComplete="off"
             minLength={12}
             onChange={(e: any) => handleChange(e)}
@@ -112,47 +149,45 @@ export const EditDeckModal = ({ open, setClose, deck }: Props) => {
               name={"type"}
               value={data?.type}
               onChange={(e: any) => handleChange(e)}
-              className="rounded-md bg-[#FAFAFF]"
+              className="rounded-[20px] bg-[#FAFAFF]"
             >
               <option>Select Quiz Type</option>
               <option value={"PRIVATE"}>PRIVATE</option>
               <option value={"PUBLIC"}>PUBLIC</option>
             </SelectInput>
 
-            <SelectInput
-              label={"Quiz Status"}
-              name={"status"}
-              value={data?.status}
+            <Input.Number
+              title={"Total Time Duration"}
+              name="timer"
+              placeholder={"How many minutes should this test last for?"}
+              className="rounded-[20px] mb-5 bg-[#FAFAFF]"
+              defaultValue={data?.timer}
+              autoComplete="off"
               onChange={(e: any) => handleChange(e)}
-              className="rounded-md bg-[#FAFAFF]"
-            >
-              <option>Select Quiz Status</option>
-              <option value={"DRAFT"}>DRAFT</option>
-              <option value={"PUBLISHED"}>PUBLISHED</option>
-            </SelectInput>
+            />
           </div>
 
-          <Input.Number
-            title={"Timer (optional)"}
-            name="timer"
-            placeholder={"How many minutes should this test last for?"}
-            className="rounded-md mb-5 bg-[#FAFAFF]"
-            defaultValue={data?.timer}
-            autoComplete="off"
+          <SelectInput
+            label={"Quiz Status"}
+            name={"status"}
+            value={data?.status}
             onChange={(e: any) => handleChange(e)}
-          />
-          <div className="flex mt-4 items-center gap-5">
+            className="rounded-[20px] bg-[#FAFAFF]"
+          >
+            <option>Select Quiz Status</option>
+            {/* <option value={"DRAFT"}>DRAFT</option> */}
+            <option value={"PUBLISHED"}>PUBLISHED</option>
+          </SelectInput>
+
+          <SelectCategory />
+
+          <div className="flex mt-10 items-center justify-center gap-5">
             <Button.Primary
-              title={"Edit Deck"}
-              className="mt-4"
-              // disabled={false}
+              title={"Publish"}
+              className="px-8 outline-none"
+              style={{ borderRadius: "50px" }}
               loading={isLoading}
               onClick={handleSubmit}
-            />
-            <Button.Secondary
-              title={"Cancel"}
-              className="mt-4"
-              onClick={() => setClose()}
             />
           </div>
         </div>

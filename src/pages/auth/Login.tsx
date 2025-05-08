@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../../components/input/Input";
+import TextInput from "components/input/TextInput";
 import Button from "../../components/button/buttons";
-// import SocialLogin from "./SocialLogin";
+import { ReactComponent as Waving } from "assets/icons/waving_hand_emoji.svg";
 import errorHandler from "handlers/errorHandler";
 // import successHandler from "handlers/successHandler";
 import { useLogInMutation } from "../../features/api/authSlice";
@@ -32,45 +32,56 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="max-w-[350px] mx-auto">
-      <div className="flex justify-between items-center mb-10">
-        <h2 className="font-bold text-2xl">Login</h2>
-        <a href="/auth/register" className="text-primary">
+    <div>
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="text-white mb-12"
+      >
+        Go Back
+      </button>
+      <div className="flex justify-center items-center gap-2 mb-10">
+        <Waving className="h-[36px]" />
+        <h2 className="font-bold text-white text-[2rem]">
+          We are glad to have you back
+        </h2>
+      </div>
+
+      <div className="border border-white rounded-[50px] py-12 ">
+        <form className="px-8">
+          <TextInput
+            title={"Email address"}
+            placeholder={"Enter email address here"}
+            name="email"
+            autoComplete="off"
+            onChange={(e: any) => handleChange(e)}
+          />
+          <TextInput
+            title={"Password"}
+            placeholder={"Enter password here"}
+            name="password"
+            autoComplete="off"
+            onChange={(e: any) => handleChange(e)}
+          />
+
+          <div className="flex justify-center items-center mt-10">
+            <Button.White
+              title={"Get Started"}
+              className="h-[55px] min-w-[160px] px-5 text-lg"
+              style={{ borderRadius: "50px" }}
+              onClick={handleSubmit}
+              loading={isLoading}
+            />
+          </div>
+        </form>
+      </div>
+
+      <div className="flex justify-center gap-1 mt-6">
+        <span className="text-white">Don't have an account?</span>{" "}
+        <a href="/auth/register" className="text-secondary">
           Sign up
         </a>
       </div>
-      <form>
-        <Input.Label
-          title={""}
-          name="email"
-          placeholder={"Enter your email"}
-          className="rounded-md"
-          autoComplete="off"
-          onChange={(e: any) => handleChange(e)}
-        />
-        <Input.Password
-          title={""}
-          name="password"
-          placeholder={"Password"}
-          className="rounded-md"
-          onChange={(e: any) => handleChange(e)}
-        />
-        <Button.Primary
-          title={"Login"}
-          onClick={handleSubmit}
-          className="w-full mt-4"
-          loading={isLoading}
-        />
-
-        <div className="flex gap-1 mt-6">
-          <span>Don't have an account?</span>{" "}
-          <a href="/auth/register" className="text-primary">
-            Sign up
-          </a>
-        </div>
-      </form>
-
-      {/* <SocialLogin /> */}
     </div>
   );
 };

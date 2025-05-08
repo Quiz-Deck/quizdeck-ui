@@ -106,32 +106,6 @@ export const GenerateDeckModal = ({ open, setClose, questions }: Props) => {
 
   // Format response as JSON
   const parseQuestions = (questionsString: string): Question[] => {
-    // return questionsString.split("\n\n").map((question, index) => {
-    //   const [questionText, optionsAndCorrectAnswerText] =
-    //     question.split("\nanswer:");
-
-    //   // const questionNumber = parseInt(questionText.match(/\d+/)![0]);
-    //   const questionNumberMatch = questionText.match(/^\d+/);
-    //   const questionNumber = questionNumberMatch
-    //     ? parseInt(questionNumberMatch[0])
-    //     : -1; // Or any default value you prefer
-    //   const [questionContent, optionsText] = questionText.split("\noptions:");
-
-    //   const options = optionsText ? optionsText.split("\n").slice(1) : [];
-    //   const correctAnswer = optionsAndCorrectAnswerText
-    //     ? optionsAndCorrectAnswerText.trim()
-    //     : "";
-
-    //   return {
-    //     questionNumber,
-    //     questionContent,
-    //     options,
-    //     correctAnswer,
-    //   };
-    // });
-
-    // const contentData = eval(questionsString);
-
     // eslint-disable-next-line
     const contentData = new Function(`return ${questionsString}`)();
 

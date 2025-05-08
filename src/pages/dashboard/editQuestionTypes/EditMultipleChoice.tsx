@@ -1,48 +1,39 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, Fragment } from "react";
+// import { useDispatch } from "react-redux";
 import Input from "../../../components/input/Input";
-import Button from "../../../components/button/buttons";
-import errorHandler from "handlers/errorHandler";
-import successHandler from "handlers/successHandler";
+// import Button from "../../../components/button/buttons";
+// import errorHandler from "handlers/errorHandler";
+// import successHandler from "handlers/successHandler";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { DeckQuestion } from "features/api/deck/deckSliceTypes";
-import { deckActions } from "features/store/deckSlice";
-import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
+// import { deckActions } from "features/store/deckSlice";
+import { ReactComponent as Plus } from "assets/icons/plus.svg";
+// import { useEditQuestionMutation } from "../../../features/api/question/questionApi";
 
 // Explicitly import the types for JSX
 type CreateQuizProps = {
   question: DeckQuestion;
+  data: any;
+  setData: (e: any) => void;
+  deckQuestions: any;
+  setDeckQuestions: (e: any) => void;
+  quiz_index: number;
 };
 
-const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
-  const dispatch = useDispatch();
-  const [editQuestion, { isLoading }] = useEditQuestionMutation();
-  const [showDetails, setShowDetails] = useState(false);
-
-  const [data, setData] = useState({
-    question: "",
-    type: "MULTI_CHOICE",
-    multichoiceOptions: [],
-    answer: "",
-  });
+const EditMultipleChoice: React.FC<CreateQuizProps> = ({
+  question,
+  data,
+  setData,
+  deckQuestions,
+  setDeckQuestions,
+  quiz_index,
+}) => {
+  // const dispatch = useDispatch();
+  // const [editQuestion, { isLoading }] = useEditQuestionMutation();
 
   const [answerFields, setAnswerFields] = useState(
     question?.multichoiceOptions
   );
-
-  useEffect(() => {
-    setData((data) => ({
-      ...data,
-      question: question?.question,
-      type: question?.type,
-      answer: question?.answer,
-    }));
-    setAnswerFields(question?.multichoiceOptions);
-  }, [question]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
 
   const handleInputChange = (
     index: number,
@@ -54,116 +45,135 @@ const EditMultipleChoice: React.FC<CreateQuizProps> = ({ question }) => {
       updatedFields[index] = value;
       return updatedFields;
     });
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index
+          ? {
+              ...quiz,
+              multichoiceOptions: quiz.multichoiceOptions.map(
+                (option: any, j: number) => (j === index ? value : option)
+              ),
+            }
+          : quiz
+      )
+    );
   };
 
   const handleAddFields = () => {
     const values = [...answerFields];
     values.push(`option ${values?.length + 1}`);
     setAnswerFields(values);
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index
+          ? {
+              ...quiz,
+              multichoiceOptions: [
+                ...quiz.multichoiceOptions,
+                `option ${values?.length}`,
+              ],
+            }
+          : quiz
+      )
+    );
   };
 
   const handleRemoveFields = (index: number) => {
     const values = [...answerFields];
     values.splice(index, 1);
     setAnswerFields(values);
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index
+          ? {
+              ...quiz,
+              multichoiceOptions: values,
+            }
+          : quiz
+      )
+    );
   };
 
   const handleSelectAnswer = (answer: string) => {
     setData({ ...data, answer: answer });
+    setDeckQuestions((prevQuizzes: any) =>
+      prevQuizzes.map((quiz: any, i: number) =>
+        i === quiz_index ? { ...quiz, answer: answer } : quiz
+      )
+    );
   };
 
-  const handleSubmit = (e: any) => {
-    if (answerFields?.length < 2) {
-      errorHandler(
-        {
-          message: "Multichoice questions should have a minimum of 2 options",
-        },
-        true
-      );
-    } else {
-      editQuestion({
-        deckId: question?._id,
-        payload: { ...data, multichoiceOptions: answerFields },
-      })
-        .unwrap()
-        .then((res: any) => {
-          successHandler(res, true);
-          dispatch(deckActions.editADeckQuestion(res?.data));
-        })
-        .catch((err) => {
-          errorHandler(err?.data || "Something went wrong", true);
-        });
-    }
-  };
+  // const handleSubmit = (e: any) => {
+  //   if (answerFields?.length < 2) {
+  //     errorHandler(
+  //       {
+  //         message: "Multichoice questions should have a minimum of 2 options",
+  //       },
+  //       true
+  //     );
+  //   } else {
+  //     editQuestion({
+  //       deckId: question?._id,
+  //       payload: { ...data, multichoiceOptions: answerFields },
+  //     })
+  //       .unwrap()
+  //       .then((res: any) => {
+  //         successHandler(res, true);
+  //         dispatch(deckActions.editADeckQuestion(res?.data));
+  //       })
+  //       .catch((err) => {
+  //         errorHandler(err?.data || "Something went wrong", true);
+  //       });
+  //   }
+  // };
 
   return (
-    <div
-      className="p-5 w-full hover:shadow-lg cursor-pointer"
-      onClick={() => setShowDetails(true)}
-    >
-      <Input.Textarea
-        title={""}
-        name="question"
-        value={data?.question}
-        placeholder="Type your question here..."
-        className="rounded-md mb-5 min-h-[60px] bg-[#FAFAFF]"
-        autoComplete="off"
-        minLength={12}
-        rows={4}
-        onChange={(e: any) => handleChange(e)}
-      />
+    <div className="py-5 w-full hover:shadow-lg cursor-pointer">
+      {answerFields.map((inputField, index) => (
+        <Fragment key={index}>
+          <div className="flex gap-4 w-full items-center">
+            <div className="w-full relative">
+              <Input.Label
+                title={""}
+                name="answer"
+                placeholder={"Type answer or option"}
+                className=" mb-4 w-full bg-[#D9D9D91A] rounded-[20px] border-[#FFFFFF4D] text-white"
+                autoComplete="off"
+                defaultValue={inputField}
+                onChange={(event: any) => handleInputChange(index, event)}
+              />
+              <input
+                type="radio"
+                name={question?._id}
+                className="absolute z-1 top-6 right-4 h-[22px] w-[22px]"
+                defaultChecked={question?.answer === inputField}
+                onChange={() => handleSelectAnswer(inputField)}
+              />
+            </div>
 
-      {showDetails && (
-        <div>
-          {answerFields.map((inputField, index) => (
-            <Fragment key={index}>
-              <div className="flex gap-4 w-full items-center">
-                <input
-                  type="radio"
-                  name={question?._id}
-                  defaultChecked={question?.answer === inputField}
-                  onChange={() => handleSelectAnswer(inputField)}
-                />
-                <div className="w-full">
-                  <Input.Label
-                    title={""}
-                    name="answer"
-                    placeholder={"Type answer or option"}
-                    className="rounded-md mb-4 w-full bg-[#FAFAFF]"
-                    autoComplete="off"
-                    defaultValue={inputField}
-                    onChange={(event: any) => handleInputChange(index, event)}
-                  />
-                </div>
-
-                <button
-                  className="btn btn-link"
-                  type="button"
-                  onClick={() => handleRemoveFields(index)}
-                >
-                  -
-                </button>
-              </div>
-            </Fragment>
-          ))}
-
-          <div className="flex items-center justify-between">
             <button
-              className="text-primary mt-4"
+              className="btn btn-link"
               type="button"
-              onClick={() => handleAddFields()}
+              onClick={() => handleRemoveFields(index)}
             >
-              + Add Answer or Option
+              <TrashIcon className="h-4 w-4 stroke-white" aria-hidden="true" />
             </button>
-            <Button.Primary
-              title={"Edit Question"}
-              className="mt-4"
-              loading={isLoading}
-              onClick={handleSubmit}
-            />
           </div>
-        </div>
-      )}
+        </Fragment>
+      ))}
+
+      <div className="flex items-center justify-between">
+        <button
+          className="text-white mt-4 flex gap-2 items-center"
+          type="button"
+          onClick={() => handleAddFields()}
+        >
+          <span className="w-[2rem] h-[2rem] bg-primary800 rounded-full flex items-center justify-center">
+            <Plus className="w-[24px] h-[24px] fill-[#ffffff]" />
+          </span>
+          Add Answer or Option
+        </button>
+      </div>
     </div>
   );
 };

@@ -40,7 +40,7 @@ export const SelectInput = ({
   return (
     <div>
       {label && (
-        <div className="w-full flex items-center mb-1">
+        <div className="w-full flex items-center">
           <label className="block text-sm font-medium text-[#151515]">
             {label}
           </label>
@@ -59,7 +59,7 @@ export const SelectInput = ({
           onChange={onChange}
           autoComplete="off"
           className={
-            "mt-2 block pl-3 pr-10 w-full text-base focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none sm:text-sm h-[40px] px-4 py-2 mb-4 border border-gray-300 " +
+            "mt-2 block pl-3 pr-10 w-full text-base focus:ring focus:ring-primary focus:border-primary focus:outline-none sm:text-sm h-[50px] px-4 py-2 mb-4 border border-gray-300 rounded-[20px] " +
             className
           }
         >
